@@ -8,9 +8,16 @@ return function()
 	printColoredWhite("-- CHOOSE A PLAYER PROFILE --", drawingX, drawingY)
 	drawingY = drawingY + (2 * linebreakSize)
 
-	printColoredWhite(PlayerDatabase[1].PlayerName, drawingX, drawingY)
-	drawingY = drawingY + linebreakSize
+	for i=1,#PlayerDatabase,1 do
+		local text = (Game.selectedPlayerIndex == i) and "> "..PlayerDatabase[i].PlayerName.." <" or PlayerDatabase[i].PlayerName
+		local colorName = (Game.selectedPlayerIndex == i) and "white" or "black"
+		printColoredColor(
+			text,
+			drawingX,
+			drawingY,
+			colorName
+		)
+		drawingY = drawingY + linebreakSize
+	end
 
-	printColoredWhite(PlayerDatabase[2].PlayerName, drawingX, drawingY)
-	drawingY = drawingY + linebreakSize
 end
