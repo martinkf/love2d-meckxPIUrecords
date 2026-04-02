@@ -55,6 +55,7 @@ Game = {}
 PlayerDatabase = {}
 MixDatabase = {}
 ChartDatabase = {}
+Input = {}
 
 
 
@@ -133,6 +134,19 @@ function love.load()
 	MixDatabase = require("MixDatabase")
 	ChartDatabase = require("ChartDatabase")
 
+	Input.upHeld = false
+    Input.downHeld = false
+    Input.upHoldTime = 0
+    Input.downHoldTime = 0
+    Input.upRepeatTimer = 0
+    Input.downRepeatTimer = 0
+
+	Input.delayBeforeRepeat = 0.25
+    Input.slowRate = 0.05
+	Input.fastThreshold = 3
+    Input.fastRate = 0.025
+
+
 end
 
 
@@ -186,16 +200,10 @@ end
 -- THEY'RE EVENTS. WILL BE TRIGGERED WHEN NEEDED
 function love.keypressed(key)
 	if key == "up" then
-		if Game.state == 1 then State01.UpPressed()
-		elseif Game.state == 2 then State02.UpPressed()
-		elseif Game.state == 3 then State03.UpPressed()
-		elseif Game.state == 4 then State04.UpPressed() end
+		HandleUp()
 	end
 	if key == "down" then
-		if Game.state == 1 then State01.DownPressed()
-		elseif Game.state == 2 then State02.DownPressed()
-		elseif Game.state == 3 then State03.DownPressed()
-		elseif Game.state == 4 then State04.DownPressed() end
+		HandleDown()
 	end
 	if key == "a" then
 		if Game.state == 1 then State01.CenterPressed()
@@ -257,6 +265,137 @@ function ToggleDebug()
 	end
 end
 
+function HandleUp()
+	if Game.state == 1 then State01.UpPressed()
+	elseif Game.state == 2 then State02.UpPressed()
+	elseif Game.state == 3 then State03.UpPressed()
+	elseif Game.state == 4 then State04.UpPressed() end
+end
+
+function HandleDown()
+	if Game.state == 1 then State01.DownPressed()
+	elseif Game.state == 2 then State02.DownPressed()
+	elseif Game.state == 3 then State03.DownPressed()
+	elseif Game.state == 4 then State04.DownPressed() end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function InputHandling_UpDown(dt)
+    local j = Joysticks[1]
+
+	-- for pc
+    --local upNow = love.keyboard.isDown("up") or (j and j:isGamepadDown("dpup"))
+	--local downNow = love.keyboard.isDown("down") or (j and j:isGamepadDown("dpdown"))
+	-- for switch
+	local upNow = j and j:isGamepadDown("dpup")
+    local downNow = j and j:isGamepadDown("dpdown")
+
+    -- UP handling
+    if upNow then
+        if not Input.upHeld then
+            Input.upHeld = true
+            Input.upHoldTime = 0
+            Input.upRepeatTimer = 0
+        else
+            Input.upHoldTime = Input.upHoldTime + dt
+
+            if Input.upHoldTime >= Input.delayBeforeRepeat then
+                local rate = (Input.upHoldTime > Input.fastThreshold) and Input.fastRate or Input.slowRate
+
+                Input.upRepeatTimer = Input.upRepeatTimer + dt
+                if Input.upRepeatTimer >= rate then
+                    HandleUp()
+                    Input.upRepeatTimer = 0
+                end
+            end
+        end
+    else
+        Input.upHeld = false
+        Input.upHoldTime = 0
+        Input.upRepeatTimer = 0
+    end
+
+    -- DOWN handling
+    if downNow then
+        if not Input.downHeld then
+            Input.downHeld = true
+            Input.downHoldTime = 0
+            Input.downRepeatTimer = 0
+        else
+            Input.downHoldTime = Input.downHoldTime + dt
+
+            if Input.downHoldTime >= Input.delayBeforeRepeat then
+                local rate = (Input.downHoldTime > Input.fastThreshold) and Input.fastRate or Input.slowRate
+
+                Input.downRepeatTimer = Input.downRepeatTimer + dt
+                if Input.downRepeatTimer >= rate then
+                    HandleDown()
+                    Input.downRepeatTimer = 0
+                end
+            end
+        end
+    else
+        Input.downHeld = false
+        Input.downHoldTime = 0
+        Input.downRepeatTimer = 0
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -306,6 +445,9 @@ function love.update(dt)
 
 	-- input handling for joysticks
 	Joysticks = love.joystick.getJoysticks()
+
+	-- input handling for smooth scrolling
+	InputHandling_UpDown(dt)
 
 	-- finally, logic
 	--nothing here yet lol
