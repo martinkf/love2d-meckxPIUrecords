@@ -1,61 +1,88 @@
+-- THESE ARE THE EXTRA LUA FILES FOR INCLUDE
+
+-- useful engine extension functions
+local Extension = require("Extension")
+-- debugging overlays
+local Debug_01Variables = require("Debug_01Variables")
+local Debug_02SimpleInputs = require("Debug_02SimpleInputs")
+local Debug_03Controller = require("Debug_03Controller")
+-- screens
+local State01 = require("State01")
+local State02 = require("State02")
+local State03 = require("State03")
 
 
--- THESE ARE THE REQUIREMENTS - EXTRA LUA FILES FOR INCLUDE
-local drawingVariablesDebugMenu = require("drawingVariablesDebugMenu")
-local drawingSimpleInputsDebugMenu = require("drawingSimpleInputsDebugMenu")
-local drawingControllerDebugMenu = require("drawingControllerDebugMenu")
-local drawingState01 = require("drawingState01")
-local drawingState02 = require("drawingState02")
-local drawingState03 = require("drawingState03")
 
--- GLOBAL USEFUL FUNCTIONS (ENGINE TWEAKING)
----@diagnostic disable-next-line: lowercase-global
-function printColoredRGB(text, x, y, r, g, b)
-    love.graphics.setColor(r, g, b)
-    love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-end
----@diagnostic disable-next-line: lowercase-global
-function printColoredColor(text, x, y, colorName)
-	local r, g, b
-	if colorName == "white" then r = 1; g = 1; b = 1; end
-	if colorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6; end
-	if colorName == "darkGray" then r = 0.3; g = 0.3; b = 0.3; end
-	if colorName == "black" then r = 0; g = 0; b = 0; end
-    love.graphics.setColor(r, g, b)
-    love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-end
----@diagnostic disable-next-line: lowercase-global
-function printColoredWhite(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-end
----@diagnostic disable-next-line: lowercase-global
-function printColoredLightGray(text, x, y)
-    love.graphics.setColor(0.6, 0.6, 0.6)
-    love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-end
----@diagnostic disable-next-line: lowercase-global
-function printColoredDarkGray(text, x, y)
-    love.graphics.setColor(0.3, 0.3, 0.3)
-    love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-end
----@diagnostic disable-next-line: lowercase-global
-function printColoredBlack(text, x, y)
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1)
-end
 
--- GLOBAL VARIABLE DECLARATION
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- GLOBAL VARIABLES
+
 Joysticks = ""
 Tee = 0
 Game = {}
 PlayerDatabase = {}
+Database = {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -71,8 +98,11 @@ PlayerDatabase = {}
 -- THIS IS THE BOOT FUNCTION.
 -- RUNS ONCE, WHEN LOADING GAME
 function love.load()
-	--engine adjustments
-	love.graphics.setFont(love.graphics.newFont(24)) --needed for defining a standard font for printing text
+	--engine adjustments (setting font)
+	DefaultFont = love.graphics.newFont(24)
+	ClassicConsole_48 = love.graphics.newFont("fonts/clacon2.ttf", 48)
+	ClassicConsole_24 = love.graphics.newFont("fonts/clacon2.ttf", 24)
+	love.graphics.setFont(DefaultFont)
 
 	--initializing engine global variables
 	Joysticks = love.joystick.getJoysticks() --needed for input implementation
@@ -83,19 +113,51 @@ function love.load()
 	Game.debug = 0
 
 	Game.selectedPlayerIndex = 1
+	Game.selectedPlayerName = "MartinTest"
+	Game.selectedMixIndex = 1
+	Game.selectedMixName = "O.B.G Season Evolution"
+	Game.selectedSortIndex = 1
+	Game.selectedSortName = "Full Display Mode"
 
-	PlayerDatabase = {
-		{	PlayerName = "MartinTest",
+	PlayerDatabase = require("PlayerDatabase")
+	Database = require("Database")
 
-		},
-		{	PlayerName = "Using Handpad",
-
-		},
-		{	PlayerName = "Using PIU pad",
-
-		},
-	}
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -113,16 +175,24 @@ end
 -- THEY'RE EVENTS. WILL BE TRIGGERED WHEN NEEDED
 function love.keypressed(key)
 	if key == "up" then
-		UpPressed()
+		if Game.state == 1 then State01.UpPressed()
+		elseif Game.state == 2 then State02.UpPressed()
+		elseif Game.state == 3 then State03.UpPressed() end
 	end
 	if key == "down" then
-		DownPressed()
+		if Game.state == 1 then State01.DownPressed()
+		elseif Game.state == 2 then State02.DownPressed()
+		elseif Game.state == 3 then State03.DownPressed() end
 	end
 	if key == "a" then
-		CenterPressed()
+		if Game.state == 1 then State01.CenterPressed()
+		elseif Game.state == 2 then State02.CenterPressed()
+		elseif Game.state == 3 then State03.CenterPressed() end
 	end
 	if key == "b" then
-		BackPressed()
+		if Game.state == 1 then State01.BackPressed()
+		elseif Game.state == 2 then State02.BackPressed()
+		elseif Game.state == 3 then State03.BackPressed() end
 	end
 	if key == "r" then
 		ToggleDebug()
@@ -131,65 +201,31 @@ end
 
 function love.gamepadpressed(joystick, button)
 	if button == "dpup" then
-		UpPressed()
+		if Game.state == 1 then State01.UpPressed()
+		elseif Game.state == 2 then State02.UpPressed()
+		elseif Game.state == 3 then State03.UpPressed() end
 	end
 	if button == "dpdown" then
-		DownPressed()
+		if Game.state == 1 then State01.DownPressed()
+		elseif Game.state == 2 then State02.DownPressed()
+		elseif Game.state == 3 then State03.DownPressed() end
 	end
 	if button == "a" then
-		CenterPressed()
+		if Game.state == 1 then State01.CenterPressed()
+		elseif Game.state == 2 then State02.CenterPressed()
+		elseif Game.state == 3 then State03.CenterPressed() end
 	end
 	if button == "b" then
-		BackPressed()
+		if Game.state == 1 then State01.BackPressed()
+		elseif Game.state == 2 then State02.BackPressed()
+		elseif Game.state == 3 then State03.BackPressed() end
 	end
 	if button == "rightshoulder" then
 		ToggleDebug()
 	end
 end
 
--- AND THESE ARE THE ACTION HANDLING FUNCTIONS.
-function UpPressed()
-	if Game.state == 1 then
-
-		Game.selectedPlayerIndex = Game.selectedPlayerIndex - 1
-		if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #PlayerDatabase end
-
-	elseif Game.state == 2 then
-		--
-	elseif Game.state == 3 then
-		--
-	end
-end
-
-function DownPressed()
-	if Game.state == 1 then
-
-		Game.selectedPlayerIndex = Game.selectedPlayerIndex + 1
-		if Game.selectedPlayerIndex > #PlayerDatabase then Game.selectedPlayerIndex = 1 end
-
-	elseif Game.state == 2 then
-		--
-	elseif Game.state == 3 then
-		--
-	end
-end
-
-function CenterPressed()
-	if Game.state == 1 then
-		Game.state = 2
-	elseif Game.state == 2 then
-		Game.state = 3
-	end
-end
-
-function BackPressed()
-	if Game.state == 3 then
-		Game.state = 2
-	elseif Game.state == 2 then
-		Game.state = 1
-	end
-end
-
+-- AND THESE ARE THE GLOBAL ACTION HANDLING FUNCTIONS.
 function ToggleDebug()
 	if Game.debug == 0 then
 		Game.debug = 1
@@ -213,11 +249,38 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- THESE ARE THE LOGIC LOOP FUNCTIONS.
 -- RUNS EVERY FRAME, BEFORE DRAWING
-local function updatingLogic()
-end
-
 function love.update(dt)
 	-- clocks
 	Tee = Tee + 1
@@ -226,8 +289,30 @@ function love.update(dt)
 	Joysticks = love.joystick.getJoysticks()
 
 	-- finally, logic
-	updatingLogic()
+	--nothing here yet lol
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -245,23 +330,27 @@ end
 -- THESE ARE THE DRAWING LOOP FUNCTIONS.
 -- RUNS EVERY FRAME, AFTER LOGIC
 local function drawingUnderlay()
+
 	if Game.state == 1 then
-		drawingState01()
+		State01.Drawing()
 	elseif Game.state == 2 then
-		drawingState02()
+		State02.Drawing()
 	elseif Game.state == 3 then
-		drawingState03()
+		State03.Drawing()
 	end
+
 end
 
 local function drawingOverlay()
+
 	if Game.debug == 1 then
-		drawingVariablesDebugMenu()
+		Debug_01Variables.Drawing()
 	elseif Game.debug == 2 then
-		drawingSimpleInputsDebugMenu()
+		Debug_02SimpleInputs.Drawing()
 	elseif Game.debug == 3 then
-		drawingControllerDebugMenu()
+		Debug_03Controller.Drawing()
 	end
+
 end
 
 function love.draw()
