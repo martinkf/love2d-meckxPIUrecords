@@ -5,22 +5,25 @@ local State03 = {}
 function State03.UpPressed()
 
 	Game.selectedSortIndex = Game.selectedSortIndex - 1
-	if Game.selectedSortIndex == 0 then Game.selectedSortIndex = #Database[Game.selectedMixIndex].SortingMethods end
-	Game.selectedSortName = Database[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	if Game.selectedSortIndex == 0 then Game.selectedSortIndex = #MixDatabase[Game.selectedMixIndex].SortingMethods end
+	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	love.audio.play(SfxMove:clone())
 
 end
 
 function State03.DownPressed()
 
 	Game.selectedSortIndex = Game.selectedSortIndex + 1
-	if Game.selectedSortIndex > #Database[Game.selectedMixIndex].SortingMethods then Game.selectedSortIndex = 1 end
-	Game.selectedSortName = Database[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	if Game.selectedSortIndex > #MixDatabase[Game.selectedMixIndex].SortingMethods then Game.selectedSortIndex = 1 end
+	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	love.audio.play(SfxMove:clone())
 
 end
 
 function State03.CenterPressed()
 
-	--
+	Game.state = 4
+	love.audio.play(SfxCenter:clone())
 
 end
 
@@ -28,7 +31,8 @@ function State03.BackPressed()
 
 	Game.state = 2
 	Game.selectedSortIndex = 1
-	Game.selectedSortName = Database[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	love.audio.play(SfxBack:clone())
 
 end
 
@@ -75,33 +79,48 @@ end
 -- DRAWING
 
 function State03.Drawing()
-	local drawingX = 10
-	local drawingY = 4
+	local drawingX = 6
+	local drawingY = 2
 	local linebreakSize = 42
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkGray",
+		ColorName = "darkestGray",
+	})
+	meckx_rect({
+		XPos = 0,
+		YPos = 0,
+		Width = 1280,
+		Height = 47,
+		ColorName = "red",
+		RectStyle = "fill",
 	})
 
 	-- contents
 	meckx_print({
-		Text = "-- 03. SELECT A SORTING ORDER --",
+		Text = Game.selectedPlayerName.."/"..Game.selectedMixName.."/",
+		XPos = drawingX,
+		YPos = drawingY-4,
+		ColorName = "yellow",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "------------ 03. SELECT A SORTING ORDER -------------",
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	drawingY = drawingY + (1.5 * linebreakSize)
+	drawingY = drawingY + linebreakSize
 
-	for i=1,#Database[Game.selectedMixIndex].SortingMethods,1 do
-		local text = (Game.selectedSortIndex == i) and "> "..Database[Game.selectedMixIndex].SortingMethods[i].SortName.." <" or Database[Game.selectedMixIndex].SortingMethods[i].SortName
-		local colorName = (Game.selectedSortIndex == i) and "white" or "black"
+	for i=1,#MixDatabase[Game.selectedMixIndex].SortingMethods,1 do
 		meckx_print({
-			Text = text,
-			XPos = drawingX,
+			Text = (Game.selectedSortIndex == i) and "> "..MixDatabase[Game.selectedMixIndex].SortingMethods[i].SortName.." <" or MixDatabase[Game.selectedMixIndex].SortingMethods[i].SortName,
+			XPos = (Game.selectedSortIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
-			ColorName = colorName,
+			ColorName = (Game.selectedSortIndex == i) and "white" or "darkGray",
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize

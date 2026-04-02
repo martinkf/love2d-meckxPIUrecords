@@ -1,8 +1,8 @@
 local Debug_01Variables = {}
 
 function Debug_01Variables.Drawing()
-	local drawingX = 660
-	local drawingY = 280
+	local drawingX = 620
+	local drawingY = 220
 	local linebreakSize = 26
 
 	-- background
@@ -81,6 +81,42 @@ function Debug_01Variables.Drawing()
 
 	meckx_print({
 		Text = "Game.selectedSortName = "..Game.selectedSortName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedSongIndex = "..Game.selectedSongIndex,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedSongName = "..Game.selectedSongName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "#Game.selectedSongArrayOfCharts = "..#Game.selectedSongArrayOfCharts,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = (Game.selectedSongArrayOfCharts[1]) and "Game.selectedSongArrayOfCharts[1] = "..Game.selectedSongArrayOfCharts[1] or "nope",
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",

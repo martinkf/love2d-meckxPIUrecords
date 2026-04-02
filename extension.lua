@@ -5,12 +5,17 @@ local Extension = {}
 function meckx_clearScreen(args)
 	local r,g,b
 	if args.ColorName == "white" then r = 1; g = 1; b = 1;
+	elseif args.ColorName == "lightestGray" then r = 0.8; g = 0.8; b = 0.8;
 	elseif args.ColorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6;
-	elseif args.ColorName == "darkGray" then r = 0.3; g = 0.3; b = 0.3;
+	elseif args.ColorName == "darkGray" then r = 0.4; g = 0.4; b = 0.4;
+	elseif args.ColorName == "darkestGray" then r = 0.2; g = 0.2; b = 0.2;
 	elseif args.ColorName == "black" then r = 0; g = 0; b = 0;
 	elseif args.ColorName == "blue" then r = 0; g = 0; b = 1;
 	elseif args.ColorName == "pink" then r = 1; g = 0; b = 1;
-	elseif args.ColorName == "red" then r = 1; g = 0; b = 0; end
+	elseif args.ColorName == "red" then r = 1; g = 0; b = 0;
+	elseif args.ColorName == "yellow" then r = 1; g = 1; b = 0;
+	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
+	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
 
 	love.graphics.clear(r, g, b)
 end
@@ -22,12 +27,17 @@ function meckx_print(args)
 	local yPos = args.YPos
 	local r,g,b
 	if args.ColorName == "white" then r = 1; g = 1; b = 1;
+	elseif args.ColorName == "lightestGray" then r = 0.8; g = 0.8; b = 0.8;
 	elseif args.ColorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6;
-	elseif args.ColorName == "darkGray" then r = 0.3; g = 0.3; b = 0.3;
+	elseif args.ColorName == "darkGray" then r = 0.4; g = 0.4; b = 0.4;
+	elseif args.ColorName == "darkestGray" then r = 0.2; g = 0.2; b = 0.2;
 	elseif args.ColorName == "black" then r = 0; g = 0; b = 0;
 	elseif args.ColorName == "blue" then r = 0; g = 0; b = 1;
 	elseif args.ColorName == "pink" then r = 1; g = 0; b = 1;
-	elseif args.ColorName == "red" then r = 1; g = 0; b = 0; end
+	elseif args.ColorName == "red" then r = 1; g = 0; b = 0;
+	elseif args.ColorName == "yellow" then r = 1; g = 1; b = 0;
+	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
+	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
 	local fontStyle = args.FontStyle
 
 	love.graphics.setColor(r, g, b)
@@ -45,12 +55,17 @@ function meckx_rect(args)
 	local height = args.Height
 	local r,g,b
 	if args.ColorName == "white" then r = 1; g = 1; b = 1;
+	elseif args.ColorName == "lightestGray" then r = 0.8; g = 0.8; b = 0.8;
 	elseif args.ColorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6;
-	elseif args.ColorName == "darkGray" then r = 0.3; g = 0.3; b = 0.3;
+	elseif args.ColorName == "darkGray" then r = 0.4; g = 0.4; b = 0.4;
+	elseif args.ColorName == "darkestGray" then r = 0.2; g = 0.2; b = 0.2;
 	elseif args.ColorName == "black" then r = 0; g = 0; b = 0;
 	elseif args.ColorName == "blue" then r = 0; g = 0; b = 1;
 	elseif args.ColorName == "pink" then r = 1; g = 0; b = 1;
-	elseif args.ColorName == "red" then r = 1; g = 0; b = 0; end
+	elseif args.ColorName == "red" then r = 1; g = 0; b = 0;
+	elseif args.ColorName == "yellow" then r = 1; g = 1; b = 0;
+	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
+	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
 	local rectStyle = args.RectStyle --"fill" or "idk"
 
 	love.graphics.setColor(r, g, b)
