@@ -1,29 +1,29 @@
-local State02 = {}
+local State_02SelectMix = {}
 
 -- INPUT HANDLING
 
-function State02.UpPressed()
+function State_02SelectMix.UpPressed()
 
 	Game.selectedMixIndex = Game.selectedMixIndex - 1
-	if Game.selectedMixIndex == 0 then Game.selectedMixIndex = #MixDatabase end
-	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+	if Game.selectedMixIndex == 0 then Game.selectedMixIndex = #DatabaseMixes end
+	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
 	--love.audio.play(SfxMove:clone())
 
 end
 
-function State02.DownPressed()
+function State_02SelectMix.DownPressed()
 
 	Game.selectedMixIndex = Game.selectedMixIndex + 1
-	if Game.selectedMixIndex > #MixDatabase then Game.selectedMixIndex = 1 end
-	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+	if Game.selectedMixIndex > #DatabaseMixes then Game.selectedMixIndex = 1 end
+	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
 	--love.audio.play(SfxMove:clone())
 
 end
 
-function State02.CenterPressed()
+function State_02SelectMix.CenterPressed()
 
 	Game.selectedSortIndex = 1
-	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
 
 	Game.state = 3
 
@@ -31,7 +31,7 @@ function State02.CenterPressed()
 
 end
 
-function State02.BackPressed()
+function State_02SelectMix.BackPressed()
 
 	Game.state = 1
 
@@ -84,9 +84,9 @@ end
 
 -- DRAWING
 
-function State02.Drawing()
+function State_02SelectMix.Drawing()
 	local drawingX = 6
-	local drawingY = 6
+	local drawingY = Game.baseDrawingY
 	local linebreakSize = 42
 
 	-- background
@@ -106,7 +106,7 @@ function State02.Drawing()
 	-- contents
 	meckx_print({
 		Text = Game.selectedPlayerName.."/",
-		XPos = drawingX,
+		XPos = drawingX+24,
 		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
@@ -122,9 +122,9 @@ function State02.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
-	for i=1,#MixDatabase,1 do
+	for i=1,#DatabaseMixes,1 do
 		meckx_print({
-			Text = (Game.selectedMixIndex == i) and "> "..MixDatabase[i].MixName.." <" or MixDatabase[i].MixName,
+			Text = (Game.selectedMixIndex == i) and "> "..DatabaseMixes[i].MixName.." <" or DatabaseMixes[i].MixName,
 			XPos = (Game.selectedMixIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
 			ColorName = (Game.selectedMixIndex == i) and "white" or "darkGray",
@@ -177,4 +177,4 @@ end
 
 
 
-return State02
+return State_02SelectMix

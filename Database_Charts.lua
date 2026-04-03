@@ -1,4 +1,4 @@
-local ChartDatabase = {
+local DatabaseCharts = {
     Songs = {
         ["ANOTHER TRUTH | CORDIALITY"] = {
             Charts = {
@@ -14,19 +14,12 @@ local ChartDatabase = {
                 ["3RD-DOUBLE"] = { DifficultyName = " D13" },
             }
         },
-        ["MR. LARPUS"] = {
-            Charts = {
-                ["OBGSE-NORMAL"] = { DifficultyName = " S05" },
-                ["OBGSE-HARD"] = { DifficultyName = " S25" },
-                ["OBGSE-CRAZY"] = { DifficultyName = " S26" },
-            }
-        },
     }
 }
 
-function ChartDatabase.FetchChartDifficulty(input_songTitle, input_chartName)
+function DatabaseCharts.FetchChartDifficulty(input_songTitle, input_chartName)
 
-    local song = ChartDatabase.Songs[input_songTitle]
+    local song = DatabaseCharts.Songs[input_songTitle]
     if not song then return "XXXX" end
 
     local chart = song.Charts[input_chartName]
@@ -36,21 +29,19 @@ function ChartDatabase.FetchChartDifficulty(input_songTitle, input_chartName)
 
 end
 
-function ChartDatabase.FetchChartColor(input_songTitle, input_chartName)
+function DatabaseCharts.FetchChartColor(input_songTitle, input_chartName)
 
-    local song = ChartDatabase.Songs[input_songTitle]
+    local song = DatabaseCharts.Songs[input_songTitle]
     if not song then return "black" end
 
     local chart = song.Charts[input_chartName]
     if not chart then return "black" end
 
-    if chart.DifficultyName:sub(2, 2) == "S" then
-        -- if the second digit is a "S"
-        return "orange"
-    elseif chart.DifficultyName:sub(2, 2) == "D" then
-        return "forestGreen"
+    if chart.DifficultyName:match("^ S") then return "orange"
+    elseif chart.DifficultyName:match("^HD") then return "blue"
+    elseif chart.DifficultyName:match("^ D") then return "forestGreen"
     else return "black" end
 
 end
 
-return ChartDatabase
+return DatabaseCharts
