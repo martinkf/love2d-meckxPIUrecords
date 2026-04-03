@@ -5,30 +5,40 @@ local State02 = {}
 function State02.UpPressed()
 
 	Game.selectedMixIndex = Game.selectedMixIndex - 1
-	if Game.selectedMixIndex == 0 then Game.selectedMixIndex = #Database end
-	Game.selectedMixName = Database[Game.selectedMixIndex].MixName
+	if Game.selectedMixIndex == 0 then Game.selectedMixIndex = #MixDatabase end
+	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+	--love.audio.play(SfxMove:clone())
 
 end
 
 function State02.DownPressed()
 
 	Game.selectedMixIndex = Game.selectedMixIndex + 1
-	if Game.selectedMixIndex > #Database then Game.selectedMixIndex = 1 end
-	Game.selectedMixName = Database[Game.selectedMixIndex].MixName
+	if Game.selectedMixIndex > #MixDatabase then Game.selectedMixIndex = 1 end
+	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+	--love.audio.play(SfxMove:clone())
 
 end
 
 function State02.CenterPressed()
 
+	Game.selectedSortIndex = 1
+	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+
 	Game.state = 3
+
+	--love.audio.play(SfxCenter:clone())
 
 end
 
 function State02.BackPressed()
 
 	Game.state = 1
-	Game.selectedMixIndex = 1
-	Game.selectedMixName = Database[Game.selectedMixIndex].MixName
+
+	Game.selectedMixIndex = 0
+	Game.selectedMixName = ""
+
+	--love.audio.play(SfxBack:clone())
 
 end
 
@@ -75,33 +85,49 @@ end
 -- DRAWING
 
 function State02.Drawing()
-	local drawingX = 10
-	local drawingY = 4
+	local drawingX = 6
+	local drawingY = 6
 	local linebreakSize = 42
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkGray",
+		ColorName = "darkestGray",
+	})
+	meckx_rect({
+		XPos = 0,
+		YPos = 0,
+		Width = 1280,
+		Height = 44,
+		ColorName = "red",
+		RectStyle = "fill",
+		Transparency = 1,
 	})
 
 	-- contents
 	meckx_print({
-		Text = "-- 02. SELECT A PIU MIX --",
+		Text = Game.selectedPlayerName.."/",
+		XPos = drawingX,
+		YPos = drawingY-2,
+		ColorName = "yellow",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "--------------- 02. SELECT A PIU MIX ----------------",
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	drawingY = drawingY + (1.5 * linebreakSize)
+	drawingY = drawingY + linebreakSize
 
-	for i=1,#Database,1 do
-		local text = (Game.selectedMixIndex == i) and "> "..Database[i].MixName.." <" or Database[i].MixName
-		local colorName = (Game.selectedMixIndex == i) and "white" or "black"
+	for i=1,#MixDatabase,1 do
 		meckx_print({
-			Text = text,
-			XPos = drawingX,
+			Text = (Game.selectedMixIndex == i) and "> "..MixDatabase[i].MixName.." <" or MixDatabase[i].MixName,
+			XPos = (Game.selectedMixIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
-			ColorName = colorName,
+			ColorName = (Game.selectedMixIndex == i) and "white" or "darkGray",
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize

@@ -7,6 +7,7 @@ function State01.UpPressed()
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex - 1
 	if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #PlayerDatabase end
 	Game.selectedPlayerName = PlayerDatabase[Game.selectedPlayerIndex].PlayerName
+	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -15,18 +16,18 @@ function State01.DownPressed()
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex + 1
 	if Game.selectedPlayerIndex > #PlayerDatabase then Game.selectedPlayerIndex = 1 end
 	Game.selectedPlayerName = PlayerDatabase[Game.selectedPlayerIndex].PlayerName
+	--love.audio.play(SfxMove:clone())
 
 end
 
 function State01.CenterPressed()
 
+	Game.selectedMixIndex = 1
+	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+
 	Game.state = 2
 
-end
-
-function State01.BackPressed()
-
-	--
+	--love.audio.play(SfxCenter:clone())
 
 end
 
@@ -73,33 +74,49 @@ end
 -- DRAWING
 
 function State01.Drawing()
-	local drawingX = 10
-	local drawingY = 4
+	local drawingX = 6
+	local drawingY = 6
 	local linebreakSize = 42
 
-	-- background
+	-- backgrounds
 	meckx_clearScreen({
-		ColorName = "darkGray",
+		ColorName = "darkestGray",
+	})
+	meckx_rect({
+		XPos = 0,
+		YPos = 0,
+		Width = 1280,
+		Height = 44,
+		ColorName = "red",
+		RectStyle = "fill",
+		Transparency = 1,
 	})
 
 	-- contents
 	meckx_print({
-		Text = "-- 01. CHOOSE A PLAYER PROFILE --",
+		Text = "../",
+		XPos = drawingX,
+		YPos = drawingY-2,
+		ColorName = "yellow",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "------------ 01. CHOOSE A PLAYER PROFILE ------------",
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	drawingY = drawingY + (1.5 * linebreakSize)
+	drawingY = drawingY + linebreakSize
 
 	for i=1,#PlayerDatabase,1 do
-		local text = (Game.selectedPlayerIndex == i) and "> "..PlayerDatabase[i].PlayerName.." <" or PlayerDatabase[i].PlayerName
-		local colorName = (Game.selectedPlayerIndex == i) and "white" or "black"
 		meckx_print({
-			Text = text,
-			XPos = drawingX,
+			Text = (Game.selectedPlayerIndex == i) and "> "..PlayerDatabase[i].PlayerName.." <" or PlayerDatabase[i].PlayerName,
+			XPos = (Game.selectedPlayerIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
-			ColorName = colorName,
+			ColorName = (Game.selectedPlayerIndex == i) and "white" or "darkGray",
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize

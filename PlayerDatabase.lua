@@ -1,9 +1,9 @@
 local PlayerDatabase = {
     {   PlayerName = "MartinTest",
     },
-    {   PlayerName = "Using Handpad",
+    {   PlayerName = "Handpad",
     },
-    {   PlayerName = "Using PIU pad",
+    {   PlayerName = "PIU pad",
     },
 }
 
