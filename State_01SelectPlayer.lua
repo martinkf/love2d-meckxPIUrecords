@@ -1,29 +1,29 @@
-local State01 = {}
+local State_01SelectPlayer = {}
 
 -- INPUT HANDLING
 
-function State01.UpPressed()
+function State_01SelectPlayer.UpPressed()
 
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex - 1
-	if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #PlayerDatabase end
-	Game.selectedPlayerName = PlayerDatabase[Game.selectedPlayerIndex].PlayerName
+	if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #DatabasePlayers end
+	Game.selectedPlayerName = DatabasePlayers[Game.selectedPlayerIndex].PlayerName
 	--love.audio.play(SfxMove:clone())
 
 end
 
-function State01.DownPressed()
+function State_01SelectPlayer.DownPressed()
 
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex + 1
-	if Game.selectedPlayerIndex > #PlayerDatabase then Game.selectedPlayerIndex = 1 end
-	Game.selectedPlayerName = PlayerDatabase[Game.selectedPlayerIndex].PlayerName
+	if Game.selectedPlayerIndex > #DatabasePlayers then Game.selectedPlayerIndex = 1 end
+	Game.selectedPlayerName = DatabasePlayers[Game.selectedPlayerIndex].PlayerName
 	--love.audio.play(SfxMove:clone())
 
 end
 
-function State01.CenterPressed()
+function State_01SelectPlayer.CenterPressed()
 
 	Game.selectedMixIndex = 1
-	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
 
 	Game.state = 2
 
@@ -73,9 +73,9 @@ end
 
 -- DRAWING
 
-function State01.Drawing()
+function State_01SelectPlayer.Drawing()
 	local drawingX = 6
-	local drawingY = 6
+	local drawingY = Game.baseDrawingY
 	local linebreakSize = 42
 
 	-- backgrounds
@@ -95,7 +95,7 @@ function State01.Drawing()
 	-- contents
 	meckx_print({
 		Text = "../",
-		XPos = drawingX,
+		XPos = drawingX+24,
 		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
@@ -103,7 +103,7 @@ function State01.Drawing()
 	drawingY = drawingY + linebreakSize
 
 	meckx_print({
-		Text = "------------ 01. CHOOSE A PLAYER PROFILE ------------",
+		Text = "------------ 01. SELECT A PLAYER PROFILE ------------",
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
@@ -111,9 +111,9 @@ function State01.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
-	for i=1,#PlayerDatabase,1 do
+	for i=1,#DatabasePlayers,1 do
 		meckx_print({
-			Text = (Game.selectedPlayerIndex == i) and "> "..PlayerDatabase[i].PlayerName.." <" or PlayerDatabase[i].PlayerName,
+			Text = (Game.selectedPlayerIndex == i) and "> "..DatabasePlayers[i].PlayerName.." <" or DatabasePlayers[i].PlayerName,
 			XPos = (Game.selectedPlayerIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
 			ColorName = (Game.selectedPlayerIndex == i) and "white" or "darkGray",
@@ -166,4 +166,4 @@ end
 
 
 
-return State01
+return State_01SelectPlayer

@@ -1,4 +1,4 @@
-local PlayerDatabase = {
+local DatabasePlayers = {
     {   PlayerName = "MartinTest",
     },
     {   PlayerName = "Handpad",
@@ -7,4 +7,4 @@ local PlayerDatabase = {
     },
 }
 
-return PlayerDatabase
+return DatabasePlayers

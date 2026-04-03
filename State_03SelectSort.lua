@@ -1,29 +1,30 @@
-local State03 = {}
+local State_03SelectSort = {}
 
 -- INPUT HANDLING
 
-function State03.UpPressed()
+function State_03SelectSort.UpPressed()
 
 	Game.selectedSortIndex = Game.selectedSortIndex - 1
-	if Game.selectedSortIndex == 0 then Game.selectedSortIndex = #MixDatabase[Game.selectedMixIndex].SortingMethods end
-	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	if Game.selectedSortIndex == 0 then Game.selectedSortIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods end
+	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
 	--love.audio.play(SfxMove:clone())
 
 end
 
-function State03.DownPressed()
+function State_03SelectSort.DownPressed()
 
 	Game.selectedSortIndex = Game.selectedSortIndex + 1
-	if Game.selectedSortIndex > #MixDatabase[Game.selectedMixIndex].SortingMethods then Game.selectedSortIndex = 1 end
-	Game.selectedSortName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	if Game.selectedSortIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods then Game.selectedSortIndex = 1 end
+	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
 	--love.audio.play(SfxMove:clone())
 
 end
 
-function State03.CenterPressed()
+function State_03SelectSort.CenterPressed()
 
 	Game.selectedSongIndex = 1
-	Game.selectedSongName = MixDatabase[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
+	Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
+	Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
 
 	Game.state = 4
 
@@ -31,7 +32,7 @@ function State03.CenterPressed()
 
 end
 
-function State03.BackPressed()
+function State_03SelectSort.BackPressed()
 
 	Game.state = 2
 
@@ -84,9 +85,9 @@ end
 
 -- DRAWING
 
-function State03.Drawing()
+function State_03SelectSort.Drawing()
 	local drawingX = 6
-	local drawingY = 6
+	local drawingY = Game.baseDrawingY
 	local linebreakSize = 42
 
 	-- background
@@ -106,7 +107,7 @@ function State03.Drawing()
 	-- contents
 	meckx_print({
 		Text = Game.selectedPlayerName.."/"..Game.selectedMixName.."/",
-		XPos = drawingX,
+		XPos = drawingX+24,
 		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
@@ -122,9 +123,9 @@ function State03.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
-	for i=1,#MixDatabase[Game.selectedMixIndex].SortingMethods,1 do
+	for i=1,#DatabaseMixes[Game.selectedMixIndex].SortingMethods,1 do
 		meckx_print({
-			Text = (Game.selectedSortIndex == i) and "> "..MixDatabase[Game.selectedMixIndex].SortingMethods[i].SortName.." <" or MixDatabase[Game.selectedMixIndex].SortingMethods[i].SortName,
+			Text = (Game.selectedSortIndex == i) and "> "..DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName.." <" or DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName,
 			XPos = (Game.selectedSortIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
 			ColorName = (Game.selectedSortIndex == i) and "white" or "darkGray",
@@ -177,4 +178,4 @@ end
 
 
 
-return State03
+return State_03SelectSort

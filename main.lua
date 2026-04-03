@@ -7,54 +7,20 @@ local Debug_01Variables = require("Debug_01Variables")
 local Debug_02SimpleInputs = require("Debug_02SimpleInputs")
 local Debug_03Controller = require("Debug_03Controller")
 -- screens
-local State01 = require("State01")
-local State02 = require("State02")
-local State03 = require("State03")
-local State04or05 = require("State04or05")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+local State_01SelectPlayer = require("State_01SelectPlayer")
+local State_02SelectMix = require("State_02SelectMix")
+local State_03SelectSort = require("State_03SelectSort")
+local State_04SelectSong = require("State_04SelectSong")
+local State_05SelectChart = require("State_05SelectChart")
 
 -- GLOBAL VARIABLES
 
+--Tee = 0
+DatabasePlayers = {}
+DatabaseMixes = {}
+DatabaseDetails = {}
 Joysticks = {}
-Tee = 0
 Game = {}
-PlayerDatabase = {}
-MixDatabase = {}
-ChartDatabase = {}
 Input = {}
 
 
@@ -116,26 +82,31 @@ function love.load()
 	--SfxBack = love.audio.newSource("sounds/SfxBack.mp3", "static")
 
 	--initializing global variables
-	Tee = 0
+	--Tee = 0
 	Game.state = 1
-	Game.debug = 3
+	Game.debug = 0
+	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
 
 	Game.selectedPlayerIndex = 1
 	Game.selectedPlayerName = "MartinTest"
+
 	Game.selectedMixIndex = 0
 	Game.selectedMixName = ""
+
 	Game.selectedSortIndex = 0
 	Game.selectedSortName = ""
+
 	Game.selectedSongIndex = 0
 	Game.selectedSongName = ""
 	Game.selectedSongArrayOfCharts = {}
+
 	Game.selectedChartIndex = 0
 	Game.selectedChartName = ""
 	Game.selectedChartDifficulty = ""
 
-	PlayerDatabase = require("PlayerDatabase")
-	MixDatabase = require("MixDatabase")
-	ChartDatabase = require("ChartDatabase")
+	DatabasePlayers = require("Database_Players")
+	DatabaseMixes = require("Database_Mixes")
+	DatabaseDetails = require("Database_Details")
 
 	Input.keyboardHeld = {}
 	Input.joystickHeld = {}
@@ -148,7 +119,6 @@ function love.load()
     Input.slowRate = 0.2
 	Input.fastThreshold = 2
     Input.fastRate = 0.075
-
 
 end
 
@@ -237,78 +207,7 @@ function love.gamepadreleased(joystick, button)
 
 end
 
--- AND THESE ARE THE GLOBAL ACTION HANDLING FUNCTIONS.
-function HandleUp()
-	if Game.state == 1 then State01.UpPressed()
-	elseif Game.state == 2 then State02.UpPressed()
-	elseif Game.state == 3 then State03.UpPressed()
-	elseif Game.state == 4 then State04or05.UpPressedState04()
-	elseif Game.state == 5 then State04or05.UpPressedState05() end
-end
-
-function HandleDown()
-	if Game.state == 1 then State01.DownPressed()
-	elseif Game.state == 2 then State02.DownPressed()
-	elseif Game.state == 3 then State03.DownPressed()
-	elseif Game.state == 4 then State04or05.DownPressedState04()
-	elseif Game.state == 5 then State04or05.DownPressedState05() end
-end
-
-function HandleCenter()
-	if Game.state == 1 then State01.CenterPressed()
-	elseif Game.state == 2 then State02.CenterPressed()
-	elseif Game.state == 3 then State03.CenterPressed()
-	elseif Game.state == 4 then State04or05.CenterPressedState04() end
-end
-
-function HandleBack()
-	if Game.state == 2 then State02.BackPressed()
-	elseif Game.state == 3 then State03.BackPressed()
-	elseif Game.state == 4 then State04or05.BackPressedState04()
-	elseif Game.state == 5 then State04or05.BackPressedState05() end
-end
-
-function ToggleDebug()
-	if Game.debug == 0 then Game.debug = 1
-	elseif Game.debug == 1 then Game.debug = 2
-	elseif Game.debug == 2 then Game.debug = 3
-	elseif Game.debug == 3 then	Game.debug = 0 end
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- THIS IS CHECKED EVERY FRAME TO IMPLEMENT THE SCROLLING "HELDING DOWN" FEATURE.
 function InputHandling_UpDown(dt)
 
     -- UP handling
@@ -349,24 +248,43 @@ function InputHandling_UpDown(dt)
 
 end
 
+-- AND THESE ARE THE GLOBAL ACTION HANDLING FUNCTIONS.
+function HandleUp()
+	if Game.state == 1 then State_01SelectPlayer.UpPressed()
+	elseif Game.state == 2 then State_02SelectMix.UpPressed()
+	elseif Game.state == 3 then State_03SelectSort.UpPressed()
+	elseif Game.state == 4 then State_04SelectSong.UpPressed()
+	elseif Game.state == 5 then State_05SelectChart.UpPressed() end
+end
 
+function HandleDown()
+	if Game.state == 1 then State_01SelectPlayer.DownPressed()
+	elseif Game.state == 2 then State_02SelectMix.DownPressed()
+	elseif Game.state == 3 then State_03SelectSort.DownPressed()
+	elseif Game.state == 4 then State_04SelectSong.DownPressed()
+	elseif Game.state == 5 then State_05SelectChart.DownPressed() end
+end
 
+function HandleCenter()
+	if Game.state == 1 then State_01SelectPlayer.CenterPressed()
+	elseif Game.state == 2 then State_02SelectMix.CenterPressed()
+	elseif Game.state == 3 then State_03SelectSort.CenterPressed()
+	elseif Game.state == 4 then State_04SelectSong.CenterPressed() end
+end
 
+function HandleBack()
+	if Game.state == 2 then State_02SelectMix.BackPressed()
+	elseif Game.state == 3 then State_03SelectSort.BackPressed()
+	elseif Game.state == 4 then State_04SelectSong.BackPressed()
+	elseif Game.state == 5 then State_05SelectChart.BackPressed() end
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function ToggleDebug()
+	if Game.debug == 0 then Game.debug = 1
+	elseif Game.debug == 1 then Game.debug = 2
+	elseif Game.debug == 2 then Game.debug = 3
+	elseif Game.debug == 3 then	Game.debug = 0 end
+end
 
 
 
@@ -415,17 +333,20 @@ end
 -- THESE ARE THE LOGIC LOOP FUNCTIONS.
 -- RUNS EVERY FRAME, BEFORE DRAWING
 function love.update(dt)
-	-- clocks
-	Tee = Tee + 1
+
+	-- clocks, if i ever need that
+	--Tee = Tee + 1
 
 	-- input handling for joysticks -- on switch, joysticks can connect at any time in the game, not just boot
+	-- hence we're always checking for the little fuckers
 	Joysticks = love.joystick.getJoysticks()
 
-	-- input handling for smooth scrolling
+	-- input handling for helding-down scrolling
 	InputHandling_UpDown(dt)
 
 	-- finally, logic
 	--nothing here yet lol
+
 end
 
 
@@ -467,27 +388,19 @@ end
 -- RUNS EVERY FRAME, AFTER LOGIC
 local function drawingUnderlay()
 
-	if Game.state == 1 then
-		State01.Drawing()
-	elseif Game.state == 2 then
-		State02.Drawing()
-	elseif Game.state == 3 then
-		State03.Drawing()
-	elseif Game.state == 4 or Game.state == 5 then
-		State04or05.Drawing()
-	end
+	if Game.state == 1 then State_01SelectPlayer.Drawing()
+	elseif Game.state == 2 then State_02SelectMix.Drawing()
+	elseif Game.state == 3 then State_03SelectSort.Drawing()
+	elseif Game.state == 4 then State_04SelectSong.Drawing()
+	elseif Game.state == 5 then State_05SelectChart.Drawing() end
 
 end
 
 local function drawingOverlay()
 
-	if Game.debug == 1 then
-		Debug_01Variables.Drawing()
-	elseif Game.debug == 2 then
-		Debug_02SimpleInputs.Drawing()
-	elseif Game.debug == 3 then
-		Debug_03Controller.Drawing()
-	end
+	if Game.debug == 1 then Debug_01Variables.Drawing()
+	elseif Game.debug == 2 then Debug_02SimpleInputs.Drawing()
+	elseif Game.debug == 3 then Debug_03Controller.Drawing() end
 
 end
 

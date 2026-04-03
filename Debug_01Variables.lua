@@ -18,7 +18,7 @@ function Debug_01Variables.Drawing()
 
 	-- contents
 	meckx_print({
-		Text = "Tee = "..Tee,
+		Text = "love._os = "..love._os,
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
