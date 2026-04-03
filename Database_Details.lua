@@ -1,25 +1,27 @@
-local DatabaseCharts = {
+local DatabaseDetails = {
     Songs = {
         ["ANOTHER TRUTH | CORDIALITY"] = {
+            OriginMix = "The 1st DF",
             Charts = {
                 ["3RD-NORMAL"] = { DifficultyName = " S04" },
                 ["3RD-HARD"] = { DifficultyName = " S06" },
                 ["3RD-DOUBLE"] = { DifficultyName = " D07" },
-            }
+            },
         },
         ["EXTRAVAGANZA"] = {
+            OriginMix = "The 2nd DF",
             Charts = {
                 ["3RD-HARD"] = { DifficultyName = " S10" },
                 ["3RD-CRAZY"] = { DifficultyName = " S12" },
                 ["3RD-DOUBLE"] = { DifficultyName = " D13" },
-            }
+            },
         },
     }
 }
 
-function DatabaseCharts.FetchChartDifficulty(input_songTitle, input_chartName)
+function DatabaseDetails.FetchChartDifficulty(input_songTitle, input_chartName)
 
-    local song = DatabaseCharts.Songs[input_songTitle]
+    local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "XXXX" end
 
     local chart = song.Charts[input_chartName]
@@ -29,9 +31,9 @@ function DatabaseCharts.FetchChartDifficulty(input_songTitle, input_chartName)
 
 end
 
-function DatabaseCharts.FetchChartColor(input_songTitle, input_chartName)
+function DatabaseDetails.FetchChartColor(input_songTitle, input_chartName)
 
-    local song = DatabaseCharts.Songs[input_songTitle]
+    local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "black" end
 
     local chart = song.Charts[input_chartName]
@@ -44,4 +46,4 @@ function DatabaseCharts.FetchChartColor(input_songTitle, input_chartName)
 
 end
 
-return DatabaseCharts
+return DatabaseDetails

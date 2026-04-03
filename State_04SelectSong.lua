@@ -28,7 +28,7 @@ function State_04SelectSong.CenterPressed()
 
 	Game.selectedChartIndex = 1
 	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
-	Game.selectedChartDifficulty = DatabaseCharts.FetchChartDifficulty(Game.selectedSongName, Game.selectedChartName)
+	Game.selectedChartDifficulty = DatabaseDetails.FetchChartDifficulty(Game.selectedSongName, Game.selectedChartName)
 
 	Game.state = 5
 
@@ -167,13 +167,13 @@ function State_04SelectSong.Drawing()
 		local songToInput = Game.selectedSongName
 		local chartToInput = Game.selectedSongArrayOfCharts[j]
 
-		local text = DatabaseCharts.FetchChartDifficulty(songToInput, chartToInput).." - "..string.format("%-15s", chartToInput).." - "
+		local text = DatabaseDetails.FetchChartDifficulty(songToInput, chartToInput).." - "..string.format("%-15s", chartToInput).." - "
 
 		meckx_print({
 			Text = text,
 			XPos = drawingX+24,
 			YPos = drawingY,
-			ColorName = DatabaseCharts.FetchChartColor(songToInput, chartToInput),
+			ColorName = DatabaseDetails.FetchChartColor(songToInput, chartToInput),
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize

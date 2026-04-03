@@ -18,7 +18,7 @@ local State_05SelectChart = require("State_05SelectChart")
 --Tee = 0
 DatabasePlayers = {}
 DatabaseMixes = {}
-DatabaseCharts = {}
+DatabaseDetails = {}
 Joysticks = {}
 Game = {}
 Input = {}
@@ -106,7 +106,7 @@ function love.load()
 
 	DatabasePlayers = require("Database_Players")
 	DatabaseMixes = require("Database_Mixes")
-	DatabaseCharts = require("Database_Charts")
+	DatabaseDetails = require("Database_Details")
 
 	Input.keyboardHeld = {}
 	Input.joystickHeld = {}
