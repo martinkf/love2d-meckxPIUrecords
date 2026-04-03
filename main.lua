@@ -10,7 +10,7 @@ local Debug_03Controller = require("Debug_03Controller")
 local State01 = require("State01")
 local State02 = require("State02")
 local State03 = require("State03")
-local State04 = require("State04")
+local State04or05 = require("State04or05")
 
 
 
@@ -110,10 +110,10 @@ function love.load()
 	--initializing engine global variables
 	Joysticks = love.joystick.getJoysticks() --needed for input implementation
 
-	--initializing sfx
-	SfxMove = love.audio.newSource("sounds/move.ogg", "static")
-	SfxCenter = love.audio.newSource("sounds/S_C_MOVE.mp3", "static")
-	SfxBack = love.audio.newSource("sounds/ChannelWheel change.ogg", "static")
+	--initializing sfx - sound breaks Switch, let's not implement sound...
+	--SfxMove = love.audio.newSource("sounds/SfxMove.mp3", "static")
+	--SfxCenter = love.audio.newSource("sounds/SfxCenter.mp3", "static")
+	--SfxBack = love.audio.newSource("sounds/SfxBack.mp3", "static")
 
 	--initializing global variables
 	Tee = 0
@@ -122,13 +122,16 @@ function love.load()
 
 	Game.selectedPlayerIndex = 1
 	Game.selectedPlayerName = "MartinTest"
-	Game.selectedMixIndex = 1
-	Game.selectedMixName = "O.B.G Season Evolution"
-	Game.selectedSortIndex = 1
-	Game.selectedSortName = "Full Display Mode"
-	Game.selectedSongIndex = 1
-	Game.selectedSongName = "ANOTHER TRUTH | CORDIALITY"
+	Game.selectedMixIndex = 0
+	Game.selectedMixName = ""
+	Game.selectedSortIndex = 0
+	Game.selectedSortName = ""
+	Game.selectedSongIndex = 0
+	Game.selectedSongName = ""
 	Game.selectedSongArrayOfCharts = {}
+	Game.selectedChartIndex = 0
+	Game.selectedChartName = ""
+	Game.selectedChartDifficulty = ""
 
 	PlayerDatabase = require("PlayerDatabase")
 	MixDatabase = require("MixDatabase")
@@ -141,10 +144,10 @@ function love.load()
     Input.upRepeatTimer = 0
     Input.downRepeatTimer = 0
 
-	Input.delayBeforeRepeat = 0.25
-    Input.slowRate = 0.05
-	Input.fastThreshold = 3
-    Input.fastRate = 0.025
+	Input.delayBeforeRepeat = 0.2
+    Input.slowRate = 0.2
+	Input.fastThreshold = 2
+    Input.fastRate = 0.075
 
 
 end
@@ -209,13 +212,13 @@ function love.keypressed(key)
 		if Game.state == 1 then State01.CenterPressed()
 		elseif Game.state == 2 then State02.CenterPressed()
 		elseif Game.state == 3 then State03.CenterPressed()
-		elseif Game.state == 4 then State04.CenterPressed() end
+		elseif Game.state == 4 then State04or05.CenterPressedState04() end
 	end
 	if key == "b" then
-		if Game.state == 1 then State01.BackPressed()
-		elseif Game.state == 2 then State02.BackPressed()
+		if Game.state == 2 then State02.BackPressed()
 		elseif Game.state == 3 then State03.BackPressed()
-		elseif Game.state == 4 then State04.BackPressed() end
+		elseif Game.state == 4 then State04or05.BackPressedState04()
+		elseif Game.state == 5 then State04or05.BackPressedState05() end
 	end
 	if key == "r" then
 		ToggleDebug()
@@ -224,28 +227,22 @@ end
 
 function love.gamepadpressed(joystick, button)
 	if button == "dpup" then
-		if Game.state == 1 then State01.UpPressed()
-		elseif Game.state == 2 then State02.UpPressed()
-		elseif Game.state == 3 then State03.UpPressed()
-		elseif Game.state == 4 then State04.UpPressed() end
+		HandleUp()
 	end
 	if button == "dpdown" then
-		if Game.state == 1 then State01.DownPressed()
-		elseif Game.state == 2 then State02.DownPressed()
-		elseif Game.state == 3 then State03.DownPressed()
-		elseif Game.state == 4 then State04.DownPressed() end
+		HandleDown()
 	end
 	if button == "a" then
 		if Game.state == 1 then State01.CenterPressed()
 		elseif Game.state == 2 then State02.CenterPressed()
 		elseif Game.state == 3 then State03.CenterPressed()
-		elseif Game.state == 4 then State04.CenterPressed() end
+		elseif Game.state == 4 then State04or05.CenterPressedState04() end
 	end
 	if button == "b" then
-		if Game.state == 1 then State01.BackPressed()
-		elseif Game.state == 2 then State02.BackPressed()
+		if Game.state == 2 then State02.BackPressed()
 		elseif Game.state == 3 then State03.BackPressed()
-		elseif Game.state == 4 then State04.BackPressed() end
+		elseif Game.state == 4 then State04or05.BackPressedState04()
+		elseif Game.state == 5 then State04or05.BackPressedState05() end
 	end
 	if button == "rightshoulder" then
 		ToggleDebug()
@@ -269,14 +266,16 @@ function HandleUp()
 	if Game.state == 1 then State01.UpPressed()
 	elseif Game.state == 2 then State02.UpPressed()
 	elseif Game.state == 3 then State03.UpPressed()
-	elseif Game.state == 4 then State04.UpPressed() end
+	elseif Game.state == 4 then State04or05.UpPressedState04()
+	elseif Game.state == 5 then State04or05.UpPressedState05() end
 end
 
 function HandleDown()
 	if Game.state == 1 then State01.DownPressed()
 	elseif Game.state == 2 then State02.DownPressed()
 	elseif Game.state == 3 then State03.DownPressed()
-	elseif Game.state == 4 then State04.DownPressed() end
+	elseif Game.state == 4 then State04or05.DownPressedState04()
+	elseif Game.state == 5 then State04or05.DownPressedState05() end
 end
 
 
@@ -316,12 +315,19 @@ end
 function InputHandling_UpDown(dt)
     local j = Joysticks[1]
 
-	-- for pc
+	-- DEPLOY --
+	-- ONE OR THE OTHER --
+	-- when running dev tests on for pc
+
     --local upNow = love.keyboard.isDown("up") or (j and j:isGamepadDown("dpup"))
 	--local downNow = love.keyboard.isDown("down") or (j and j:isGamepadDown("dpdown"))
-	-- for switch
+
+	-- when deploying to switch
+
 	local upNow = j and j:isGamepadDown("dpup")
     local downNow = j and j:isGamepadDown("dpdown")
+
+	-- END OF DEPLOY CHOICE --
 
     -- UP handling
     if upNow then
@@ -498,8 +504,8 @@ local function drawingUnderlay()
 		State02.Drawing()
 	elseif Game.state == 3 then
 		State03.Drawing()
-	elseif Game.state == 4 then
-		State04.Drawing()
+	elseif Game.state == 4 or Game.state == 5 then
+		State04or05.Drawing()
 	end
 
 end

@@ -67,10 +67,11 @@ function meckx_rect(args)
 	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
 	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
 	local rectStyle = args.RectStyle --"fill" or "idk"
+	local transparency = args.Transparency
 
-	love.graphics.setColor(r, g, b)
+	love.graphics.setColor(r, g, b, transparency)
 	love.graphics.rectangle(rectStyle, xPos, yPos, width, height)
-	love.graphics.setColor(1, 1, 1)
+	love.graphics.setColor(1, 1, 1, 1)
 end
 
 return Extension

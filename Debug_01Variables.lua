@@ -1,8 +1,8 @@
 local Debug_01Variables = {}
 
 function Debug_01Variables.Drawing()
-	local drawingX = 620
-	local drawingY = 220
+	local drawingX = 650
+	local drawingY = 100
 	local linebreakSize = 26
 
 	-- background
@@ -13,6 +13,7 @@ function Debug_01Variables.Drawing()
 		Height = 720 - drawingY,
 		ColorName = "blue",
 		RectStyle = "fill",
+		Transparency = 0.25,
 	})
 
 	-- contents
@@ -24,6 +25,7 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
 		Text = "Game.state = "..Game.state,
@@ -33,6 +35,7 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
 		Text = "Game.selectedPlayerIndex = "..Game.selectedPlayerIndex,
@@ -51,6 +54,7 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
 		Text = "Game.selectedMixIndex = "..Game.selectedMixIndex,
@@ -69,6 +73,7 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
 		Text = "Game.selectedSortIndex = "..Game.selectedSortIndex,
@@ -87,6 +92,7 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
 		Text = "Game.selectedSongIndex = "..Game.selectedSongIndex,
@@ -115,8 +121,40 @@ function Debug_01Variables.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
+	if #Game.selectedSongArrayOfCharts > 0 then
+		for i = 1, #Game.selectedSongArrayOfCharts do
+			meckx_print({
+				Text = "Game.selectedSongArrayOfCharts[" .. i .. "] = " .. Game.selectedSongArrayOfCharts[i],
+				XPos = drawingX,
+				YPos = drawingY,
+				ColorName = "white",
+				FontStyle = ClassicConsole_24,
+			})
+			drawingY = drawingY + linebreakSize
+		end
+	end
+	drawingY = drawingY + (0.5 * linebreakSize)
+
 	meckx_print({
-		Text = (Game.selectedSongArrayOfCharts[1]) and "Game.selectedSongArrayOfCharts[1] = "..Game.selectedSongArrayOfCharts[1] or "nope",
+		Text = "Game.selectedChartIndex = "..Game.selectedChartIndex,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedChartName = "..Game.selectedChartName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedChartDifficulty = "..Game.selectedChartDifficulty,
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",

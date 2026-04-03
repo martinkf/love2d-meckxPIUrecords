@@ -7,7 +7,7 @@ function State01.UpPressed()
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex - 1
 	if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #PlayerDatabase end
 	Game.selectedPlayerName = PlayerDatabase[Game.selectedPlayerIndex].PlayerName
-	love.audio.play(SfxMove:clone())
+	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -16,20 +16,18 @@ function State01.DownPressed()
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex + 1
 	if Game.selectedPlayerIndex > #PlayerDatabase then Game.selectedPlayerIndex = 1 end
 	Game.selectedPlayerName = PlayerDatabase[Game.selectedPlayerIndex].PlayerName
-	love.audio.play(SfxMove:clone())
+	--love.audio.play(SfxMove:clone())
 
 end
 
 function State01.CenterPressed()
 
+	Game.selectedMixIndex = 1
+	Game.selectedMixName = MixDatabase[Game.selectedMixIndex].MixName
+
 	Game.state = 2
-	love.audio.play(SfxCenter:clone())
 
-end
-
-function State01.BackPressed()
-
-	--
+	--love.audio.play(SfxCenter:clone())
 
 end
 
@@ -77,7 +75,7 @@ end
 
 function State01.Drawing()
 	local drawingX = 6
-	local drawingY = 2
+	local drawingY = 6
 	local linebreakSize = 42
 
 	-- backgrounds
@@ -88,16 +86,17 @@ function State01.Drawing()
 		XPos = 0,
 		YPos = 0,
 		Width = 1280,
-		Height = 47,
+		Height = 44,
 		ColorName = "red",
 		RectStyle = "fill",
+		Transparency = 1,
 	})
 
 	-- contents
 	meckx_print({
 		Text = "../",
 		XPos = drawingX,
-		YPos = drawingY-4,
+		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
 	})

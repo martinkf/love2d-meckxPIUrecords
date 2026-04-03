@@ -3,7 +3,7 @@ local Debug_02SimpleInputs = {}
 function Debug_02SimpleInputs.Drawing()
 	local j = Joysticks[1]
 	local drawingX = 660
-	local drawingY = 280
+	local drawingY = 100
 	local linebreakSize = 26
 
 	-- background
@@ -14,6 +14,7 @@ function Debug_02SimpleInputs.Drawing()
 		Height = 720 - drawingY,
 		ColorName = "pink",
 		RectStyle = "fill",
+		Transparency = 0.25,
 	})
 
 	-- Joystick information
