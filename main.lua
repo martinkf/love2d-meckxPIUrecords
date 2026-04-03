@@ -85,7 +85,7 @@ function love.load()
 	--Tee = 0
 	Game.state = 1
 	Game.debug = 0
-	Game.baseDrawingY = (false) and -3 or 6
+	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
 
 	Game.selectedPlayerIndex = 1
 	Game.selectedPlayerName = "MartinTest"
