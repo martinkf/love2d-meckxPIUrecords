@@ -49,7 +49,7 @@ local State04or05 = require("State04or05")
 
 -- GLOBAL VARIABLES
 
-Joysticks = ""
+Joysticks = {}
 Tee = 0
 Game = {}
 PlayerDatabase = {}
@@ -118,7 +118,7 @@ function love.load()
 	--initializing global variables
 	Tee = 0
 	Game.state = 1
-	Game.debug = 0
+	Game.debug = 3
 
 	Game.selectedPlayerIndex = 1
 	Game.selectedPlayerName = "MartinTest"
@@ -137,8 +137,8 @@ function love.load()
 	MixDatabase = require("MixDatabase")
 	ChartDatabase = require("ChartDatabase")
 
-	Input.upHeld = false
-    Input.downHeld = false
+	Input.keyboardHeld = {}
+	Input.joystickHeld = {}
     Input.upHoldTime = 0
     Input.downHoldTime = 0
     Input.upRepeatTimer = 0
@@ -202,66 +202,42 @@ end
 -- THESE ARE THE INPUT HANDLING FUNCTIONS.
 -- THEY'RE EVENTS. WILL BE TRIGGERED WHEN NEEDED
 function love.keypressed(key)
-	if key == "up" then
-		HandleUp()
-	end
-	if key == "down" then
-		HandleDown()
-	end
-	if key == "a" then
-		if Game.state == 1 then State01.CenterPressed()
-		elseif Game.state == 2 then State02.CenterPressed()
-		elseif Game.state == 3 then State03.CenterPressed()
-		elseif Game.state == 4 then State04or05.CenterPressedState04() end
-	end
-	if key == "b" then
-		if Game.state == 2 then State02.BackPressed()
-		elseif Game.state == 3 then State03.BackPressed()
-		elseif Game.state == 4 then State04or05.BackPressedState04()
-		elseif Game.state == 5 then State04or05.BackPressedState05() end
-	end
-	if key == "r" then
-		ToggleDebug()
-	end
+
+	Input.keyboardHeld[key] = true
+
+	if key == "up" then HandleUp() end
+	if key == "down" then HandleDown() end
+	if key == "a" then HandleCenter() end
+	if key == "b" then HandleBack() end
+	if key == "r" then ToggleDebug() end
+
+end
+
+function love.keyreleased(key)
+
+    Input.keyboardHeld[key] = false
+
 end
 
 function love.gamepadpressed(joystick, button)
-	if button == "dpup" then
-		HandleUp()
-	end
-	if button == "dpdown" then
-		HandleDown()
-	end
-	if button == "a" then
-		if Game.state == 1 then State01.CenterPressed()
-		elseif Game.state == 2 then State02.CenterPressed()
-		elseif Game.state == 3 then State03.CenterPressed()
-		elseif Game.state == 4 then State04or05.CenterPressedState04() end
-	end
-	if button == "b" then
-		if Game.state == 2 then State02.BackPressed()
-		elseif Game.state == 3 then State03.BackPressed()
-		elseif Game.state == 4 then State04or05.BackPressedState04()
-		elseif Game.state == 5 then State04or05.BackPressedState05() end
-	end
-	if button == "rightshoulder" then
-		ToggleDebug()
-	end
+
+	Input.joystickHeld[button] = true
+
+	if button == "dpup" then HandleUp() end
+	if button == "dpdown" then HandleDown() end
+	if button == "a" then HandleCenter() end
+	if button == "b" then HandleBack() end
+	if button == "rightshoulder" then ToggleDebug() end
+
+end
+
+function love.gamepadreleased(joystick, button)
+
+    Input.joystickHeld[button] = false
+
 end
 
 -- AND THESE ARE THE GLOBAL ACTION HANDLING FUNCTIONS.
-function ToggleDebug()
-	if Game.debug == 0 then
-		Game.debug = 1
-	elseif Game.debug == 1 then
-		Game.debug = 2
-	elseif Game.debug == 2 then
-		Game.debug = 3
-	elseif Game.debug == 3 then
-		Game.debug = 0
-	end
-end
-
 function HandleUp()
 	if Game.state == 1 then State01.UpPressed()
 	elseif Game.state == 2 then State02.UpPressed()
@@ -276,6 +252,27 @@ function HandleDown()
 	elseif Game.state == 3 then State03.DownPressed()
 	elseif Game.state == 4 then State04or05.DownPressedState04()
 	elseif Game.state == 5 then State04or05.DownPressedState05() end
+end
+
+function HandleCenter()
+	if Game.state == 1 then State01.CenterPressed()
+	elseif Game.state == 2 then State02.CenterPressed()
+	elseif Game.state == 3 then State03.CenterPressed()
+	elseif Game.state == 4 then State04or05.CenterPressedState04() end
+end
+
+function HandleBack()
+	if Game.state == 2 then State02.BackPressed()
+	elseif Game.state == 3 then State03.BackPressed()
+	elseif Game.state == 4 then State04or05.BackPressedState04()
+	elseif Game.state == 5 then State04or05.BackPressedState05() end
+end
+
+function ToggleDebug()
+	if Game.debug == 0 then Game.debug = 1
+	elseif Game.debug == 1 then Game.debug = 2
+	elseif Game.debug == 2 then Game.debug = 3
+	elseif Game.debug == 3 then	Game.debug = 0 end
 end
 
 
@@ -313,71 +310,43 @@ end
 
 
 function InputHandling_UpDown(dt)
-    local j = Joysticks[1]
-
-	-- DEPLOY --
-	-- ONE OR THE OTHER --
-	-- when running dev tests on for pc
-
-    --local upNow = love.keyboard.isDown("up") or (j and j:isGamepadDown("dpup"))
-	--local downNow = love.keyboard.isDown("down") or (j and j:isGamepadDown("dpdown"))
-
-	-- when deploying to switch
-
-	local upNow = j and j:isGamepadDown("dpup")
-    local downNow = j and j:isGamepadDown("dpdown")
-
-	-- END OF DEPLOY CHOICE --
 
     -- UP handling
-    if upNow then
-        if not Input.upHeld then
-            Input.upHeld = true
-            Input.upHoldTime = 0
-            Input.upRepeatTimer = 0
-        else
-            Input.upHoldTime = Input.upHoldTime + dt
+    if Input.keyboardHeld["up"] or Input.joystickHeld["dpup"] then
+		Input.upHoldTime = Input.upHoldTime + dt
 
-            if Input.upHoldTime >= Input.delayBeforeRepeat then
-                local rate = (Input.upHoldTime > Input.fastThreshold) and Input.fastRate or Input.slowRate
+		if Input.upHoldTime >= Input.delayBeforeRepeat then
+			local rate = (Input.upHoldTime > Input.fastThreshold) and Input.fastRate or Input.slowRate
 
-                Input.upRepeatTimer = Input.upRepeatTimer + dt
-                if Input.upRepeatTimer >= rate then
-                    HandleUp()
-                    Input.upRepeatTimer = 0
-                end
-            end
-        end
-    else
-        Input.upHeld = false
-        Input.upHoldTime = 0
-        Input.upRepeatTimer = 0
-    end
+			Input.upRepeatTimer = Input.upRepeatTimer + dt
+			if Input.upRepeatTimer >= rate then
+				HandleUp()
+				Input.upRepeatTimer = 0
+			end
+		end
+	else
+		Input.upHoldTime = 0
+		Input.upRepeatTimer = 0
+	end
 
     -- DOWN handling
-    if downNow then
-        if not Input.downHeld then
-            Input.downHeld = true
-            Input.downHoldTime = 0
-            Input.downRepeatTimer = 0
-        else
-            Input.downHoldTime = Input.downHoldTime + dt
+    if Input.keyboardHeld["down"] or Input.joystickHeld["dpdown"] then
+		Input.downHoldTime = Input.downHoldTime + dt
 
-            if Input.downHoldTime >= Input.delayBeforeRepeat then
-                local rate = (Input.downHoldTime > Input.fastThreshold) and Input.fastRate or Input.slowRate
+		if Input.downHoldTime >= Input.delayBeforeRepeat then
+			local rate = (Input.downHoldTime > Input.fastThreshold) and Input.fastRate or Input.slowRate
 
-                Input.downRepeatTimer = Input.downRepeatTimer + dt
-                if Input.downRepeatTimer >= rate then
-                    HandleDown()
-                    Input.downRepeatTimer = 0
-                end
-            end
-        end
-    else
-        Input.downHeld = false
-        Input.downHoldTime = 0
-        Input.downRepeatTimer = 0
-    end
+			Input.downRepeatTimer = Input.downRepeatTimer + dt
+			if Input.downRepeatTimer >= rate then
+				HandleDown()
+				Input.downRepeatTimer = 0
+			end
+		end
+	else
+		Input.downHoldTime = 0
+		Input.downRepeatTimer = 0
+	end
+
 end
 
 
@@ -449,7 +418,7 @@ function love.update(dt)
 	-- clocks
 	Tee = Tee + 1
 
-	-- input handling for joysticks
+	-- input handling for joysticks -- on switch, joysticks can connect at any time in the game, not just boot
 	Joysticks = love.joystick.getJoysticks()
 
 	-- input handling for smooth scrolling
