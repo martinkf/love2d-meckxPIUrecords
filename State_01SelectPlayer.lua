@@ -5,8 +5,16 @@ local State_01SelectPlayer = {}
 function State_01SelectPlayer.UpPressed()
 
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex - 1
-	if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #DatabasePlayers end
+	if true then
+		-- doesn't wrap around
+		if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = 1 end
+	else
+		-- wraps around
+		if Game.selectedPlayerIndex == 0 then Game.selectedPlayerIndex = #DatabasePlayers end
+	end
+
 	Game.selectedPlayerName = DatabasePlayers[Game.selectedPlayerIndex].PlayerName
+
 	--love.audio.play(SfxMove:clone())
 
 end
@@ -14,8 +22,16 @@ end
 function State_01SelectPlayer.DownPressed()
 
 	Game.selectedPlayerIndex = Game.selectedPlayerIndex + 1
-	if Game.selectedPlayerIndex > #DatabasePlayers then Game.selectedPlayerIndex = 1 end
+	if true then
+		-- doesnt' wrap around
+		if Game.selectedPlayerIndex > #DatabasePlayers then Game.selectedPlayerIndex = #DatabasePlayers end
+	else
+		-- wraps around
+		if Game.selectedPlayerIndex > #DatabasePlayers then Game.selectedPlayerIndex = 1 end
+	end
+
 	Game.selectedPlayerName = DatabasePlayers[Game.selectedPlayerIndex].PlayerName
+
 	--love.audio.play(SfxMove:clone())
 
 end

@@ -5,8 +5,16 @@ local State_03SelectSort = {}
 function State_03SelectSort.UpPressed()
 
 	Game.selectedSortIndex = Game.selectedSortIndex - 1
-	if Game.selectedSortIndex == 0 then Game.selectedSortIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods end
+	if true then
+		-- doesn't wrap around
+		if Game.selectedSortIndex == 0 then Game.selectedSortIndex = 1 end
+	else
+		-- wraps around
+		if Game.selectedSortIndex == 0 then Game.selectedSortIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods end
+	end
+
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+
 	--love.audio.play(SfxMove:clone())
 
 end
@@ -14,8 +22,18 @@ end
 function State_03SelectSort.DownPressed()
 
 	Game.selectedSortIndex = Game.selectedSortIndex + 1
-	if Game.selectedSortIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods then Game.selectedSortIndex = 1 end
+	if true then
+		-- doesnt' wrap around
+		if Game.selectedSortIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods then
+			Game.selectedSortIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods
+		end
+	else
+		-- wraps around
+		if Game.selectedSortIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods then Game.selectedSortIndex = 1 end
+	end
+
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+
 	--love.audio.play(SfxMove:clone())
 
 end
@@ -113,6 +131,28 @@ function State_03SelectSort.Drawing()
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
+
+	if #DatabaseMixes[Game.selectedMixIndex].CheatCodes > 0 then
+		meckx_print({
+			Text = "-------------------- CHEAT CODES --------------------",
+			XPos = drawingX,
+			YPos = drawingY,
+			ColorName = "white",
+			FontStyle = ClassicConsole_48,
+		})
+		drawingY = drawingY + linebreakSize
+
+		for i=1,#DatabaseMixes[Game.selectedMixIndex].CheatCodes,1 do
+			meckx_print({
+				Text = DatabaseMixes[Game.selectedMixIndex].CheatCodes[i],
+				XPos = drawingX+24,
+				YPos = drawingY,
+				ColorName = "lightGray",
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		end
+	end
 
 	meckx_print({
 		Text = "------------ 03. SELECT A SORTING ORDER -------------",

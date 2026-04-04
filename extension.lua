@@ -1,21 +1,87 @@
 local Extension = {}
 
+-- LOCAL HELPER VARIABLE
+local colors = {
+    white = {1, 1, 1},
+    lightestGray = {0.8, 0.8, 0.8},
+    lightGray = {0.6, 0.6, 0.6},
+    darkGray = {0.4, 0.4, 0.4},
+    darkestGray = {0.2, 0.2, 0.2},
+    black = {0, 0, 0},
+
+    blue = {0, 0, 1},
+    magenta = {1, 0, 1},
+    red = {1, 0, 0},
+    yellow = {1, 1, 0},
+	green = {0, 1, 0},
+	cyan = {0, 1, 1},
+
+    meckx_01Pink_light = {1, 0, 1},
+    meckx_02Blue_light = {0, 0.6, 1},
+    meckx_03Green_light = {0.2, 0.7, 0},
+    meckx_04Yellow_light = {0.9, 0.8, 0.2},
+    meckx_05Orange_light = {1, 0.45, 0},
+    meckx_06Red_light = {1, 0, 0},
+
+    meckx_01Pink_dark = {0.4, 0, 0.4},
+    meckx_02Blue_dark = {0, 0.15, 0.6},
+    meckx_03Green_dark = {0.05, 0.3, 0},
+    meckx_04Yellow_dark = {0.35, 0.3, 0},
+    meckx_05Orange_dark = {0.4, 0.2, 0},
+    meckx_06Red_dark = {0.4, 0, 0},
+}
+
+-- LOCAL HELPER FUNCTION
+local function getColor(name)
+    local grabbed = colors[name] or colors["white"]
+    return grabbed[1], grabbed[2], grabbed[3]
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- GLOBAL USEFUL FUNCTIONS (ENGINE TWEAKING)
 ---@diagnostic disable-next-line: lowercase-global
 function meckx_clearScreen(args)
-	local r,g,b
-	if args.ColorName == "white" then r = 1; g = 1; b = 1;
-	elseif args.ColorName == "lightestGray" then r = 0.8; g = 0.8; b = 0.8;
-	elseif args.ColorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6;
-	elseif args.ColorName == "darkGray" then r = 0.4; g = 0.4; b = 0.4;
-	elseif args.ColorName == "darkestGray" then r = 0.2; g = 0.2; b = 0.2;
-	elseif args.ColorName == "black" then r = 0; g = 0; b = 0;
-	elseif args.ColorName == "blue" then r = 0; g = 0; b = 1;
-	elseif args.ColorName == "pink" then r = 1; g = 0; b = 1;
-	elseif args.ColorName == "red" then r = 1; g = 0; b = 0;
-	elseif args.ColorName == "yellow" then r = 1; g = 1; b = 0;
-	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
-	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
+	local r, g, b = getColor(args.ColorName)
 
 	love.graphics.clear(r, g, b)
 end
@@ -25,19 +91,7 @@ function meckx_print(args)
 	local text = args.Text
 	local xPos = args.XPos
 	local yPos = args.YPos
-	local r,g,b
-	if args.ColorName == "white" then r = 1; g = 1; b = 1;
-	elseif args.ColorName == "lightestGray" then r = 0.8; g = 0.8; b = 0.8;
-	elseif args.ColorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6;
-	elseif args.ColorName == "darkGray" then r = 0.4; g = 0.4; b = 0.4;
-	elseif args.ColorName == "darkestGray" then r = 0.2; g = 0.2; b = 0.2;
-	elseif args.ColorName == "black" then r = 0; g = 0; b = 0;
-	elseif args.ColorName == "blue" then r = 0; g = 0; b = 1;
-	elseif args.ColorName == "pink" then r = 1; g = 0; b = 1;
-	elseif args.ColorName == "red" then r = 1; g = 0; b = 0;
-	elseif args.ColorName == "yellow" then r = 1; g = 1; b = 0;
-	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
-	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
+	local r, g, b = getColor(args.ColorName)
 	local fontStyle = args.FontStyle
 
 	love.graphics.setColor(r, g, b)
@@ -53,19 +107,7 @@ function meckx_rect(args)
 	local yPos = args.YPos
 	local width = args.Width
 	local height = args.Height
-	local r,g,b
-	if args.ColorName == "white" then r = 1; g = 1; b = 1;
-	elseif args.ColorName == "lightestGray" then r = 0.8; g = 0.8; b = 0.8;
-	elseif args.ColorName == "lightGray" then r = 0.6; g = 0.6; b = 0.6;
-	elseif args.ColorName == "darkGray" then r = 0.4; g = 0.4; b = 0.4;
-	elseif args.ColorName == "darkestGray" then r = 0.2; g = 0.2; b = 0.2;
-	elseif args.ColorName == "black" then r = 0; g = 0; b = 0;
-	elseif args.ColorName == "blue" then r = 0; g = 0; b = 1;
-	elseif args.ColorName == "pink" then r = 1; g = 0; b = 1;
-	elseif args.ColorName == "red" then r = 1; g = 0; b = 0;
-	elseif args.ColorName == "yellow" then r = 1; g = 1; b = 0;
-	elseif args.ColorName == "orange" then r = 0.9; g = 0.5; b = 0.1;
-	elseif args.ColorName == "forestGreen" then r = 0.2; g = 0.5; b = 0.2; end
+	local r, g, b = getColor(args.ColorName)
 	local rectStyle = args.RectStyle --"fill" or "idk"
 	local transparency = args.Transparency
 
@@ -73,5 +115,47 @@ function meckx_rect(args)
 	love.graphics.rectangle(rectStyle, xPos, yPos, width, height)
 	love.graphics.setColor(1, 1, 1, 1)
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 return Extension

@@ -102,7 +102,7 @@ function love.load()
 
 	Game.selectedChartIndex = 0
 	Game.selectedChartName = ""
-	Game.selectedChartDifficulty = ""
+	Game.selectedChartDifficultyName = ""
 
 	DatabasePlayers = require("Database_Players")
 	DatabaseMixes = require("Database_Mixes")

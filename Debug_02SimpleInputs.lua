@@ -12,7 +12,7 @@ function Debug_02SimpleInputs.Drawing()
 		YPos = drawingY - 6,
 		Width = 1280 - drawingX,
 		Height = 720 - drawingY,
-		ColorName = "pink",
+		ColorName = "magenta",
 		RectStyle = "fill",
 		Transparency = 0.25,
 	})

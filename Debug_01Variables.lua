@@ -154,7 +154,7 @@ function Debug_01Variables.Drawing()
 	drawingY = drawingY + linebreakSize
 
 	meckx_print({
-		Text = "Game.selectedChartDifficulty = "..Game.selectedChartDifficulty,
+		Text = "Game.selectedChartDifficultyName = "..Game.selectedChartDifficultyName,
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
