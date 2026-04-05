@@ -133,7 +133,8 @@ function State_05SelectChart.Drawing()
 		drawingY = drawingY + 2 * linebreakSize
 	end
 
-	--temporary
+	--this is a temporary display on how records might appear
+	--[[
 	drawingY = tempdrawingY
 	for j=1,#Game.selectedSongArrayOfCharts,1 do
 		if j == 1 then
@@ -224,6 +225,7 @@ function State_05SelectChart.Drawing()
 		end
 		
 	end
+	]]--
 
 end
 

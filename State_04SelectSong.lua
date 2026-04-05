@@ -164,24 +164,72 @@ function State_04SelectSong.Drawing()
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
-	
-	local numberOfDisplayedCharts = (#Game.selectedSongArrayOfCharts < 11) and #Game.selectedSongArrayOfCharts or 10
-	for offset = -2, (11 - numberOfDisplayedCharts) do
-		local index = ((Game.selectedSongIndex + offset - 1) % #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs) + 1
-		local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].SongTitle
-		local indexFormatted = string.format("%04d", index)
-		local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
 
-		local text = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+	if Game.selectedSortName == "Full Display Mode" or
+	Game.selectedSortName == "Single Progressive" or
+	Game.selectedSortName == "Half-Double Progressive" or
+	Game.selectedSortName == "Double Progressive" or
+	Game.selectedSortName == "Swan Charts" then
+		-- song list doesnt wrap around
+		local numberOfDisplayedCharts = (#Game.selectedSongArrayOfCharts < 11) and #Game.selectedSongArrayOfCharts or 10
+		for offset = -2, (11 - numberOfDisplayedCharts) do
+			local index = Game.selectedSongIndex + offset
+			if index < 1 then
+				meckx_print({
+					Text = "",
+					XPos = drawingX+24,
+					YPos = drawingY,
+					ColorName = "white",
+					FontStyle = ClassicConsole_48,
+				})
+				drawingY = drawingY + linebreakSize
+			elseif index < (#DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs + 1) then
+				local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].SongTitle
+				local indexFormatted = string.format("%04d", index)
+				local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
 
-		meckx_print({
-			Text = (offset == 0) and "> "..text.." <" or text,
-			XPos = (offset == 0) and drawingX or drawingX+24,
-			YPos = drawingY,
-			ColorName = (offset == 0) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
-			FontStyle = ClassicConsole_48,
-		})
-		drawingY = drawingY + linebreakSize
+				local text = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+
+				meckx_print({
+					Text = (offset == 0) and "> "..text.." <" or text,
+					XPos = (offset == 0) and drawingX or drawingX+24,
+					YPos = drawingY,
+					ColorName = (offset == 0) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
+					FontStyle = ClassicConsole_48,
+				})
+				drawingY = drawingY + linebreakSize
+			else
+				meckx_print({
+					Text = "",
+					XPos = drawingX+24,
+					YPos = drawingY,
+					ColorName = "white",
+					FontStyle = ClassicConsole_48,
+				})
+				drawingY = drawingY + linebreakSize
+			end
+
+		end
+	else
+		-- song list loops around
+		local numberOfDisplayedCharts = (#Game.selectedSongArrayOfCharts < 11) and #Game.selectedSongArrayOfCharts or 10
+		for offset = -2, (11 - numberOfDisplayedCharts) do
+			local index = ((Game.selectedSongIndex + offset - 1) % #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs) + 1
+			local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].SongTitle
+			local indexFormatted = string.format("%04d", index)
+			local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
+
+			local text = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+
+			meckx_print({
+				Text = (offset == 0) and "> "..text.." <" or text,
+				XPos = (offset == 0) and drawingX or drawingX+24,
+				YPos = drawingY,
+				ColorName = (offset == 0) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		end
 	end
 
 
@@ -197,6 +245,8 @@ function State_04SelectSong.Drawing()
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
+
+	local tempdrawingY = drawingY
 
 	for j=1,#Game.selectedSongArrayOfCharts,1 do
 
@@ -214,6 +264,32 @@ function State_04SelectSong.Drawing()
 		})
 		drawingY = drawingY + linebreakSize
 	end
+
+	--this is a temporary display on how records might appear
+	--[[
+	drawingY = tempdrawingY
+	for j=1,#Game.selectedSongArrayOfCharts,1 do
+		if j == 1 then
+			meckx_print({
+				Text = "100.0% ·  FPC · 22/08/2026",
+				XPos = drawingX+(27*24),
+				YPos = drawingY,
+				ColorName = "blue",
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		else
+			meckx_print({
+				Text = "89.47% · +10B · 12/02/2025",
+				XPos = drawingX+(27*24),
+				YPos = drawingY,
+				ColorName = "red",
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		end
+	end
+	]]--
 
 end
 
