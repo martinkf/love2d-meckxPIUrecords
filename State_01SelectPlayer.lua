@@ -15,8 +15,6 @@ function State_01SelectPlayer.UpPressed()
 
 	Game.selectedPlayerName = DatabasePlayers[Game.selectedPlayerIndex].PlayerName
 
-	--love.audio.play(SfxMove:clone())
-
 end
 
 function State_01SelectPlayer.DownPressed()
@@ -32,8 +30,6 @@ function State_01SelectPlayer.DownPressed()
 
 	Game.selectedPlayerName = DatabasePlayers[Game.selectedPlayerIndex].PlayerName
 
-	--love.audio.play(SfxMove:clone())
-
 end
 
 function State_01SelectPlayer.CenterPressed()
@@ -42,8 +38,6 @@ function State_01SelectPlayer.CenterPressed()
 	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
 
 	Game.state = 2
-
-	--love.audio.play(SfxCenter:clone())
 
 end
 

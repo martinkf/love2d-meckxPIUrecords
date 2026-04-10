@@ -25,7 +25,6 @@ function State_04SelectSong.UpPressed()
 		Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
 		Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
 
-		--love.audio.play(SfxMove:clone())
 	end
 
 end
@@ -54,7 +53,6 @@ function State_04SelectSong.DownPressed()
 		Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
 		Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
 
-		--love.audio.play(SfxMove:clone())
 	end
 
 end
@@ -70,8 +68,6 @@ function State_04SelectSong.CenterPressed()
 
 		Game.infographic = 0
 		Game.state = 5
-
-		--love.audio.play(SfxCenter:clone())
 	end
 
 end
@@ -87,7 +83,6 @@ function State_04SelectSong.BackPressed()
 		Game.selectedSongName = ""
 		Game.selectedSongArrayOfCharts = {}
 
-		--love.audio.play(SfxBack:clone())
 	end
 
 end

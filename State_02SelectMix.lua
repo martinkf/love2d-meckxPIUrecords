@@ -15,8 +15,6 @@ function State_02SelectMix.UpPressed()
 
 	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
 
-	--love.audio.play(SfxMove:clone())
-
 end
 
 function State_02SelectMix.DownPressed()
@@ -32,8 +30,6 @@ function State_02SelectMix.DownPressed()
 
 	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
 
-	--love.audio.play(SfxMove:clone())
-
 end
 
 function State_02SelectMix.CenterPressed()
@@ -43,8 +39,6 @@ function State_02SelectMix.CenterPressed()
 
 	Game.state = 3
 
-	--love.audio.play(SfxCenter:clone())
-
 end
 
 function State_02SelectMix.BackPressed()
@@ -53,8 +47,6 @@ function State_02SelectMix.BackPressed()
 
 	Game.selectedMixIndex = 0
 	Game.selectedMixName = ""
-
-	--love.audio.play(SfxBack:clone())
 
 end
 

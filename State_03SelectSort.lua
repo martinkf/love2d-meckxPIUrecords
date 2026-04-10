@@ -15,8 +15,6 @@ function State_03SelectSort.UpPressed()
 
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
 
-	--love.audio.play(SfxMove:clone())
-
 end
 
 function State_03SelectSort.DownPressed()
@@ -34,8 +32,6 @@ function State_03SelectSort.DownPressed()
 
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
 
-	--love.audio.play(SfxMove:clone())
-
 end
 
 function State_03SelectSort.CenterPressed()
@@ -46,8 +42,6 @@ function State_03SelectSort.CenterPressed()
 
 	Game.state = 4
 
-	--love.audio.play(SfxCenter:clone())
-
 end
 
 function State_03SelectSort.BackPressed()
@@ -56,8 +50,6 @@ function State_03SelectSort.BackPressed()
 
 	Game.selectedSortIndex = 0
 	Game.selectedSortName = ""
-
-	--love.audio.play(SfxBack:clone())
 
 end
 

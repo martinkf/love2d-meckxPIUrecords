@@ -8,7 +8,6 @@ function State_05SelectChart.UpPressed()
 	if Game.selectedChartIndex == 0 then Game.selectedChartIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts end
 	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 	Game.selectedChartDifficultyName = DatabaseDetails.FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
-	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -18,7 +17,6 @@ function State_05SelectChart.DownPressed()
 	if Game.selectedChartIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts then Game.selectedChartIndex = 1 end
 	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 	Game.selectedChartDifficultyName = DatabaseDetails.FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
-	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -29,8 +27,6 @@ function State_05SelectChart.CenterPressed()
 
 	Game.state = 6
 
-	--love.audio.play(SfxCenter:clone())
-
 end
 
 function State_05SelectChart.BackPressed()
@@ -40,8 +36,6 @@ function State_05SelectChart.BackPressed()
 	Game.selectedChartIndex = 0
 	Game.selectedChartName = ""
 	Game.selectedChartDifficultyName = ""
-
-	--love.audio.play(SfxBack:clone())
 
 end
 

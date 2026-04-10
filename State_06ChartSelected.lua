@@ -13,7 +13,6 @@ function State_06ChartSelected.UpPressed()
 	Game.selectedChartOptIndex = Game.selectedChartOptIndex - 1
 	if Game.selectedChartOptIndex == 0 then Game.selectedChartOptIndex = #chartOptions end
 	Game.selectedChartOptName = chartOptions[Game.selectedChartOptIndex]
-	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -22,7 +21,6 @@ function State_06ChartSelected.DownPressed()
 	Game.selectedChartOptIndex = Game.selectedChartOptIndex + 1
 	if Game.selectedChartOptIndex > #chartOptions then Game.selectedChartOptIndex = 1 end
 	Game.selectedChartOptName = chartOptions[Game.selectedChartOptIndex]
-	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -32,8 +30,6 @@ function State_06ChartSelected.BackPressed()
 
 	Game.selectedChartOptIndex = 0
 	Game.selectedChartOptName = ""
-
-	--love.audio.play(SfxBack:clone())
 
 end
 

@@ -78,11 +78,6 @@ function love.load()
 	--initializing engine global variables
 	Joysticks = love.joystick.getJoysticks() --needed for input implementation
 
-	--initializing sfx - sound breaks Switch, let's not implement sound...
-	--SfxMove = love.audio.newSource("sounds/SfxMove.mp3", "static")
-	--SfxCenter = love.audio.newSource("sounds/SfxCenter.mp3", "static")
-	--SfxBack = love.audio.newSource("sounds/SfxBack.mp3", "static")
-
 	--initializing global variables
 	--Tee = 0
 	Game.state = 1
