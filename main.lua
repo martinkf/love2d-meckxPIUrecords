@@ -12,9 +12,11 @@ local State_02SelectMix = require("State_02SelectMix")
 local State_03SelectSort = require("State_03SelectSort")
 local State_04SelectSong = require("State_04SelectSong")
 local State_05SelectChart = require("State_05SelectChart")
+local State_06ChartSelected = require("State_06ChartSelected")
+-- overlay screens
+local Overlay_Infographic = require("Overlay_Infographic")
 
 -- GLOBAL VARIABLES
-
 --Tee = 0
 DatabasePlayers = {}
 DatabaseMixes = {}
@@ -85,6 +87,7 @@ function love.load()
 	--Tee = 0
 	Game.state = 1
 	Game.debug = 0
+	Game.infographic = 0
 	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
 
 	Game.selectedPlayerIndex = 1
@@ -103,6 +106,9 @@ function love.load()
 	Game.selectedChartIndex = 0
 	Game.selectedChartName = ""
 	Game.selectedChartDifficultyName = ""
+
+	Game.selectedChartOptIndex = 0
+	Game.selectedChartOptName = ""
 
 	DatabasePlayers = require("Database_Players")
 	DatabaseMixes = require("Database_Mixes")
@@ -180,6 +186,7 @@ function love.keypressed(key)
 	if key == "a" then HandleCenter() end
 	if key == "b" then HandleBack() end
 	if key == "r" then ToggleDebug() end
+	if key == "l" then ToggleInfographic() end
 
 end
 
@@ -198,6 +205,7 @@ function love.gamepadpressed(joystick, button)
 	if button == "a" then HandleCenter() end
 	if button == "b" then HandleBack() end
 	if button == "rightshoulder" then ToggleDebug() end
+	if button == "leftshoulder" then ToggleInfographic() end
 
 end
 
@@ -254,7 +262,8 @@ function HandleUp()
 	elseif Game.state == 2 then State_02SelectMix.UpPressed()
 	elseif Game.state == 3 then State_03SelectSort.UpPressed()
 	elseif Game.state == 4 then State_04SelectSong.UpPressed()
-	elseif Game.state == 5 then State_05SelectChart.UpPressed() end
+	elseif Game.state == 5 then State_05SelectChart.UpPressed()
+	elseif Game.state == 6 then State_06ChartSelected.UpPressed() end
 end
 
 function HandleDown()
@@ -262,21 +271,24 @@ function HandleDown()
 	elseif Game.state == 2 then State_02SelectMix.DownPressed()
 	elseif Game.state == 3 then State_03SelectSort.DownPressed()
 	elseif Game.state == 4 then State_04SelectSong.DownPressed()
-	elseif Game.state == 5 then State_05SelectChart.DownPressed() end
+	elseif Game.state == 5 then State_05SelectChart.DownPressed()
+	elseif Game.state == 6 then State_06ChartSelected.DownPressed() end
 end
 
 function HandleCenter()
 	if Game.state == 1 then State_01SelectPlayer.CenterPressed()
 	elseif Game.state == 2 then State_02SelectMix.CenterPressed()
 	elseif Game.state == 3 then State_03SelectSort.CenterPressed()
-	elseif Game.state == 4 then State_04SelectSong.CenterPressed() end
+	elseif Game.state == 4 then State_04SelectSong.CenterPressed()
+	elseif Game.state == 5 then State_05SelectChart.CenterPressed() end
 end
 
 function HandleBack()
 	if Game.state == 2 then State_02SelectMix.BackPressed()
 	elseif Game.state == 3 then State_03SelectSort.BackPressed()
 	elseif Game.state == 4 then State_04SelectSong.BackPressed()
-	elseif Game.state == 5 then State_05SelectChart.BackPressed() end
+	elseif Game.state == 5 then State_05SelectChart.BackPressed()
+	elseif Game.state == 6 then State_06ChartSelected.BackPressed() end
 end
 
 function ToggleDebug()
@@ -284,6 +296,12 @@ function ToggleDebug()
 	elseif Game.debug == 1 then Game.debug = 2
 	elseif Game.debug == 2 then Game.debug = 3
 	elseif Game.debug == 3 then	Game.debug = 0 end
+end
+
+function ToggleInfographic()
+	if Game.state == 4 then
+		if Game.infographic == 0 then Game.infographic = 1 else Game.infographic = 0 end
+	end
 end
 
 
@@ -392,11 +410,14 @@ local function drawingUnderlay()
 	elseif Game.state == 2 then State_02SelectMix.Drawing()
 	elseif Game.state == 3 then State_03SelectSort.Drawing()
 	elseif Game.state == 4 then State_04SelectSong.Drawing()
-	elseif Game.state == 5 then State_05SelectChart.Drawing() end
+	elseif Game.state == 5 then State_05SelectChart.Drawing()
+	elseif Game.state == 6 then State_06ChartSelected.Drawing() end
 
 end
 
 local function drawingOverlay()
+
+	if ((Game.infographic == 1) and (Game.state == 4)) then Overlay_Infographic.Drawing() end
 
 	if Game.debug == 1 then Debug_01Variables.Drawing()
 	elseif Game.debug == 2 then Debug_02SimpleInputs.Drawing()

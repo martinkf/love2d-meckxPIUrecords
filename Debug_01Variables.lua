@@ -28,6 +28,15 @@ function Debug_01Variables.Drawing()
 	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
+		Text = "Game.infographic = "..Game.infographic,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
 		Text = "Game.state = "..Game.state,
 		XPos = drawingX,
 		YPos = drawingY,
@@ -155,6 +164,25 @@ function Debug_01Variables.Drawing()
 
 	meckx_print({
 		Text = "Game.selectedChartDifficultyName = "..Game.selectedChartDifficultyName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
+
+	meckx_print({
+		Text = "Game.selectedChartOptIndex = "..Game.selectedChartOptIndex,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedChartOptName = "..Game.selectedChartOptName,
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",

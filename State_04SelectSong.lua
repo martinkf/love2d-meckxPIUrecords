@@ -4,76 +4,91 @@ local State_04SelectSong = {}
 
 function State_04SelectSong.UpPressed()
 
-	Game.selectedSongIndex = Game.selectedSongIndex - 1
-	if Game.selectedSortName == "Full Display Mode" or
-	Game.selectedSortName == "Single Progressive" or
-	Game.selectedSortName == "Half-Double Progressive" or
-	Game.selectedSortName == "Double Progressive" or
-	Game.selectedSortName == "Swan Charts" then
-		-- doesnt wrap around
-		if Game.selectedSongIndex == 0 then
-			Game.selectedSongIndex = 1 
-		end
+	if Game.infographic == 1 then
+		Game.infographic = 0
 	else
-		-- wraps around
-		if Game.selectedSongIndex == 0 then
-			Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
+		Game.selectedSongIndex = Game.selectedSongIndex - 1
+		if Game.selectedSortName == "Single Progressive" or
+		Game.selectedSortName == "Half-Double Progressive" or
+		Game.selectedSortName == "Double Progressive" or
+		Game.selectedSortName == "Swan Charts" then
+			-- doesnt wrap around
+			if Game.selectedSongIndex == 0 then
+				Game.selectedSongIndex = 1 
+			end
+		else
+			-- wraps around
+			if Game.selectedSongIndex == 0 then
+				Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
+			end
 		end
-	end
-	Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
-	Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
+		Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
+		Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
 
-	--love.audio.play(SfxMove:clone())
+		--love.audio.play(SfxMove:clone())
+	end
 
 end
 
 function State_04SelectSong.DownPressed()
 
-	Game.selectedSongIndex = Game.selectedSongIndex + 1
-	if Game.selectedSortName == "Full Display Mode" or
-	Game.selectedSortName == "Single Progressive" or
-	Game.selectedSortName == "Half-Double Progressive" or
-	Game.selectedSortName == "Double Progressive" or
-	Game.selectedSortName == "Swan Charts" then
-		-- doesnt wrap around
-		if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then
-			Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
-		end
+	if Game.infographic == 1 then
+		Game.infographic = 0
 	else
-		-- wraps around
-		if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then
-			Game.selectedSongIndex = 1
+		Game.selectedSongIndex = Game.selectedSongIndex + 1
+		if Game.selectedSortName == "Single Progressive" or
+		Game.selectedSortName == "Half-Double Progressive" or
+		Game.selectedSortName == "Double Progressive" or
+		Game.selectedSortName == "Swan Charts" then
+			-- doesnt wrap around
+			if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then
+				Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
+			end
+		else
+			-- wraps around
+			if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then
+				Game.selectedSongIndex = 1
+			end
 		end
+
+		Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
+		Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
+
+		--love.audio.play(SfxMove:clone())
 	end
-
-	Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
-	Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
-
-	--love.audio.play(SfxMove:clone())
 
 end
 
 function State_04SelectSong.CenterPressed()
 
-	Game.selectedChartIndex = 1
-	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
-	Game.selectedChartDifficultyName = DatabaseDetails.FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
+	if Game.infographic == 1 then
+		Game.infographic = 0
+	else
+		Game.selectedChartIndex = 1
+		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
+		Game.selectedChartDifficultyName = DatabaseDetails.FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 
-	Game.state = 5
+		Game.infographic = 0
+		Game.state = 5
 
-	--love.audio.play(SfxCenter:clone())
+		--love.audio.play(SfxCenter:clone())
+	end
 
 end
 
 function State_04SelectSong.BackPressed()
 
-	Game.state = 3
+	if Game.infographic == 1 then
+		Game.infographic = 0
+	else
+		Game.state = 3
 
-	Game.selectedSongIndex = 0
-	Game.selectedSongName = ""
-	Game.selectedSongArrayOfCharts = {}
+		Game.selectedSongIndex = 0
+		Game.selectedSongName = ""
+		Game.selectedSongArrayOfCharts = {}
 
-	--love.audio.play(SfxBack:clone())
+		--love.audio.play(SfxBack:clone())
+	end
 
 end
 
@@ -165,8 +180,7 @@ function State_04SelectSong.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
-	if Game.selectedSortName == "Full Display Mode" or
-	Game.selectedSortName == "Single Progressive" or
+	if Game.selectedSortName == "Single Progressive" or
 	Game.selectedSortName == "Half-Double Progressive" or
 	Game.selectedSortName == "Double Progressive" or
 	Game.selectedSortName == "Swan Charts" then
@@ -253,7 +267,7 @@ function State_04SelectSong.Drawing()
 		local songToInput = Game.selectedSongName
 		local chartToInput = Game.selectedSongArrayOfCharts[j]
 
-		local text = DatabaseDetails.FetchChartDifficultyName(songToInput, chartToInput).." - "..chartToInput
+		local text = DatabaseDetails.FetchChartDifficultyName(songToInput, chartToInput).."·"..chartToInput
 
 		meckx_print({
 			Text = text,

@@ -5,6 +5,7 @@ local colors = {
     white = {1, 1, 1},
     lightestGray = {0.8, 0.8, 0.8},
     lightGray = {0.6, 0.6, 0.6},
+    gray = {0.5, 0.5, 0.5},
     darkGray = {0.4, 0.4, 0.4},
     darkestGray = {0.2, 0.2, 0.2},
     black = {0, 0, 0},

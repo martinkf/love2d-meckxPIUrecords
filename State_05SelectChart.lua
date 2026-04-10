@@ -22,6 +22,17 @@ function State_05SelectChart.DownPressed()
 
 end
 
+function State_05SelectChart.CenterPressed()
+
+	Game.selectedChartOptIndex = 1
+	Game.selectedChartOptName = "Add new record"
+
+	Game.state = 6
+
+	--love.audio.play(SfxCenter:clone())
+
+end
+
 function State_05SelectChart.BackPressed()
 
 	Game.state = 4
@@ -97,7 +108,7 @@ function State_05SelectChart.Drawing()
 
 	-- contents
 	meckx_print({
-		Text = Game.selectedSongName,
+		Text = "../"..Game.selectedSongName,
 		XPos = drawingX+24,
 		YPos = drawingY-2,
 		ColorName = "yellow",
@@ -121,7 +132,7 @@ function State_05SelectChart.Drawing()
 		local songToInput = Game.selectedSongName
 		local chartToInput = Game.selectedSongArrayOfCharts[j]
 
-		local text = DatabaseDetails.FetchChartDifficultyName(songToInput, chartToInput).." - "..chartToInput
+		local text = DatabaseDetails.FetchChartDifficultyName(songToInput, chartToInput).."·"..chartToInput
 
 		meckx_print({
 			Text = (j == Game.selectedChartIndex) and "> "..text or text,
