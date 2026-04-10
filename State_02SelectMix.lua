@@ -5,18 +5,30 @@ local State_02SelectMix = {}
 function State_02SelectMix.UpPressed()
 
 	Game.selectedMixIndex = Game.selectedMixIndex - 1
-	if Game.selectedMixIndex == 0 then Game.selectedMixIndex = #DatabaseMixes end
+	if true then
+		-- doesn't wrap around
+		if Game.selectedMixIndex == 0 then Game.selectedMixIndex = 1 end
+	else
+		-- wraps around
+		if Game.selectedMixIndex == 0 then Game.selectedMixIndex = #DatabaseMixes end
+	end
+
 	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
-	--love.audio.play(SfxMove:clone())
 
 end
 
 function State_02SelectMix.DownPressed()
 
 	Game.selectedMixIndex = Game.selectedMixIndex + 1
-	if Game.selectedMixIndex > #DatabaseMixes then Game.selectedMixIndex = 1 end
+	if true then
+		-- doesnt' wrap around
+		if Game.selectedMixIndex > #DatabaseMixes then Game.selectedMixIndex = #DatabaseMixes end
+	else
+		-- wraps around
+		if Game.selectedMixIndex > #DatabaseMixes then Game.selectedMixIndex = 1 end
+	end
+
 	Game.selectedMixName = DatabaseMixes[Game.selectedMixIndex].MixName
-	--love.audio.play(SfxMove:clone())
 
 end
 
@@ -27,8 +39,6 @@ function State_02SelectMix.CenterPressed()
 
 	Game.state = 3
 
-	--love.audio.play(SfxCenter:clone())
-
 end
 
 function State_02SelectMix.BackPressed()
@@ -37,8 +47,6 @@ function State_02SelectMix.BackPressed()
 
 	Game.selectedMixIndex = 0
 	Game.selectedMixName = ""
-
-	--love.audio.play(SfxBack:clone())
 
 end
 

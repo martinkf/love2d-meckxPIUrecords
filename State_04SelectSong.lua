@@ -4,47 +4,86 @@ local State_04SelectSong = {}
 
 function State_04SelectSong.UpPressed()
 
-	Game.selectedSongIndex = Game.selectedSongIndex - 1
-	if Game.selectedSongIndex == 0 then Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs end
-	Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
-	Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
+	if Game.infographic == 1 then
+		Game.infographic = 0
+	else
+		Game.selectedSongIndex = Game.selectedSongIndex - 1
+		if Game.selectedSortName == "Single Progressive" or
+		Game.selectedSortName == "Half-Double Progressive" or
+		Game.selectedSortName == "Double Progressive" or
+		Game.selectedSortName == "Swan Charts" then
+			-- doesnt wrap around
+			if Game.selectedSongIndex == 0 then
+				Game.selectedSongIndex = 1 
+			end
+		else
+			-- wraps around
+			if Game.selectedSongIndex == 0 then
+				Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
+			end
+		end
+		Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
+		Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
 
-	--love.audio.play(SfxMove:clone())
+	end
 
 end
 
 function State_04SelectSong.DownPressed()
 
-	Game.selectedSongIndex = Game.selectedSongIndex + 1
-	if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then Game.selectedSongIndex = 1 end
-	Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
-	Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
+	if Game.infographic == 1 then
+		Game.infographic = 0
+	else
+		Game.selectedSongIndex = Game.selectedSongIndex + 1
+		if Game.selectedSortName == "Single Progressive" or
+		Game.selectedSortName == "Half-Double Progressive" or
+		Game.selectedSortName == "Double Progressive" or
+		Game.selectedSortName == "Swan Charts" then
+			-- doesnt wrap around
+			if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then
+				Game.selectedSongIndex = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
+			end
+		else
+			-- wraps around
+			if Game.selectedSongIndex > #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs then
+				Game.selectedSongIndex = 1
+			end
+		end
 
-	--love.audio.play(SfxMove:clone())
+		Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
+		Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
+
+	end
 
 end
 
 function State_04SelectSong.CenterPressed()
 
-	Game.selectedChartIndex = 1
-	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
-	Game.selectedChartDifficulty = DatabaseDetails.FetchChartDifficulty(Game.selectedSongName, Game.selectedChartName)
+	if Game.infographic == 1 then
+		Game.infographic = 0
+	else
+		Game.selectedChartIndex = 1
+		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
+		Game.selectedChartDifficultyName = DatabaseDetails.FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 
-	Game.state = 5
-
-	--love.audio.play(SfxCenter:clone())
+		Game.infographic = 0
+		Game.state = 5
+	end
 
 end
 
 function State_04SelectSong.BackPressed()
 
-	Game.state = 3
+	if Game.infographic == 1 then
+		Game.infographic = 0
+	else
+		Game.state = 3
 
-	Game.selectedSongIndex = 0
-	Game.selectedSongName = ""
-	Game.selectedSongArrayOfCharts = {}
+		Game.selectedSongIndex = 0
+		Game.selectedSongName = ""
+		Game.selectedSongArrayOfCharts = {}
 
-	--love.audio.play(SfxBack:clone())
+	end
 
 end
 
@@ -123,6 +162,10 @@ function State_04SelectSong.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
+
+
+
+	-- drawing songs
 	meckx_print({
 		Text = "----------------- 04. SELECT A SONG -----------------",
 		XPos = drawingX,
@@ -131,27 +174,78 @@ function State_04SelectSong.Drawing()
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
-	
-	local numberOfDisplayedCharts = (#Game.selectedSongArrayOfCharts < 11) and #Game.selectedSongArrayOfCharts or 10
-	for offset = -2, (11 - numberOfDisplayedCharts) do
-		local index = ((Game.selectedSongIndex + offset - 1) % #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs) + 1
-		local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].SongTitle
-		local indexFormatted = string.format("%04d", index)
-		
-		if offset == 0 then
-			-- let's grab the currently hovered song's { array of charts }
-			--Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].Charts
+
+	if Game.selectedSortName == "Single Progressive" or
+	Game.selectedSortName == "Half-Double Progressive" or
+	Game.selectedSortName == "Double Progressive" or
+	Game.selectedSortName == "Swan Charts" then
+		-- song list doesnt wrap around
+		local numberOfDisplayedCharts = (#Game.selectedSongArrayOfCharts < 11) and #Game.selectedSongArrayOfCharts or 10
+		for offset = -2, (11 - numberOfDisplayedCharts) do
+			local index = Game.selectedSongIndex + offset
+			if index < 1 then
+				meckx_print({
+					Text = "",
+					XPos = drawingX+24,
+					YPos = drawingY,
+					ColorName = "white",
+					FontStyle = ClassicConsole_48,
+				})
+				drawingY = drawingY + linebreakSize
+			elseif index < (#DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs + 1) then
+				local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].SongTitle
+				local indexFormatted = string.format("%04d", index)
+				local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
+
+				local text = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+
+				meckx_print({
+					Text = (offset == 0) and "> "..text.." <" or text,
+					XPos = (offset == 0) and drawingX or drawingX+24,
+					YPos = drawingY,
+					ColorName = (offset == 0) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
+					FontStyle = ClassicConsole_48,
+				})
+				drawingY = drawingY + linebreakSize
+			else
+				meckx_print({
+					Text = "",
+					XPos = drawingX+24,
+					YPos = drawingY,
+					ColorName = "white",
+					FontStyle = ClassicConsole_48,
+				})
+				drawingY = drawingY + linebreakSize
+			end
+
 		end
-		meckx_print({
-			Text = (offset == 0) and "> "..indexFormatted..". "..songTitle.." <" or indexFormatted..". "..songTitle,
-			XPos = (offset == 0) and drawingX or drawingX+24,
-			YPos = drawingY,
-			ColorName = (offset == 0) and "white" or "darkGray",
-			FontStyle = ClassicConsole_48,
-		})
-		drawingY = drawingY + linebreakSize
+	else
+		-- song list loops around
+		local numberOfDisplayedCharts = (#Game.selectedSongArrayOfCharts < 11) and #Game.selectedSongArrayOfCharts or 10
+		for offset = -2, (11 - numberOfDisplayedCharts) do
+			local index = ((Game.selectedSongIndex + offset - 1) % #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs) + 1
+			local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[index].SongTitle
+			local indexFormatted = string.format("%04d", index)
+			local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
+
+			local text = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+
+			meckx_print({
+				Text = (offset == 0) and "> "..text.." <" or text,
+				XPos = (offset == 0) and drawingX or drawingX+24,
+				YPos = drawingY,
+				ColorName = (offset == 0) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		end
 	end
 
+
+
+
+
+	-- drawing charts
 	meckx_print({
 		Text = "---------------------- CHARTS -----------------------",
 		XPos = drawingX,
@@ -161,23 +255,50 @@ function State_04SelectSong.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
-	-- drawing charts
+	local tempdrawingY = drawingY
+
 	for j=1,#Game.selectedSongArrayOfCharts,1 do
-		
+
 		local songToInput = Game.selectedSongName
 		local chartToInput = Game.selectedSongArrayOfCharts[j]
 
-		local text = DatabaseDetails.FetchChartDifficulty(songToInput, chartToInput).." - "..string.format("%-15s", chartToInput).." - "
+		local text = DatabaseDetails.FetchChartDifficultyName(songToInput, chartToInput).."·"..chartToInput
 
 		meckx_print({
 			Text = text,
 			XPos = drawingX+24,
 			YPos = drawingY,
-			ColorName = DatabaseDetails.FetchChartColor(songToInput, chartToInput),
+			ColorName = DatabaseDetails.FetchChartColorEnabled(songToInput, chartToInput),
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize
 	end
+
+	--this is a temporary display on how records might appear
+	--[[
+	drawingY = tempdrawingY
+	for j=1,#Game.selectedSongArrayOfCharts,1 do
+		if j == 1 then
+			meckx_print({
+				Text = "100.0% ·  FPC · 22/08/2026",
+				XPos = drawingX+(27*24),
+				YPos = drawingY,
+				ColorName = "blue",
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		else
+			meckx_print({
+				Text = "89.47% · +10B · 12/02/2025",
+				XPos = drawingX+(27*24),
+				YPos = drawingY,
+				ColorName = "red",
+				FontStyle = ClassicConsole_48,
+			})
+			drawingY = drawingY + linebreakSize
+		end
+	end
+	]]--
 
 end
 
