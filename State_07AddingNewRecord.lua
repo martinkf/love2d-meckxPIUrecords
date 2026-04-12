@@ -28,13 +28,26 @@ local correctBads = 0
 local correctMisses = 0
 local totalSteps = 300
 local accuracy = 1
+local accuracyAsString = "100.00"
 local stars = 5
 local comment = "PG!"
 local recordColor = "white"
+
+-- SELECTOR
 local selectorIndex = 1
+local function getRowCol(index)
+	local cols = 4
+    local row = math.floor((index - 1) / cols)
+    local col = (index - 1) % cols
+    return row, col
+end
+local function getIndex(row, col)
+	local cols = 4
+    return row * cols + col + 1
+end
 
 -- LOCAL FUNCTIONS
-function State_07AddingNewRecord.UpdateCorrectSteps()
+local function UpdateCorrectSteps()
 	correctPerfects = (perfectsM * 1000) + (perfectsC * 100) + (perfectsD * 10) + perfectsU
 	correctGreats = (greatsM * 1000) + (greatsC * 100) + (greatsD * 10) + greatsU
 	correctGoods = (goodsM * 1000) + (goodsC * 100) + (goodsD * 10) + goodsU
@@ -43,16 +56,17 @@ function State_07AddingNewRecord.UpdateCorrectSteps()
 	totalSteps = correctPerfects + correctGreats + correctGoods + correctBads + correctMisses
 end
 
-function State_07AddingNewRecord.UpdateAccuracy()
+local function UpdateAccuracy()
 
-	State_07AddingNewRecord.UpdateCorrectSteps()
+	UpdateCorrectSteps()
 	accuracy = ((correctPerfects/totalSteps)*1) + ((correctGreats/totalSteps)*0.8) + ((correctGoods/totalSteps)*0.5) + ((correctBads/totalSteps)*0.2)
+	accuracyAsString = string.format("%.2f", accuracy*100) .. "%"
 
 end
 
-function State_07AddingNewRecord.UpdateStars()
+local function UpdateStars()
 
-	State_07AddingNewRecord.UpdateAccuracy()
+	UpdateAccuracy()
 	if accuracy == 1 then
 		stars = 5
 		recordColor = "meckx_02Blue_light"
@@ -72,18 +86,33 @@ function State_07AddingNewRecord.UpdateStars()
 
 end
 
-function State_07AddingNewRecord.UpdateComment()
+local function UpdateComment()
 
-	State_07AddingNewRecord.UpdateStars()
-	if stars == 5 then comment = "PG!" end
-	if correctGreats > 0 then comment = correctGreats .. " GREATS" end
-	if correctGoods > 0 then comment = comment .. ", " .. correctGoods .. " GOODS" end
-	if correctBads > 0 then comment = comment .. ", " .. correctBads .. " BADS" end
-	if correctMisses > 0 then comment = comment .. ", " .. correctMisses .. " MISSES" end
+	UpdateStars()
+	if stars == 5 then comment = "PG!"
+	elseif stars == 4 then comment = correctGreats .. " GREATS"
+	elseif stars == 3 then
+		comment = ""
+		if correctGreats > 0 then comment = correctGreats .. " GREATS, " end
+		comment = comment .. correctGoods .. " GOODS"
+	elseif stars == 2 then
+		comment = ""
+		if correctGreats > 0 then comment = correctGreats .. " GREATS, " end
+		if correctGoods > 0 then comment = comment .. correctGoods .. " GOODS, " end
+		comment = comment .. correctBads .. " BADS"
+	elseif stars == 1 then
+		comment = ""
+		if correctGreats > 0 then comment = correctGreats .. " GREATS, " end
+		if correctGoods > 0 then comment = comment .. correctGoods .. " GOODS, " end
+		if correctBads > 0 then comment = comment .. correctBads .. " BADS, " end
+		comment = comment .. correctMisses .. " MISSES"
+	end
 
 end
 
-function TestSaveDummyScore()
+local function SaveANewRecord()
+
+	UpdateComment()
 
     MemorycardData = MemorycardData or {}
     MemorycardData.Players = MemorycardData.Players or {}
@@ -95,14 +124,14 @@ function TestSaveDummyScore()
         ChartName = Game.selectedChartName,
         Date = os.date("%d/%m/%Y"),
 		Time = os.date("%H:%M:%S"),
-        Perfects = 190,
-        Greats = 2,
-        Goods = 1,
-        Bads = 0,
-        Misses = 0,
-        Accuracy = 0.995,
-        Stars = 3,
-        Comment = "1 GOOD"
+        Perfects = correctPerfects,
+        Greats = correctGreats,
+        Goods = correctGoods,
+        Bads = correctBads,
+        Misses = correctMisses,
+        Accuracy = accuracyAsString,
+        Stars = stars,
+        Comment = comment
     }
 
     table.insert(MemorycardData.Players[Game.selectedPlayerName].Scores, newEntry)
@@ -115,61 +144,164 @@ end
 
 function State_07AddingNewRecord.UpPressed()
 
-	if selectorIndex == 21 then selectorIndex = 17
-	elseif selectorIndex == 17 then selectorIndex = 13
-	elseif selectorIndex == 13 then selectorIndex = 9
-	elseif selectorIndex == 9 then selectorIndex = 5
-	elseif selectorIndex == 5 then selectorIndex = 1
-	end
-	State_07AddingNewRecord.UpdateComment()
+    if selectorIndex == 21 then
+        selectorIndex = 17
+    else
+        local row, col = getRowCol(selectorIndex)
 
+        if row > 0 then
+            row = row - 1
+            selectorIndex = getIndex(row, col)
+        end
+    end
+
+    UpdateComment()
 end
 
 function State_07AddingNewRecord.DownPressed()
 
-	if selectorIndex == 1 then selectorIndex = 5
-	elseif selectorIndex == 5 then selectorIndex = 9
-	elseif selectorIndex == 9 then selectorIndex = 13
-	elseif selectorIndex == 13 then selectorIndex = 17
-	elseif selectorIndex == 17 then selectorIndex = 21
-	end
-	State_07AddingNewRecord.UpdateComment()
+    if selectorIndex >= 17 and selectorIndex <= 20 then
+        selectorIndex = 21
+    elseif selectorIndex ~= 21 then
+        local row, col = getRowCol(selectorIndex)
 
+        if row < 4 then
+            row = row + 1
+            selectorIndex = getIndex(row, col)
+        end
+    end
+
+    UpdateComment()
 end
 
 function State_07AddingNewRecord.LeftPressed()
+    if selectorIndex ~= 21 then
+        local row, col = getRowCol(selectorIndex)
 
-	if selectorIndex == 2 then selectorIndex = 1
-	elseif selectorIndex == 6 then selectorIndex = 5
-	elseif selectorIndex == 10 then selectorIndex = 9
-	elseif selectorIndex == 14 then selectorIndex = 13
-	elseif selectorIndex == 18 then selectorIndex = 17
-	end
-	State_07AddingNewRecord.UpdateComment()
+        if col > 0 then
+            col = col - 1
+            selectorIndex = getIndex(row, col)
+        end
+    end
 
+    UpdateComment()
 end
 
 function State_07AddingNewRecord.RightPressed()
+    if selectorIndex ~= 21 then
+        local row, col = getRowCol(selectorIndex)
 
-	if selectorIndex == 1 then selectorIndex = 2
-	elseif selectorIndex == 5 then selectorIndex = 6
-	elseif selectorIndex == 9 then selectorIndex = 10
-	elseif selectorIndex == 13 then selectorIndex = 14
-	elseif selectorIndex == 17 then selectorIndex = 18
-	end
-	State_07AddingNewRecord.UpdateComment()
+        if col < 3 then
+            col = col + 1
+            selectorIndex = getIndex(row, col)
+        end
+    end
 
+    UpdateComment()
 end
 
 function State_07AddingNewRecord.CenterPressed()
 
+	if selectorIndex == 21 then
 
+		SaveANewRecord()
+
+		Game.state = 4
+		Game.selectedChartOptIndex = 0
+		Game.selectedChartOptName = ""
+		Game.selectedChartIndex = 0
+		Game.selectedChartName = ""
+		Game.selectedChartDifficultyName = ""
+
+	elseif selectorIndex == 20 then
+		if missesU == 9 then missesU = 0 else missesU = missesU + 1 end
+	elseif selectorIndex == 19 then
+		if missesD == 9 then missesD = 0 else missesD = missesD + 1 end
+	elseif selectorIndex == 18 then
+		if missesC == 9 then missesC = 0 else missesC = missesC + 1 end
+	elseif selectorIndex == 17 then
+		if missesM == 9 then missesM = 0 else missesM = missesM + 1 end
+	elseif selectorIndex == 16 then
+		if badsU == 9 then badsU = 0 else badsU = badsU + 1 end
+	elseif selectorIndex == 15 then
+		if badsD == 9 then badsD = 0 else badsD = badsD + 1 end
+	elseif selectorIndex == 14 then
+		if badsC == 9 then badsC = 0 else badsC = badsC + 1 end
+	elseif selectorIndex == 13 then
+		if badsM == 9 then badsM = 0 else badsM = badsM + 1 end
+	elseif selectorIndex == 12 then
+		if goodsU == 9 then goodsU = 0 else goodsU = goodsU + 1 end
+	elseif selectorIndex == 11 then
+		if goodsD == 9 then goodsD = 0 else goodsD = goodsD + 1 end
+	elseif selectorIndex == 10 then
+		if goodsC == 9 then goodsC = 0 else goodsC = goodsC + 1 end
+	elseif selectorIndex == 9 then
+		if goodsM == 9 then goodsM = 0 else goodsM = goodsM + 1 end
+	elseif selectorIndex == 8 then
+		if greatsU == 9 then greatsU = 0 else greatsU = greatsU + 1 end
+	elseif selectorIndex == 7 then
+		if greatsD == 9 then greatsD = 0 else greatsD = greatsD + 1 end
+	elseif selectorIndex == 6 then
+		if greatsC == 9 then greatsC = 0 else greatsC = greatsC + 1 end
+	elseif selectorIndex == 5 then
+		if greatsM == 9 then greatsM = 0 else greatsM = greatsM + 1 end
+	elseif selectorIndex == 4 then
+		if perfectsU == 9 then perfectsU = 0 else perfectsU = perfectsU + 1 end
+	elseif selectorIndex == 3 then
+		if perfectsD == 9 then perfectsD = 0 else perfectsD = perfectsD + 1 end
+	elseif selectorIndex == 2 then
+		if perfectsC == 9 then perfectsC = 0 else perfectsC = perfectsC + 1 end
+	elseif selectorIndex == 1 then
+		if perfectsM == 9 then perfectsM = 0 else perfectsM = perfectsM + 1 end
+	end
+
+	UpdateComment()
 
 end
 
 function State_07AddingNewRecord.BackPressed()
 
-
+	if selectorIndex == 20 then
+		if missesU == 0 then missesU = 9 else missesU = missesU - 1 end
+	elseif selectorIndex == 19 then
+		if missesD == 0 then missesD = 9 else missesD = missesD - 1 end
+	elseif selectorIndex == 18 then
+		if missesC == 0 then missesC = 9 else missesC = missesC - 1 end
+	elseif selectorIndex == 17 then
+		if missesM == 0 then missesM = 9 else missesM = missesM - 1 end
+	elseif selectorIndex == 16 then
+		if badsU == 0 then badsU = 9 else badsU = badsU - 1 end
+	elseif selectorIndex == 15 then
+		if badsD == 0 then badsD = 9 else badsD = badsD - 1 end
+	elseif selectorIndex == 14 then
+		if badsC == 0 then badsC = 9 else badsC = badsC - 1 end
+	elseif selectorIndex == 13 then
+		if badsM == 0 then badsM = 9 else badsM = badsM - 1 end
+	elseif selectorIndex == 12 then
+		if goodsU == 0 then goodsU = 9 else goodsU = goodsU - 1 end
+	elseif selectorIndex == 11 then
+		if goodsD == 0 then goodsD = 9 else goodsD = goodsD - 1 end
+	elseif selectorIndex == 10 then
+		if goodsC == 0 then goodsC = 9 else goodsC = goodsC - 1 end
+	elseif selectorIndex == 9 then
+		if goodsM == 0 then goodsM = 9 else goodsM = goodsM - 1 end
+	elseif selectorIndex == 8 then
+		if greatsU == 0 then greatsU = 9 else greatsU = greatsU - 1 end
+	elseif selectorIndex == 7 then
+		if greatsD == 0 then greatsD = 9 else greatsD = greatsD - 1 end
+	elseif selectorIndex == 6 then
+		if greatsC == 0 then greatsC = 9 else greatsC = greatsC - 1 end
+	elseif selectorIndex == 5 then
+		if greatsM == 0 then greatsM = 9 else greatsM = greatsM - 1 end
+	elseif selectorIndex == 4 then
+		if perfectsU == 0 then perfectsU = 9 else perfectsU = perfectsU - 1 end
+	elseif selectorIndex == 3 then
+		if perfectsD == 0 then perfectsD = 9 else perfectsD = perfectsD - 1 end
+	elseif selectorIndex == 2 then
+		if perfectsC == 0 then perfectsC = 9 else perfectsC = perfectsC - 1 end
+	elseif selectorIndex == 1 then
+		if perfectsM == 0 then perfectsM = 9 else perfectsM = perfectsM - 1 end
+	end
 
 end
 
@@ -222,7 +354,7 @@ function State_07AddingNewRecord.Drawing()
 	local drawingY = Game.baseDrawingY
 	local linebreakSize = 42
 
-	State_07AddingNewRecord.UpdateComment()
+	UpdateComment()
 
 	-- background
 	meckx_clearScreen({
@@ -258,20 +390,13 @@ function State_07AddingNewRecord.Drawing()
 	drawingY = drawingY + linebreakSize
 
 	--drawing the selector
-	local selectorX = 0
-	local selectorY = 0
+	local selectorX, selectorY
 
-	if selectorIndex == 1 or selectorIndex == 5 or selectorIndex == 9 or selectorIndex == 13 or selectorIndex == 17 then selectorX = drawingX+23
-	elseif selectorIndex == 2 or selectorIndex == 6 or selectorIndex == 10 or selectorIndex == 14 or selectorIndex == 18 then selectorX = drawingX+23+(1*24)
-	elseif selectorIndex == 21 then selectorX = -200
-	end
-
-	if selectorIndex == 1 or selectorIndex == 2 then selectorY = 89
-	elseif selectorIndex == 5 or selectorIndex == 6 then selectorY = 131
-	elseif selectorIndex == 9 or selectorIndex == 10 then selectorY = 173
-	elseif selectorIndex == 13 or selectorIndex == 14 then selectorY = 215
-	elseif selectorIndex == 17 or selectorIndex == 18 then selectorY = 257
-	elseif selectorIndex == 21 then selectorY = -200
+	if selectorIndex == 21 then selectorX = -200; selectorY = -200;
+	else
+		local row, col = getRowCol(selectorIndex)
+		selectorX = (drawingX + 23) + (col * 24)
+		selectorY = 89 + (row * 42)
 	end
 
 	meckx_rect({
@@ -296,21 +421,21 @@ function State_07AddingNewRecord.Drawing()
 		Text = perfectsC,
 		XPos = drawingX+(2*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 2) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = perfectsD,
 		XPos = drawingX+(3*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 3) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = perfectsU,
 		XPos = drawingX+(4*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 4) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
@@ -333,21 +458,21 @@ function State_07AddingNewRecord.Drawing()
 		Text = greatsC,
 		XPos = drawingX+(2*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 6) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = greatsD,
 		XPos = drawingX+(3*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 7) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = greatsU,
 		XPos = drawingX+(4*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 8) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
@@ -370,21 +495,21 @@ function State_07AddingNewRecord.Drawing()
 		Text = goodsC,
 		XPos = drawingX+(2*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 10) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = goodsD,
 		XPos = drawingX+(3*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 11) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = goodsU,
 		XPos = drawingX+(4*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 12) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
@@ -407,21 +532,21 @@ function State_07AddingNewRecord.Drawing()
 		Text = badsC,
 		XPos = drawingX+(2*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 14) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = badsD,
 		XPos = drawingX+(3*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 15) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = badsU,
 		XPos = drawingX+(4*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 16) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
@@ -444,21 +569,21 @@ function State_07AddingNewRecord.Drawing()
 		Text = missesC,
 		XPos = drawingX+(2*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 18) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = missesD,
 		XPos = drawingX+(3*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 19) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
 		Text = missesU,
 		XPos = drawingX+(4*24),
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 20) and "black" or "white",
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
@@ -477,9 +602,8 @@ function State_07AddingNewRecord.Drawing()
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	local displaytext = accuracy*100 .. "%"
 	meckx_print({
-		Text = displaytext,
+		Text = accuracyAsString,
 		XPos = drawingX+(16*24),
 		YPos = drawingY,
 		ColorName = recordColor,
@@ -496,9 +620,9 @@ function State_07AddingNewRecord.Drawing()
 	})
 	local starsAsString
 	if stars == 5 then starsAsString = "*****"
-	elseif stars == 5 then starsAsString = "****"
-	elseif stars == 5 then starsAsString = "***"
-	elseif stars == 5 then starsAsString = "**"
+	elseif stars == 4 then starsAsString = "****"
+	elseif stars == 3 then starsAsString = "***"
+	elseif stars == 2 then starsAsString = "**"
 	else starsAsString = "*" end
 	meckx_print({
 		Text = starsAsString,
