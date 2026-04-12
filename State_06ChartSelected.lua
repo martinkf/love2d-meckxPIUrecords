@@ -6,6 +6,36 @@ local chartOptions = {
 	"Add new record",
 }
 
+-- LOCAL FUNCTIONS
+function TestSaveDummyScore()
+    local playerName = Game.selectedPlayerName
+
+    -- safety (never crash)
+    MemorycardData = MemorycardData or {}
+    MemorycardData.Players = MemorycardData.Players or {}
+    MemorycardData.Players[playerName] = MemorycardData.Players[playerName] or {}
+    MemorycardData.Players[playerName].Scores = MemorycardData.Players[playerName].Scores or {}
+
+    local newEntry = {
+        SongTitle = Game.selectedSongName,
+        ChartName = Game.selectedChartName,
+        Date = os.date("%d/%m/%Y"),
+		Time = os.date("%H:%M:%S"),
+        Perfects = 190,
+        Greats = 2,
+        Goods = 1,
+        Bads = 0,
+        Misses = 0,
+        Accuracy = 0.995,
+        Score = 3,
+        Comment = "1 GOOD"
+    }
+
+    table.insert(MemorycardData.Players[playerName].Scores, newEntry)
+
+    SaveToMemorycard()
+end
+
 -- INPUT HANDLING
 
 function State_06ChartSelected.UpPressed()
@@ -21,6 +51,21 @@ function State_06ChartSelected.DownPressed()
 	Game.selectedChartOptIndex = Game.selectedChartOptIndex + 1
 	if Game.selectedChartOptIndex > #chartOptions then Game.selectedChartOptIndex = 1 end
 	Game.selectedChartOptName = chartOptions[Game.selectedChartOptIndex]
+
+end
+
+function State_06ChartSelected.CenterPressed()
+
+	TestSaveDummyScore()
+
+	Game.selectedChartOptIndex = 0
+	Game.selectedChartOptName = ""
+
+	Game.selectedChartIndex = 0
+	Game.selectedChartName = ""
+	Game.selectedChartDifficultyName = ""
+
+	Game.state = 4
 
 end
 

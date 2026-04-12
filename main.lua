@@ -2,6 +2,31 @@
 
 -- useful engine extension functions
 local Extension = require("Extension")
+-- save/load feature
+local json = require("json")
+function LoadFromMemorycard()
+    local data = love.filesystem.read("memorycard.json")
+
+    if not data then
+        return { Players = {} }
+    end
+
+    local decoded = json.decode(data)
+
+    if not decoded then
+        return { Players = {} }
+    end
+
+    if not decoded.Players then
+        return { Players = {} }
+    end
+
+    return decoded
+end
+function SaveToMemorycard()
+    local encoded = json.encode(MemorycardData)
+    love.filesystem.write("memorycard.json", encoded)
+end
 -- debugging overlays
 local Debug_01Variables = require("Debug_01Variables")
 local Debug_02SimpleInputs = require("Debug_02SimpleInputs")
@@ -24,108 +49,6 @@ DatabaseDetails = {}
 Joysticks = {}
 Game = {}
 Input = {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- THIS IS THE BOOT FUNCTION.
--- RUNS ONCE, WHEN LOADING GAME
-function love.load()
-	--engine adjustments (setting font)
-	DefaultFont = love.graphics.newFont(24)
-	ClassicConsole_48 = love.graphics.newFont("fonts/clacon2.ttf", 48)
-	ClassicConsole_24 = love.graphics.newFont("fonts/clacon2.ttf", 24)
-	love.graphics.setFont(DefaultFont)
-
-	--initializing engine global variables
-	Joysticks = love.joystick.getJoysticks() --needed for input implementation
-
-	--initializing global variables
-	--Tee = 0
-	Game.state = 1
-	Game.debug = 0
-	Game.infographic = 0
-	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
-
-	Game.selectedPlayerIndex = 1
-	Game.selectedPlayerName = "MartinTest"
-
-	Game.selectedMixIndex = 0
-	Game.selectedMixName = ""
-
-	Game.selectedSortIndex = 0
-	Game.selectedSortName = ""
-
-	Game.selectedSongIndex = 0
-	Game.selectedSongName = ""
-	Game.selectedSongArrayOfCharts = {}
-
-	Game.selectedChartIndex = 0
-	Game.selectedChartName = ""
-	Game.selectedChartDifficultyName = ""
-
-	Game.selectedChartOptIndex = 0
-	Game.selectedChartOptName = ""
-
-	DatabasePlayers = require("Database_Players")
-	DatabaseMixes = require("Database_Mixes")
-	DatabaseDetails = require("Database_Details")
-
-	Input.keyboardHeld = {}
-	Input.joystickHeld = {}
-    Input.upHoldTime = 0
-    Input.downHoldTime = 0
-    Input.upRepeatTimer = 0
-    Input.downRepeatTimer = 0
-
-	Input.delayBeforeRepeat = 0.2
-    Input.slowRate = 0.2
-	Input.fastThreshold = 2
-    Input.fastRate = 0.075
-
-end
-
-
-
-
 
 
 
@@ -275,7 +198,8 @@ function HandleCenter()
 	elseif Game.state == 2 then State_02SelectMix.CenterPressed()
 	elseif Game.state == 3 then State_03SelectSort.CenterPressed()
 	elseif Game.state == 4 then State_04SelectSong.CenterPressed()
-	elseif Game.state == 5 then State_05SelectChart.CenterPressed() end
+	elseif Game.state == 5 then State_05SelectChart.CenterPressed()
+	elseif Game.state == 6 then State_06ChartSelected.CenterPressed() end
 end
 
 function HandleBack()
@@ -298,6 +222,114 @@ function ToggleInfographic()
 		if Game.infographic == 0 then Game.infographic = 1 else Game.infographic = 0 end
 	end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- THIS IS THE BOOT FUNCTION.
+-- RUNS ONCE, WHEN LOADING GAME
+function love.load()
+	--engine adjustments (setting font)
+	DefaultFont = love.graphics.newFont(24)
+	ClassicConsole_48 = love.graphics.newFont("fonts/clacon2.ttf", 48)
+	ClassicConsole_24 = love.graphics.newFont("fonts/clacon2.ttf", 24)
+	love.graphics.setFont(DefaultFont)
+
+	--initializing engine global variables
+	Joysticks = love.joystick.getJoysticks() --needed for input implementation
+
+	--initializing global variables
+	--Tee = 0
+	Game.state = 1
+	Game.debug = 0
+	Game.infographic = 0
+	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
+
+	Game.selectedPlayerIndex = 1
+	Game.selectedPlayerName = "MartinTest"
+
+	Game.selectedMixIndex = 0
+	Game.selectedMixName = ""
+
+	Game.selectedSortIndex = 0
+	Game.selectedSortName = ""
+
+	Game.selectedSongIndex = 0
+	Game.selectedSongName = ""
+	Game.selectedSongArrayOfCharts = {}
+
+	Game.selectedChartIndex = 0
+	Game.selectedChartName = ""
+	Game.selectedChartDifficultyName = ""
+
+	Game.selectedChartOptIndex = 0
+	Game.selectedChartOptName = ""
+
+	DatabasePlayers = require("Database_Players")
+	DatabaseMixes = require("Database_Mixes")
+	DatabaseDetails = require("Database_Details")
+
+	Input.keyboardHeld = {}
+	Input.joystickHeld = {}
+    Input.upHoldTime = 0
+    Input.downHoldTime = 0
+    Input.upRepeatTimer = 0
+    Input.downRepeatTimer = 0
+
+	Input.delayBeforeRepeat = 0.2
+    Input.slowRate = 0.2
+	Input.fastThreshold = 2
+    Input.fastRate = 0.075
+
+	--initializing save/load feature
+	MemorycardData = LoadFromMemorycard()
+
+end
+
+
+
+
+
 
 
 

@@ -35,6 +35,7 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
 		Text = "Game.state = "..Game.state,
@@ -189,6 +190,8 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+
+	
 
 end
 
