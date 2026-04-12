@@ -281,7 +281,7 @@ function love.load()
 	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
 
 	Game.selectedPlayerIndex = 1
-	Game.selectedPlayerName = "MartinTest"
+	Game.selectedPlayerName = "1. MartinTest"
 
 	Game.selectedMixIndex = 0
 	Game.selectedMixName = ""
@@ -300,8 +300,23 @@ function love.load()
 	Game.selectedChartOptIndex = 0
 	Game.selectedChartOptName = ""
 
-	DatabasePlayers = require("Database_Players")
+	-- DATABASEPLAYERS
+	local file = love.filesystem.read("memorycard.json")
+	local data = json.decode(file)
+	DatabasePlayers = {}
+	if data and data.Players then
+		for playerName, _ in pairs(data.Players) do
+			DatabasePlayers[#DatabasePlayers + 1] = {
+				PlayerName = playerName
+			}
+		end
+	end
+	table.sort(DatabasePlayers, function(a, b)
+		return a.PlayerName < b.PlayerName
+	end)
+	-- DATABASEMIXES
 	DatabaseMixes = require("Database_Mixes")
+	-- DATABASEDETAILS
 	DatabaseDetails = require("Database_Details")
 
 	Input.keyboardHeld = {}

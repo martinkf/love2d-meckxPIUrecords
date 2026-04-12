@@ -274,32 +274,30 @@ function State_04SelectSong.Drawing()
 		drawingY = drawingY + linebreakSize
 	end
 
-	--this is a temporary display on how records might appear
-	--[[
+	--displaying top record information
 	drawingY = tempdrawingY
 	for j=1,#Game.selectedSongArrayOfCharts,1 do
-		if j == 1 then
-			meckx_print({
-				Text = "100.0% ·  FPC · 22/08/2026",
-				XPos = drawingX+(27*24),
-				YPos = drawingY,
-				ColorName = "blue",
-				FontStyle = ClassicConsole_48,
-			})
-			drawingY = drawingY + linebreakSize
-		else
-			meckx_print({
-				Text = "89.47% · +10B · 12/02/2025",
-				XPos = drawingX+(27*24),
-				YPos = drawingY,
-				ColorName = "red",
-				FontStyle = ClassicConsole_48,
-			})
-			drawingY = drawingY + linebreakSize
-		end
-	end
-	]]--
+		local playerPlaying = Game.selectedPlayerName
+		local songToInput = Game.selectedSongName
+		local chartToInput = Game.selectedSongArrayOfCharts[j]
 
+		local highScoreObject = FetchHighScore(playerPlaying, songToInput, chartToInput)
+
+		local actualText
+		local actualColor
+		if highScoreObject then actualText = highScoreObject.Stars else actualText = "" end
+		if highScoreObject then actualColor = "meckx_06Red_light" else actualColor = "white" end
+
+		meckx_print({
+			Text = actualText,
+			XPos = drawingX+(29*24),
+			YPos = drawingY,
+			ColorName = actualColor,
+			FontStyle = ClassicConsole_48,
+		})
+		drawingY = drawingY + linebreakSize
+	end
+	
 end
 
 
