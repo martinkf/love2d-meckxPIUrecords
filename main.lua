@@ -4,29 +4,7 @@
 local Extension = require("Extension")
 -- save/load feature
 local json = require("json")
-function LoadFromMemorycard()
-    local data = love.filesystem.read("memorycard.json")
-
-    if not data then
-        return { Players = {} }
-    end
-
-    local decoded = json.decode(data)
-
-    if not decoded then
-        return { Players = {} }
-    end
-
-    if not decoded.Players then
-        return { Players = {} }
-    end
-
-    return decoded
-end
-function SaveToMemorycard()
-    local encoded = json.encode(MemorycardData)
-    love.filesystem.write("memorycard.json", encoded)
-end
+local SaveLoadLibrary = require("json-saveload")
 -- debugging overlays
 local Debug_01Variables = require("Debug_01Variables")
 local Debug_02SimpleInputs = require("Debug_02SimpleInputs")
@@ -38,6 +16,7 @@ local State_03SelectSort = require("State_03SelectSort")
 local State_04SelectSong = require("State_04SelectSong")
 local State_05SelectChart = require("State_05SelectChart")
 local State_06ChartSelected = require("State_06ChartSelected")
+local State_07AddingNewRecord = require("State_07AddingNewRecord")
 -- overlay screens
 local Overlay_Infographic = require("Overlay_Infographic")
 
@@ -101,6 +80,8 @@ function love.keypressed(key)
 
 	if key == "up" then HandleUp() end
 	if key == "down" then HandleDown() end
+	if key == "left" then HandleLeft() end
+	if key == "right" then HandleRight() end
 	if key == "a" then HandleCenter() end
 	if key == "b" then HandleBack() end
 	if key == "r" then ToggleDebug() end
@@ -120,6 +101,8 @@ function love.gamepadpressed(joystick, button)
 
 	if button == "dpup" then HandleUp() end
 	if button == "dpdown" then HandleDown() end
+	if button == "dpleft" then HandleLeft() end
+	if button == "dpright" then HandleRight() end
 	if button == "a" then HandleCenter() end
 	if button == "b" then HandleBack() end
 	if button == "rightshoulder" then ToggleDebug() end
@@ -181,7 +164,8 @@ function HandleUp()
 	elseif Game.state == 3 then State_03SelectSort.UpPressed()
 	elseif Game.state == 4 then State_04SelectSong.UpPressed()
 	elseif Game.state == 5 then State_05SelectChart.UpPressed()
-	elseif Game.state == 6 then State_06ChartSelected.UpPressed() end
+	elseif Game.state == 6 then State_06ChartSelected.UpPressed()
+	elseif Game.state == 7 then State_07AddingNewRecord.UpPressed() end
 end
 
 function HandleDown()
@@ -190,7 +174,8 @@ function HandleDown()
 	elseif Game.state == 3 then State_03SelectSort.DownPressed()
 	elseif Game.state == 4 then State_04SelectSong.DownPressed()
 	elseif Game.state == 5 then State_05SelectChart.DownPressed()
-	elseif Game.state == 6 then State_06ChartSelected.DownPressed() end
+	elseif Game.state == 6 then State_06ChartSelected.DownPressed()
+	elseif Game.state == 7 then State_07AddingNewRecord.DownPressed() end
 end
 
 function HandleCenter()
@@ -199,7 +184,8 @@ function HandleCenter()
 	elseif Game.state == 3 then State_03SelectSort.CenterPressed()
 	elseif Game.state == 4 then State_04SelectSong.CenterPressed()
 	elseif Game.state == 5 then State_05SelectChart.CenterPressed()
-	elseif Game.state == 6 then State_06ChartSelected.CenterPressed() end
+	elseif Game.state == 6 then State_06ChartSelected.CenterPressed()
+	elseif Game.state == 7 then State_07AddingNewRecord.CenterPressed() end
 end
 
 function HandleBack()
@@ -207,7 +193,16 @@ function HandleBack()
 	elseif Game.state == 3 then State_03SelectSort.BackPressed()
 	elseif Game.state == 4 then State_04SelectSong.BackPressed()
 	elseif Game.state == 5 then State_05SelectChart.BackPressed()
-	elseif Game.state == 6 then State_06ChartSelected.BackPressed() end
+	elseif Game.state == 6 then State_06ChartSelected.BackPressed()
+	elseif Game.state == 7 then State_07AddingNewRecord.BackPressed() end
+end
+
+function HandleLeft()
+	if Game.state == 7 then State_07AddingNewRecord.LeftPressed() end
+end
+
+function HandleRight()
+	if Game.state == 7 then State_07AddingNewRecord.RightPressed() end
 end
 
 function ToggleDebug()
@@ -438,7 +433,8 @@ local function drawingUnderlay()
 	elseif Game.state == 3 then State_03SelectSort.Drawing()
 	elseif Game.state == 4 then State_04SelectSong.Drawing()
 	elseif Game.state == 5 then State_05SelectChart.Drawing()
-	elseif Game.state == 6 then State_06ChartSelected.Drawing() end
+	elseif Game.state == 6 then State_06ChartSelected.Drawing()
+	elseif Game.state == 7 then State_07AddingNewRecord.Drawing() end
 
 end
 
