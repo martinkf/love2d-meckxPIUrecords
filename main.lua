@@ -294,32 +294,9 @@ function love.load()
 	--initializing engine global variables
 	Joysticks = love.joystick.getJoysticks() --needed for input implementation
 
-	--initializing global variables
-	--Tee = 0
-	Game.state = 1
-	Game.debug = 0
-	Game.infographic = 0
-	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
-
-	Game.selectedPlayerIndex = 1
-	Game.selectedPlayerName = "1. MartinTest"
-
-	Game.selectedMixIndex = 0
-	Game.selectedMixName = ""
-
-	Game.selectedSortIndex = 0
-	Game.selectedSortName = ""
-
-	Game.selectedSongIndex = 0
-	Game.selectedSongName = ""
-	Game.selectedSongArrayOfCharts = {}
-
-	Game.selectedChartIndex = 0
-	Game.selectedChartName = ""
-	Game.selectedChartDifficultyName = ""
-
-	Game.selectedChartOptIndex = 0
-	Game.selectedChartOptName = ""
+	--initializing save/load feature
+	MemorycardData = LoadFromMemorycard()
+	SaveToMemorycard()
 
 	-- DATABASEPLAYERS
 	local file = love.filesystem.read("memorycard.json")
@@ -340,6 +317,35 @@ function love.load()
 	-- DATABASEDETAILS
 	DatabaseDetails = require("Database_Details")
 
+	--initializing global variables
+	--Tee = 0
+	Game.state = 1
+	Game.debug = 0
+	Game.infographic = 0
+	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
+
+	Game.selectedPlayerIndex = 1
+	Game.selectedPlayerName = DatabasePlayers[1].PlayerName
+
+	Game.selectedMixIndex = 0
+	Game.selectedMixName = ""
+
+	Game.selectedSortIndex = 0
+	Game.selectedSortName = ""
+
+	Game.selectedSongIndex = 0
+	Game.selectedSongName = ""
+	Game.selectedSongArrayOfCharts = {}
+
+	Game.selectedChartIndex = 0
+	Game.selectedChartName = ""
+	Game.selectedChartDifficultyName = ""
+
+	Game.selectedChartOptIndex = 0
+	Game.selectedChartOptName = ""
+
+
+
 	Input.keyboardHeld = {}
 	Input.joystickHeld = {}
     Input.upHoldTime = 0
@@ -352,8 +358,7 @@ function love.load()
 	Input.fastThreshold = 2
     Input.fastRate = 0.075
 
-	--initializing save/load feature
-	MemorycardData = LoadFromMemorycard()
+
 
 end
 

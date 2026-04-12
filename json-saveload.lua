@@ -2,21 +2,31 @@ local SaveLoadLibrary = {}
 
 local json = require("json")
 
+local function GetDefaultMemorycard()
+    return {
+        Players = {
+            ["1. MartinTest"] = { Scores = {} },
+            ["2. Handpad"]    = { Scores = {} },
+            ["3. PIU pad"]    = { Scores = {} },
+        }
+    }
+end
+
 function LoadFromMemorycard()
     local data = love.filesystem.read("memorycard.json")
 
     if not data then
-        return { Players = {} }
+        return GetDefaultMemorycard()
     end
 
     local decoded = json.decode(data)
 
     if not decoded then
-        return { Players = {} }
+        return GetDefaultMemorycard()
     end
 
     if not decoded.Players then
-        return { Players = {} }
+        return GetDefaultMemorycard()
     end
 
     return decoded
