@@ -281,23 +281,24 @@ function State_04SelectSong.Drawing()
 		local songToInput = Game.selectedSongName
 		local chartToInput = Game.selectedSongArrayOfCharts[j]
 
+		local actualText = "-"
+		local actualColor = "lightGray"
 		local highScoreObject = FetchHighScore(playerPlaying, songToInput, chartToInput)
-
-		local actualText
-		local actualColor
-		if highScoreObject then actualText = highScoreObject.Stars else actualText = "" end
-		if highScoreObject then actualColor = "meckx_06Red_light" else actualColor = "white" end
+		if highScoreObject then
+			actualText = highScoreObject.Accuracy .. "·" .. highScoreObject.Comment
+			actualColor = FetchHighScoreColor(playerPlaying, songToInput, chartToInput)
+		end
 
 		meckx_print({
 			Text = actualText,
-			XPos = drawingX+(29*24),
+			XPos = drawingX+(23*24),
 			YPos = drawingY,
 			ColorName = actualColor,
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize
 	end
-	
+
 end
 
 

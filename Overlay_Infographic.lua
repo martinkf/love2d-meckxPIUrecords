@@ -30,15 +30,21 @@ function Overlay_Infographic.Drawing()
         local xPos = drawingX + (col * (totalWidth / cols))
         local yPos = drawingY + (row * (totalHeight / rows))
 
-        local songTitle = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[i].SongTitle
-		local color = DatabaseDetails.FetchSongColorEnabled(songTitle)
+		local playerPlaying = Game.selectedPlayerName
+		local actualColor = "lightGray"
+        local songToInput = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[i].SongTitle
+		local chartToInput = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[i].Charts[1]
+		local highScoreObject = FetchHighScore(playerPlaying, songToInput, chartToInput)
+		if highScoreObject then
+			actualColor = FetchHighScoreColor(playerPlaying, songToInput, chartToInput)
+		end
 
         meckx_rect({
             XPos = xPos,
             YPos = yPos,
             Width = (totalWidth / cols),
             Height = (totalHeight / rows),
-            ColorName = color,
+            ColorName = actualColor,
             RectStyle = "fill",
             Transparency = 1,
         })

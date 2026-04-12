@@ -213,9 +213,30 @@ function ToggleDebug()
 end
 
 function ToggleInfographic()
-	if Game.state == 4 then
+	local isAllowedSortName = false
+
+	if Game.selectedSortName == "Normal" or
+	Game.selectedSortName == "Hard" or
+	Game.selectedSortName == "Crazy" or
+	Game.selectedSortName == "eXtra eXpert" or
+	Game.selectedSortName == "Half-Double" or
+	Game.selectedSortName == "Double" or
+	Game.selectedSortName == "Full-Double" or
+	Game.selectedSortName == "eXtra eXpert Double" or
+	Game.selectedSortName == "Freestyle" or
+	Game.selectedSortName == "Nightmare" or
+	Game.selectedSortName == "Easy Station" or
+	Game.selectedSortName == "Single Progressive" or
+	Game.selectedSortName == "Half-Double Progressive" or
+	Game.selectedSortName == "Double Progressive"
+	then
+		isAllowedSortName = true
+	end
+
+	if Game.state == 4 and isAllowedSortName then
 		if Game.infographic == 0 then Game.infographic = 1 else Game.infographic = 0 end
 	end
+
 end
 
 

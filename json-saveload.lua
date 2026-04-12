@@ -49,9 +49,31 @@ function FetchHighScore(input_playerName, input_songTitle, input_chartName)
     local completeArray = FetchArrayOfRecords(input_playerName, input_songTitle, input_chartName)
 
     if #completeArray > 0 then
-        return completeArray[1]
+        if #completeArray == 1 then return completeArray[1] -- if only 1 score for this player+song+chart
+        else
+            -- if 2 or more scores for this player+song+chart, then we actually need to think a little
+            -- pending lol
+            return completeArray[1]
+        end
     else
-        return
+        return -- if no scores at all for this player+song+chart
+    end
+
+end
+
+function FetchHighScoreColor(input_playerName, input_songTitle, input_chartName)
+
+    local highScoreObject = FetchHighScore(input_playerName, input_songTitle, input_chartName)
+
+    if highScoreObject then
+        if highScoreObject.Stars == 5 then return "meckx_02Blue_light"
+        elseif highScoreObject.Stars == 4 then return "meckx_03Green_light"
+        elseif highScoreObject.Stars == 3 then return "meckx_04Yellow_light"
+        elseif highScoreObject.Stars == 2 then return "meckx_01Pink_light"
+        else return "meckx_06Red_light"
+        end
+    else
+        return "lightGray"
     end
 
 end
