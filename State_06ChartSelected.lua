@@ -26,6 +26,7 @@ end
 
 function State_06ChartSelected.CenterPressed()
 
+	ResetState07Numbers()
 	Game.state = 7
 
 end

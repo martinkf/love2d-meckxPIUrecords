@@ -28,9 +28,9 @@ local correctBads = 0
 local correctMisses = 0
 local totalSteps = 300
 local accuracy = 1
-local accuracyAsString = "100.00"
+local displayAccuracy = "100.00%"
 local stars = 5
-local comment = "PG!"
+local comment = "PERFECT GAME!"
 local recordColor = "white"
 
 -- SELECTOR
@@ -44,6 +44,43 @@ end
 local function getIndex(row, col)
 	local cols = 4
     return row * cols + col + 1
+end
+
+-- GLOBAL FUNCTIONS
+function ResetState07Numbers()
+	perfectsM = 0
+	perfectsC = 3
+	perfectsD = 0
+	perfectsU = 0
+	greatsM = 0
+	greatsC = 0
+	greatsD = 0
+	greatsU = 0
+	goodsM = 0
+	goodsC = 0
+	goodsD = 0
+	goodsU = 0
+	badsM = 0
+	badsC = 0
+	badsD = 0
+	badsU = 0
+	missesM = 0
+	missesC = 0
+	missesD = 0
+	missesU = 0
+	correctPerfects = 300
+	correctGreats = 0
+	correctGoods = 0
+	correctBads = 0
+	correctMisses = 0
+	totalSteps = 300
+	accuracy = 1
+	displayAccuracy = "100.00%"
+	stars = 5
+	comment = "PERFECT GAME!"
+	recordColor = "white"
+
+	selectorIndex = 1
 end
 
 -- LOCAL FUNCTIONS
@@ -60,7 +97,7 @@ local function UpdateAccuracy()
 
 	UpdateCorrectSteps()
 	accuracy = ((correctPerfects/totalSteps)*1) + ((correctGreats/totalSteps)*0.8) + ((correctGoods/totalSteps)*0.5) + ((correctBads/totalSteps)*0.2)
-	accuracyAsString = string.format("%.2f", accuracy*100) .. "%"
+	displayAccuracy = string.format("%.2f", accuracy*100) .. "%"
 
 end
 
@@ -89,7 +126,7 @@ end
 local function UpdateComment()
 
 	UpdateStars()
-	if stars == 5 then comment = "PG!"
+	if stars == 5 then comment = "PERFECT GAME!"
 	elseif stars == 4 then comment = correctGreats .. " GREATS"
 	elseif stars == 3 then
 		comment = ""
@@ -129,7 +166,8 @@ local function SaveANewRecord()
         Goods = correctGoods,
         Bads = correctBads,
         Misses = correctMisses,
-        Accuracy = accuracyAsString,
+        Accuracy = accuracy,
+		DisplayAccuracy = displayAccuracy,
         Stars = stars,
         Comment = comment
     }
@@ -603,7 +641,7 @@ function State_07AddingNewRecord.Drawing()
 		FontStyle = ClassicConsole_48,
 	})
 	meckx_print({
-		Text = accuracyAsString,
+		Text = displayAccuracy,
 		XPos = drawingX+(16*24),
 		YPos = drawingY,
 		ColorName = recordColor,

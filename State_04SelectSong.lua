@@ -285,7 +285,7 @@ function State_04SelectSong.Drawing()
 		local actualColor = "lightGray"
 		local highScoreObject = FetchHighScore(playerPlaying, songToInput, chartToInput)
 		if highScoreObject then
-			actualText = highScoreObject.Accuracy .. "·" .. highScoreObject.Comment
+			actualText = highScoreObject.DisplayAccuracy .. "·" .. highScoreObject.Comment
 			actualColor = FetchHighScoreColor(playerPlaying, songToInput, chartToInput)
 		end
 

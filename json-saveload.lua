@@ -54,17 +54,32 @@ function FetchArrayOfRecords(input_playerName, input_songTitle, input_chartName)
     return results
 end
 
+function SortArrayOfRecordsByStarsThenAccuracy(input_array)
+    local output_array = {}
+
+    -- this copies the input array into a new one, to preserve input_array the way it is (for some reason)
+    for i, v in ipairs(input_array) do
+        output_array[i] = v
+    end
+
+    -- sorts! thanks lua
+    table.sort(output_array, function(a, b)
+        if a.Stars ~= b.Stars then
+            return a.Stars > b.Stars
+        end
+        return a.Accuracy > b.Accuracy
+    end)
+
+    return output_array
+end
+
 function FetchHighScore(input_playerName, input_songTitle, input_chartName)
 
     local completeArray = FetchArrayOfRecords(input_playerName, input_songTitle, input_chartName)
+    completeArray = SortArrayOfRecordsByStarsThenAccuracy(completeArray)
 
     if #completeArray > 0 then
-        if #completeArray == 1 then return completeArray[1] -- if only 1 score for this player+song+chart
-        else
-            -- if 2 or more scores for this player+song+chart, then we actually need to think a little
-            -- pending lol
-            return completeArray[1]
-        end
+        return completeArray[1]
     else
         return -- if no scores at all for this player+song+chart
     end
