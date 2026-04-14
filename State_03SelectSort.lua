@@ -102,7 +102,7 @@ function State_03SelectSort.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "black",
 	})
 	meckx_rect({
 		XPos = 0,

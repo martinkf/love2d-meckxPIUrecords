@@ -88,7 +88,7 @@ function State_05SelectChart.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "black",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -136,6 +136,41 @@ function State_05SelectChart.Drawing()
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + 2 * linebreakSize
+	end
+
+	--displaying top record information
+	drawingY = tempdrawingY
+	for j=1,#Game.selectedSongArrayOfCharts,1 do
+		local playerPlaying = Game.selectedPlayerName
+		local songToInput = Game.selectedSongName
+		local chartToInput = Game.selectedSongArrayOfCharts[j]
+
+		local actualText = "-"
+		local actualText2 = ""
+		local actualColor = "lightGray"
+		local highScoreObject = FetchHighScore(playerPlaying, songToInput, chartToInput)
+		if highScoreObject then
+			actualText = highScoreObject.DisplayAccuracy .. "·" .. highScoreObject.Comment
+			actualColor = FetchHighScoreColor(playerPlaying, songToInput, chartToInput)
+			actualText2 = highScoreObject.Date .. "·" .. highScoreObject.Time
+		end
+
+		meckx_print({
+			Text = actualText,
+			XPos = drawingX+(23*24),
+			YPos = drawingY,
+			ColorName = actualColor,
+			FontStyle = ClassicConsole_48,
+		})
+		drawingY = drawingY + linebreakSize
+		meckx_print({
+			Text = actualText2,
+			XPos = drawingX+(34*24),
+			YPos = drawingY,
+			ColorName = actualColor,
+			FontStyle = ClassicConsole_48,
+		})
+		drawingY = drawingY + linebreakSize
 	end
 
 	--this is a temporary display on how records might appear

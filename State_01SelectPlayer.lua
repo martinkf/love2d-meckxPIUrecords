@@ -90,7 +90,7 @@ function State_01SelectPlayer.Drawing()
 
 	-- backgrounds
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "black",
 	})
 	meckx_rect({
 		XPos = 0,

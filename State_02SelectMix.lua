@@ -99,7 +99,7 @@ function State_02SelectMix.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "black",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -135,7 +135,7 @@ function State_02SelectMix.Drawing()
 			Text = (Game.selectedMixIndex == i) and "> "..DatabaseMixes[i].MixName.." <" or DatabaseMixes[i].MixName,
 			XPos = (Game.selectedMixIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
-			ColorName = (Game.selectedMixIndex == i) and "white" or "darkGray",
+			ColorName = (Game.selectedMixIndex == i) and FetchMixColorEnabled(DatabaseMixes[i].MixName) or FetchMixColorDisabled(DatabaseMixes[i].MixName),
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize

@@ -226,6 +226,7 @@ function ToggleInfographic()
 	Game.selectedSortName == "Freestyle" or
 	Game.selectedSortName == "Nightmare" or
 	Game.selectedSortName == "Easy Station" or
+	Game.selectedSortName == "Training Station" or
 	Game.selectedSortName == "Single Progressive" or
 	Game.selectedSortName == "Half-Double Progressive" or
 	Game.selectedSortName == "Double Progressive"

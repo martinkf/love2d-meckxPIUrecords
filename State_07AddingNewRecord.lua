@@ -30,6 +30,7 @@ local totalSteps = 300
 local accuracy = 1
 local displayAccuracy = "100.00%"
 local stars = 5
+local displayStars = "*****"
 local comment = "PERFECT GAME!"
 local recordColor = "white"
 
@@ -77,6 +78,7 @@ function ResetState07Numbers()
 	accuracy = 1
 	displayAccuracy = "100.00%"
 	stars = 5
+	local displayStars = "*****"
 	comment = "PERFECT GAME!"
 	recordColor = "white"
 
@@ -106,18 +108,23 @@ local function UpdateStars()
 	UpdateAccuracy()
 	if accuracy == 1 then
 		stars = 5
+		displayStars = "*****"
 		recordColor = "meckx_02Blue_light"
 	elseif (correctMisses+correctBads+correctGoods) == 0 then
 		stars = 4
+		displayStars = "****"
 		recordColor = "meckx_03Green_light"
 	elseif (correctMisses+correctBads) == 0 then
 		stars = 3
+		displayStars = "***"
 		recordColor = "meckx_04Yellow_light"
 	elseif correctMisses == 0 then
 		stars = 2
+		displayStars = "**"
 		recordColor = "meckx_01Pink_light"
 	else
 		stars = 1
+		displayStars = "*"
 		recordColor = "meckx_06Red_light"
 	end
 
@@ -169,6 +176,7 @@ local function SaveANewRecord()
         Accuracy = accuracy,
 		DisplayAccuracy = displayAccuracy,
         Stars = stars,
+		DisplayStars = displayStars,
         Comment = comment
     }
 
@@ -396,7 +404,7 @@ function State_07AddingNewRecord.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "black",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -656,14 +664,8 @@ function State_07AddingNewRecord.Drawing()
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	local starsAsString
-	if stars == 5 then starsAsString = "*****"
-	elseif stars == 4 then starsAsString = "****"
-	elseif stars == 3 then starsAsString = "***"
-	elseif stars == 2 then starsAsString = "**"
-	else starsAsString = "*" end
 	meckx_print({
-		Text = starsAsString,
+		Text = displayStars,
 		XPos = drawingX+(16*24),
 		YPos = drawingY,
 		ColorName = recordColor,

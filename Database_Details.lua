@@ -2278,7 +2278,7 @@ function DatabaseDetails.FetchSongColorEnabled(input_songTitle)
         ["NX2"] = "meckx_04Yellow_light",
         ["NX Absolute"] = "meckx_05Orange_light",
     }
-    return mappingMap[song.OriginMix] or "XXXX"
+    return mappingMap[song.OriginMix] or "black"
 
 end
 
@@ -2306,7 +2306,7 @@ function DatabaseDetails.FetchSongColorDisabled(input_songTitle)
         ["NX2"] = "meckx_04Yellow_dark",
         ["NX Absolute"] = "meckx_05Orange_dark",
     }
-    return mappingMap[song.OriginMix] or "XXXX"
+    return mappingMap[song.OriginMix] or "black"
 
 end
 
