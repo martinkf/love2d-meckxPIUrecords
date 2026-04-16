@@ -2,7 +2,7 @@ local Debug_01Variables = {}
 
 function Debug_01Variables.Drawing()
 	local drawingX = 650
-	local drawingY = 100
+	local drawingY = 20
 	local linebreakSize = 26
 
 	-- background
@@ -13,7 +13,7 @@ function Debug_01Variables.Drawing()
 		Height = 720 - drawingY,
 		ColorName = "blue",
 		RectStyle = "fill",
-		Transparency = 0.25,
+		Transparency = 0.65
 	})
 
 	-- contents
@@ -102,6 +102,15 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedSortTotalSongs = "..Game.selectedSortTotalSongs,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
 	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({
@@ -165,6 +174,15 @@ function Debug_01Variables.Drawing()
 
 	meckx_print({
 		Text = "Game.selectedChartDifficultyName = "..Game.selectedChartDifficultyName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedChartRecommendedSpeed = "..Game.selectedChartRecommendedSpeed,
 		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",

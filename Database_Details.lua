@@ -2229,26 +2229,26 @@ local DatabaseDetails = {
 function DatabaseDetails.FetchSongOriginShort(input_songTitle)
 
     local song = DatabaseDetails.Songs[input_songTitle]
-    if not song then return "XXXXXX" end
+    if not song then return "XXXX" end
 
     local mappingMap = {
-        ["The 1st DF"] = "1ST-DF",
-        ["The 2nd DF"] = "2ND-DF",
-        ["O.B.G The 3rd"] = "3RDOBG",
-        ["O.B.G Season Evo."] = "OBG-SE",
-        ["Perfect"] = "PERFEC",
-        ["Extra"] = " EXTRA",
-        ["Premiere"] = "PREM-1",
-        ["Rebirth"] = "REBIRT",
-        ["Premiere 3"] = "PREM-3",
-        ["Prex 3"] = "PREX-3",
-        ["Exceed"] = "EXCE-1",
-        ["Exceed 2"] = "EXCE-2",
-        ["Zero"] = "  ZERO",
-        ["NX"] = "    NX",
-        ["Pro"] = "   PRO",
-        ["NX2"] = "   NX2",
-        ["NX Absolute"] = "NXABSO",
+        ["The 1st DF"] = " 1ST",
+        ["The 2nd DF"] = " 2ND",
+        ["O.B.G The 3rd"] = " 3RD",
+        ["O.B.G Season Evo."] = "  SE",
+        ["Perfect"] = "PERF",
+        ["Extra"] = "EXTR",
+        ["Premiere"] = "PRM1",
+        ["Rebirth"] = " REB",
+        ["Premiere 3"] = "PRM3",
+        ["Prex 3"] = "PRX3",
+        ["Exceed"] = "EXC1",
+        ["Exceed 2"] = "EXC2",
+        ["Zero"] = "ZERO",
+        ["NX"] = "  NX",
+        ["Pro"] = " PRO",
+        ["NX2"] = " NX2",
+        ["NX Absolute"] = " NXA",
     }
     return mappingMap[song.OriginMix] or "XXXX"
 
@@ -2310,7 +2310,7 @@ function DatabaseDetails.FetchSongColorDisabled(input_songTitle)
 
 end
 
-function DatabaseDetails.FetchChartDifficultyName(input_songTitle, input_chartName)
+function FetchChartDifficultyName(input_songTitle, input_chartName)
 
     local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "XXXX" end
@@ -2322,7 +2322,7 @@ function DatabaseDetails.FetchChartDifficultyName(input_songTitle, input_chartNa
 
 end
 
-function DatabaseDetails.FetchChartColorEnabled(input_songTitle, input_chartName)
+function FetchChartColorEnabled(input_songTitle, input_chartName)
 
     local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "black" end
@@ -2337,7 +2337,7 @@ function DatabaseDetails.FetchChartColorEnabled(input_songTitle, input_chartName
 
 end
 
-function DatabaseDetails.FetchChartColorDisabled(input_songTitle, input_chartName)
+function FetchChartColorDisabled(input_songTitle, input_chartName)
 
     local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "black" end

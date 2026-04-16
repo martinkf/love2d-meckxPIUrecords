@@ -13,10 +13,12 @@ local Debug_03Controller = require("Debug_03Controller")
 local State_01SelectPlayer = require("State_01SelectPlayer")
 local State_02SelectMix = require("State_02SelectMix")
 local State_03SelectSort = require("State_03SelectSort")
-local State_04SelectSong = require("State_04SelectSong")
+local State_041SelectSongMultipleCharts = require("State_041SelectSongMultipleCharts")
+local State_042SelectSongSingleChart = require("State_042SelectSongSingleChart")
 local State_05SelectChart = require("State_05SelectChart")
 local State_06ChartSelected = require("State_06ChartSelected")
 local State_07AddingNewRecord = require("State_07AddingNewRecord")
+local State_08EditingRecommendedSpeed = require("State_08EditingRecommendedSpeed")
 -- overlay screens
 local Overlay_Infographic = require("Overlay_Infographic")
 
@@ -84,8 +86,8 @@ function love.keypressed(key)
 	if key == "right" then HandleRight() end
 	if key == "a" then HandleCenter() end
 	if key == "b" then HandleBack() end
-	if key == "r" then ToggleDebug() end
-	if key == "l" then ToggleInfographic() end
+	if key == "x" then ToggleDebug() end
+	if key == "r" then ToggleInfographic() end
 
 end
 
@@ -105,8 +107,8 @@ function love.gamepadpressed(joystick, button)
 	if button == "dpright" then HandleRight() end
 	if button == "a" then HandleCenter() end
 	if button == "b" then HandleBack() end
-	if button == "rightshoulder" then ToggleDebug() end
-	if button == "leftshoulder" then ToggleInfographic() end
+	if button == "x" then ToggleDebug() end
+	if button == "rightshoulder" then ToggleInfographic() end
 
 end
 
@@ -162,47 +164,57 @@ function HandleUp()
 	if Game.state == 1 then State_01SelectPlayer.UpPressed()
 	elseif Game.state == 2 then State_02SelectMix.UpPressed()
 	elseif Game.state == 3 then State_03SelectSort.UpPressed()
-	elseif Game.state == 4 then State_04SelectSong.UpPressed()
+	elseif Game.state == 41 then State_041SelectSongMultipleCharts.UpPressed()
+	elseif Game.state == 42 then State_042SelectSongSingleChart.UpPressed()
 	elseif Game.state == 5 then State_05SelectChart.UpPressed()
 	elseif Game.state == 6 then State_06ChartSelected.UpPressed()
-	elseif Game.state == 7 then State_07AddingNewRecord.UpPressed() end
+	elseif Game.state == 7 then State_07AddingNewRecord.UpPressed()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.UpPressed() end
 end
 
 function HandleDown()
 	if Game.state == 1 then State_01SelectPlayer.DownPressed()
 	elseif Game.state == 2 then State_02SelectMix.DownPressed()
 	elseif Game.state == 3 then State_03SelectSort.DownPressed()
-	elseif Game.state == 4 then State_04SelectSong.DownPressed()
+	elseif Game.state == 41 then State_041SelectSongMultipleCharts.DownPressed()
+	elseif Game.state == 42 then State_042SelectSongSingleChart.DownPressed()
 	elseif Game.state == 5 then State_05SelectChart.DownPressed()
 	elseif Game.state == 6 then State_06ChartSelected.DownPressed()
-	elseif Game.state == 7 then State_07AddingNewRecord.DownPressed() end
+	elseif Game.state == 7 then State_07AddingNewRecord.DownPressed()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.DownPressed() end
 end
 
 function HandleCenter()
 	if Game.state == 1 then State_01SelectPlayer.CenterPressed()
 	elseif Game.state == 2 then State_02SelectMix.CenterPressed()
 	elseif Game.state == 3 then State_03SelectSort.CenterPressed()
-	elseif Game.state == 4 then State_04SelectSong.CenterPressed()
+	elseif Game.state == 41 then State_041SelectSongMultipleCharts.CenterPressed()
+	elseif Game.state == 42 then State_042SelectSongSingleChart.CenterPressed()
 	elseif Game.state == 5 then State_05SelectChart.CenterPressed()
 	elseif Game.state == 6 then State_06ChartSelected.CenterPressed()
-	elseif Game.state == 7 then State_07AddingNewRecord.CenterPressed() end
+	elseif Game.state == 7 then State_07AddingNewRecord.CenterPressed()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.CenterPressed() end
 end
 
 function HandleBack()
 	if Game.state == 2 then State_02SelectMix.BackPressed()
 	elseif Game.state == 3 then State_03SelectSort.BackPressed()
-	elseif Game.state == 4 then State_04SelectSong.BackPressed()
+	elseif Game.state == 41 then State_041SelectSongMultipleCharts.BackPressed()
+	elseif Game.state == 42 then State_042SelectSongSingleChart.BackPressed()
 	elseif Game.state == 5 then State_05SelectChart.BackPressed()
 	elseif Game.state == 6 then State_06ChartSelected.BackPressed()
-	elseif Game.state == 7 then State_07AddingNewRecord.BackPressed() end
+	elseif Game.state == 7 then State_07AddingNewRecord.BackPressed()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.BackPressed() end
 end
 
 function HandleLeft()
-	if Game.state == 7 then State_07AddingNewRecord.LeftPressed() end
+	if Game.state == 7 then State_07AddingNewRecord.LeftPressed()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.LeftPressed() end
 end
 
 function HandleRight()
-	if Game.state == 7 then State_07AddingNewRecord.RightPressed() end
+	if Game.state == 7 then State_07AddingNewRecord.RightPressed()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.RightPressed() end
 end
 
 function ToggleDebug()
@@ -213,28 +225,8 @@ function ToggleDebug()
 end
 
 function ToggleInfographic()
-	local isAllowedSortName = false
 
-	if Game.selectedSortName == "Normal" or
-	Game.selectedSortName == "Hard" or
-	Game.selectedSortName == "Crazy" or
-	Game.selectedSortName == "eXtra eXpert" or
-	Game.selectedSortName == "Half-Double" or
-	Game.selectedSortName == "Double" or
-	Game.selectedSortName == "Full-Double" or
-	Game.selectedSortName == "eXtra eXpert Double" or
-	Game.selectedSortName == "Freestyle" or
-	Game.selectedSortName == "Nightmare" or
-	Game.selectedSortName == "Easy Station" or
-	Game.selectedSortName == "Training Station" or
-	Game.selectedSortName == "Single Progressive" or
-	Game.selectedSortName == "Half-Double Progressive" or
-	Game.selectedSortName == "Double Progressive"
-	then
-		isAllowedSortName = true
-	end
-
-	if Game.state == 4 and isAllowedSortName then
+	if Game.state == 42 then
 		if Game.infographic == 0 then Game.infographic = 1 else Game.infographic = 0 end
 	end
 
@@ -333,6 +325,7 @@ function love.load()
 
 	Game.selectedSortIndex = 0
 	Game.selectedSortName = ""
+	Game.selectedSortTotalSongs = 0
 
 	Game.selectedSongIndex = 0
 	Game.selectedSongName = ""
@@ -341,6 +334,7 @@ function love.load()
 	Game.selectedChartIndex = 0
 	Game.selectedChartName = ""
 	Game.selectedChartDifficultyName = ""
+	Game.selectedChartRecommendedSpeed = ""
 
 	Game.selectedChartOptIndex = 0
 	Game.selectedChartOptName = ""
@@ -473,16 +467,18 @@ local function drawingUnderlay()
 	if Game.state == 1 then State_01SelectPlayer.Drawing()
 	elseif Game.state == 2 then State_02SelectMix.Drawing()
 	elseif Game.state == 3 then State_03SelectSort.Drawing()
-	elseif Game.state == 4 then State_04SelectSong.Drawing()
+	elseif Game.state == 41 then State_041SelectSongMultipleCharts.Drawing()
+	elseif Game.state == 42 then State_042SelectSongSingleChart.Drawing()
 	elseif Game.state == 5 then State_05SelectChart.Drawing()
 	elseif Game.state == 6 then State_06ChartSelected.Drawing()
-	elseif Game.state == 7 then State_07AddingNewRecord.Drawing() end
+	elseif Game.state == 7 then State_07AddingNewRecord.Drawing()
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.Drawing() end
 
 end
 
 local function drawingOverlay()
 
-	if ((Game.infographic == 1) and (Game.state == 4)) then Overlay_Infographic.Drawing() end
+	if ((Game.infographic == 1) and (Game.state == 42)) then Overlay_Infographic.Drawing() end
 
 	if Game.debug == 1 then Debug_01Variables.Drawing()
 	elseif Game.debug == 2 then Debug_02SimpleInputs.Drawing()

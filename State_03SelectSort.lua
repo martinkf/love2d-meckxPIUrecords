@@ -14,6 +14,7 @@ function State_03SelectSort.UpPressed()
 	end
 
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	Game.selectedSortTotalSongs = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
 
 end
 
@@ -31,6 +32,7 @@ function State_03SelectSort.DownPressed()
 	end
 
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	Game.selectedSortTotalSongs = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
 
 end
 
@@ -40,7 +42,17 @@ function State_03SelectSort.CenterPressed()
 	Game.selectedSongName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].SongTitle
 	Game.selectedSongArrayOfCharts = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts
 
-	Game.state = 4
+	if Game.selectedSortName == "Full Display Mode" then
+		-- means we will load a "multiple-chart songwheel"
+		Game.state = 41
+	else
+		-- this means we will load a "single-chart songwheel"
+		Game.selectedChartIndex = 1
+		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
+		Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
+		Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+		Game.state = 42
+	end
 
 end
 
@@ -50,6 +62,7 @@ function State_03SelectSort.BackPressed()
 
 	Game.selectedSortIndex = 0
 	Game.selectedSortName = ""
+	Game.selectedSortTotalSongs = 0
 
 end
 
@@ -102,7 +115,7 @@ function State_03SelectSort.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "black",
+		ColorName = "darkestGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -157,7 +170,7 @@ function State_03SelectSort.Drawing()
 
 	for i=1,#DatabaseMixes[Game.selectedMixIndex].SortingMethods,1 do
 		meckx_print({
-			Text = (Game.selectedSortIndex == i) and "> "..DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName.." <" or DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName,
+			Text = (Game.selectedSortIndex == i) and "> "..DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName or DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName,
 			XPos = (Game.selectedSortIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
 			ColorName = (Game.selectedSortIndex == i) and "white" or "darkGray",

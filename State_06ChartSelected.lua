@@ -4,6 +4,7 @@ local State_06ChartSelected = {}
 
 local chartOptions = {
 	"Add new record",
+	"Edit recommended speed"
 }
 
 -- INPUT HANDLING
@@ -26,17 +27,32 @@ end
 
 function State_06ChartSelected.CenterPressed()
 
-	ResetState07Numbers()
-	Game.state = 7
+	if Game.selectedChartOptIndex == 1 then
+		ResetState07()
+		Game.state = 7
+	elseif Game.selectedChartOptIndex == 2 then
+		ResetState08()
+		Game.state = 8
+	end
 
 end
 
 function State_06ChartSelected.BackPressed()
 
-	Game.state = 5
-
 	Game.selectedChartOptIndex = 0
 	Game.selectedChartOptName = ""
+
+	if Game.selectedSortName == "Full Display Mode" then
+		-- then we will return to a "multiple-chart songwheel"
+		Game.selectedChartIndex = 0
+		Game.selectedChartName = ""
+		Game.selectedChartDifficultyName = ""
+		Game.selectedChartRecommendedSpeed = ""
+		Game.state = 41
+	else
+		-- we will return to a "single-chart songwheel"
+		Game.state = 42
+	end
 
 end
 
@@ -89,7 +105,7 @@ function State_06ChartSelected.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "black",
+		ColorName = "darkestGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -107,6 +123,31 @@ function State_06ChartSelected.Drawing()
 		XPos = drawingX+24,
 		YPos = drawingY-2,
 		ColorName = "yellow",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = Game.selectedChartName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
+		FontStyle = ClassicConsole_48,
+	})
+	local outputText = "["..Game.selectedChartRecommendedSpeed.."]"
+	meckx_print({
+		Text = outputText,
+		XPos = drawingX + ((53-#outputText)*24),
+		YPos = drawingY,
+		ColorName = "lightGray",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+	meckx_print({
+		Text = Game.selectedChartDifficultyName,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize

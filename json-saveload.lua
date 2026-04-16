@@ -103,6 +103,23 @@ function FetchHighScoreColor(input_playerName, input_songTitle, input_chartName)
 
 end
 
+function FetchRecommendedSpeed(input_playerName, input_songTitle, input_chartName)
+
+    local player = MemorycardData.Players[input_playerName]
+    if not player or not player.RecommendedSpeeds then
+        return "  0x"
+    end
+
+    for _, thisSongAndChart in ipairs(player.RecommendedSpeeds) do
+        if thisSongAndChart.SongTitle == input_songTitle and thisSongAndChart.ChartName == input_chartName then
+            return thisSongAndChart.RecommendedSpeed
+        end
+    end
+
+    return "  0x"
+
+end
+
 
 
 

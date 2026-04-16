@@ -48,7 +48,7 @@ local function getIndex(row, col)
 end
 
 -- GLOBAL FUNCTIONS
-function ResetState07Numbers()
+function ResetState07()
 	perfectsM = 0
 	perfectsC = 3
 	perfectsD = 0
@@ -78,7 +78,6 @@ function ResetState07Numbers()
 	accuracy = 1
 	displayAccuracy = "100.00%"
 	stars = 5
-	local displayStars = "*****"
 	comment = "PERFECT GAME!"
 	recordColor = "white"
 
@@ -190,7 +189,9 @@ end
 
 function State_07AddingNewRecord.UpPressed()
 
-    if selectorIndex == 21 then
+	if selectorIndex == 22 then
+        selectorIndex = 21
+    elseif selectorIndex == 21 then
         selectorIndex = 17
     else
         local row, col = getRowCol(selectorIndex)
@@ -206,9 +207,11 @@ end
 
 function State_07AddingNewRecord.DownPressed()
 
-    if selectorIndex >= 17 and selectorIndex <= 20 then
+	if selectorIndex == 21 then
+        selectorIndex = 22
+    elseif selectorIndex >= 17 and selectorIndex <= 20 then
         selectorIndex = 21
-    elseif selectorIndex ~= 21 then
+    elseif selectorIndex <= 17 then
         local row, col = getRowCol(selectorIndex)
 
         if row < 4 then
@@ -221,7 +224,7 @@ function State_07AddingNewRecord.DownPressed()
 end
 
 function State_07AddingNewRecord.LeftPressed()
-    if selectorIndex ~= 21 then
+    if selectorIndex ~= 21 and selectorIndex ~= 22 then
         local row, col = getRowCol(selectorIndex)
 
         if col > 0 then
@@ -234,7 +237,7 @@ function State_07AddingNewRecord.LeftPressed()
 end
 
 function State_07AddingNewRecord.RightPressed()
-    if selectorIndex ~= 21 then
+    if selectorIndex ~= 21 and selectorIndex ~= 22 then
         local row, col = getRowCol(selectorIndex)
 
         if col < 3 then
@@ -248,16 +251,36 @@ end
 
 function State_07AddingNewRecord.CenterPressed()
 
-	if selectorIndex == 21 then
-
-		SaveANewRecord()
-
-		Game.state = 4
+	if selectorIndex == 22 then
 		Game.selectedChartOptIndex = 0
 		Game.selectedChartOptName = ""
 		Game.selectedChartIndex = 0
 		Game.selectedChartName = ""
 		Game.selectedChartDifficultyName = ""
+		Game.selectedChartRecommendedSpeed = ""
+
+		if Game.selectedSortName == "Full Display Mode" then
+			Game.state = 41
+		else
+			Game.state = 42
+		end
+
+	elseif selectorIndex == 21 then
+
+		SaveANewRecord()
+
+		Game.selectedChartOptIndex = 0
+		Game.selectedChartOptName = ""
+		Game.selectedChartIndex = 0
+		Game.selectedChartName = ""
+		Game.selectedChartDifficultyName = ""
+		Game.selectedChartRecommendedSpeed = ""
+
+		if Game.selectedSortName == "Full Display Mode" then
+			Game.state = 41
+		else
+			Game.state = 42
+		end
 
 	elseif selectorIndex == 20 then
 		if missesU == 9 then missesU = 0 else missesU = missesU + 1 end
@@ -404,7 +427,7 @@ function State_07AddingNewRecord.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "black",
+		ColorName = "darkestGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -438,7 +461,7 @@ function State_07AddingNewRecord.Drawing()
 	--drawing the selector
 	local selectorX, selectorY
 
-	if selectorIndex == 21 then selectorX = -200; selectorY = -200;
+	if selectorIndex == 21 or selectorIndex == 22 then selectorX = -200; selectorY = -200;
 	else
 		local row, col = getRowCol(selectorIndex)
 		selectorX = (drawingX + 23) + (col * 24)
@@ -693,7 +716,15 @@ function State_07AddingNewRecord.Drawing()
 		Text = (selectorIndex == 21) and "> Confirm adding new record..." or "Confirm adding new record...",
 		XPos = (selectorIndex == 21) and drawingX or drawingX+24,
 		YPos = drawingY,
-		ColorName = "white",
+		ColorName = (selectorIndex == 21) and "meckx_03Green_light" or "meckx_03Green_dark",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+	meckx_print({
+		Text = (selectorIndex == 22) and "> Cancel..." or "Cancel...",
+		XPos = (selectorIndex == 22) and drawingX or drawingX+24,
+		YPos = drawingY,
+		ColorName = (selectorIndex == 22) and "meckx_06Red_light" or "meckx_06Red_dark",
 		FontStyle = ClassicConsole_48,
 	})
 end
