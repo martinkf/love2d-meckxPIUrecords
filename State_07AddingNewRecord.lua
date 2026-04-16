@@ -427,7 +427,7 @@ function State_07AddingNewRecord.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,

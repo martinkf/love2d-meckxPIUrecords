@@ -11065,6 +11065,28 @@ function FetchMixColorDisabled(input_mixName)
 
 end
 
+function FetchPlayerColorEnabled(input_playerName)
+
+    local mappingMap = {
+        ["1. MartinTest"] = "meckx_06Red_light",
+        ["2. Hand PIU"] = "meckx_01Pink_light",
+        ["3. PIU pad"] = "meckx_02Blue_light",
+    }
+    return mappingMap[input_playerName] or "white"
+
+end
+
+function FetchPlayerColorDisabled(input_playerName)
+
+    local mappingMap = {
+        ["1. MartinTest"] = "meckx_06Red_dark",
+        ["2. Hand PIU"] = "meckx_01Pink_dark",
+        ["3. PIU pad"] = "meckx_02Blue_dark",
+    }
+    return mappingMap[input_playerName] or "darkGray"
+
+end
+
 
 
 

@@ -6,7 +6,7 @@ local function GetDefaultMemorycard()
     return {
         Players = {
             ["1. MartinTest"] = { Scores = {} },
-            ["2. Handpad"]    = { Scores = {} },
+            ["2. Hand PIU"]    = { Scores = {} },
             ["3. PIU pad"]    = { Scores = {} },
         }
     }

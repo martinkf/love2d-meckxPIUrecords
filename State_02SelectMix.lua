@@ -100,7 +100,7 @@ function State_02SelectMix.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,

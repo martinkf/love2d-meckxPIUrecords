@@ -91,7 +91,7 @@ function State_05SelectChart.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,

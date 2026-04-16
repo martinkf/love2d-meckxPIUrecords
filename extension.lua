@@ -8,6 +8,7 @@ local colors = {
     gray = {0.5, 0.5, 0.5},
     darkGray = {0.4, 0.4, 0.4},
     darkestGray = {0.2, 0.2, 0.2},
+    backgroundGray = {0.1, 0.1, 0.1},
     black = {0, 0, 0},
 
     blue = {0, 0, 1},

@@ -137,7 +137,7 @@ function State_042SelectSongSingleChart.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -181,12 +181,18 @@ function State_042SelectSongSingleChart.Drawing()
 			local indexFormatted = string.format("%03d", index)
 			local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
 
-			local fullSongTitle = "["..originFormatted.."] "..indexFormatted..". "..songTitle
-			local dividerInteger = 31
-			local outputText = string.sub(fullSongTitle, 1, dividerInteger)
+			local leftSideText
+			if Game.songListModeL == 0 then
+				leftSideText = songTitle
+			elseif Game.songListModeL == 1 then
+				leftSideText = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+			end
+			
+			local dividerInteger = 36
+			local outputLeftSideText = string.sub(leftSideText, 1, dividerInteger)
 
 			meckx_print({
-				Text = (Game.selectedSongIndex == index) and "> "..outputText or outputText,
+				Text = (Game.selectedSongIndex == index) and "> "..outputLeftSideText or outputLeftSideText,
 				XPos = (Game.selectedSongIndex == index) and drawingX or drawingX+24,
 				YPos = drawingY,
 				ColorName = (Game.selectedSongIndex == index) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
@@ -199,18 +205,18 @@ function State_042SelectSongSingleChart.Drawing()
 			local recommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, songTitle, chartName)
 			local highScoreObject = FetchHighScore(Game.selectedPlayerName, songTitle, chartName)
 
-			local actualText
+			local outputRightSideText
 			local actualColor
 			if highScoreObject then
-				actualText = chartDifficulty .. " [" .. recommendedSpeed .. "] " .. highScoreObject.DisplayAccuracy
+				outputRightSideText = "[" .. chartDifficulty .. "] " .. highScoreObject.DisplayAccuracy
 				actualColor = FetchHighScoreColor(Game.selectedPlayerName, songTitle, chartName)
 			else
-				actualText = chartDifficulty .. " [" .. recommendedSpeed .. "] " .. "-"
+				outputRightSideText = "[" .. chartDifficulty .. "] " .. "-"
 				actualColor = "lightGray"
 			end
 			
 			meckx_print({
-				Text = actualText,
+				Text = outputRightSideText,
 				XPos = drawingX+((dividerInteger+3)*24),
 				YPos = drawingY,
 				ColorName = actualColor,
@@ -226,12 +232,18 @@ function State_042SelectSongSingleChart.Drawing()
 			local indexFormatted = string.format("%03d", index)
 			local originFormatted = DatabaseDetails.FetchSongOriginShort(songTitle)
 
-			local fullSongTitle = "["..originFormatted.."] "..indexFormatted..". "..songTitle
-			local dividerInteger = 31
-			local outputText = string.sub(fullSongTitle, 1, dividerInteger)
+			local leftSideText
+			if Game.songListModeL == 0 then
+				leftSideText = songTitle
+			elseif Game.songListModeL == 1 then
+				leftSideText = "["..originFormatted.."] "..indexFormatted..". "..songTitle
+			end
+			
+			local dividerInteger = 36
+			local outputLeftSideText = string.sub(leftSideText, 1, dividerInteger)
 
 			meckx_print({
-				Text = (offset == 0) and "> "..outputText or outputText,
+				Text = (offset == 0) and "> "..outputLeftSideText or outputLeftSideText,
 				XPos = (offset == 0) and drawingX or drawingX+24,
 				YPos = drawingY,
 				ColorName = (offset == 0) and DatabaseDetails.FetchSongColorEnabled(songTitle) or DatabaseDetails.FetchSongColorDisabled(songTitle),
@@ -244,18 +256,18 @@ function State_042SelectSongSingleChart.Drawing()
 			local recommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, songTitle, chartName)
 			local highScoreObject = FetchHighScore(Game.selectedPlayerName, songTitle, chartName)
 
-			local actualText
+			local outputRightSideText
 			local actualColor
 			if highScoreObject then
-				actualText = chartDifficulty .. " [" .. recommendedSpeed .. "] " .. highScoreObject.DisplayAccuracy
+				outputRightSideText = "[" .. chartDifficulty .. "] " .. highScoreObject.DisplayAccuracy
 				actualColor = FetchHighScoreColor(Game.selectedPlayerName, songTitle, chartName)
 			else
-				actualText = chartDifficulty .. " [" .. recommendedSpeed .. "] " .. "-"
+				outputRightSideText = "[" .. chartDifficulty .. "] " .. "-"
 				actualColor = "lightGray"
 			end
 			
 			meckx_print({
-				Text = actualText,
+				Text = outputRightSideText,
 				XPos = drawingX+((dividerInteger+3)*24),
 				YPos = drawingY,
 				ColorName = actualColor,

@@ -115,7 +115,7 @@ function State_03SelectSort.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -137,7 +137,30 @@ function State_03SelectSort.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
+	meckx_print({
+		Text = "------------ 03. SELECT A SORTING ORDER -------------",
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
+
+	for i=1,#DatabaseMixes[Game.selectedMixIndex].SortingMethods,1 do
+		meckx_print({
+			Text = (Game.selectedSortIndex == i) and "> "..DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName or DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName,
+			XPos = (Game.selectedSortIndex == i) and drawingX or drawingX+24,
+			YPos = drawingY,
+			ColorName = (Game.selectedSortIndex == i) and "white" or "darkGray",
+			FontStyle = ClassicConsole_48,
+		})
+		drawingY = drawingY + linebreakSize
+	end
+
 	if #DatabaseMixes[Game.selectedMixIndex].CheatCodes > 0 then
+
+		drawingY = 670 - (#DatabaseMixes[Game.selectedMixIndex].CheatCodes * 42)
+
 		meckx_print({
 			Text = "-------------------- CHEAT CODES --------------------",
 			XPos = drawingX,
@@ -157,26 +180,7 @@ function State_03SelectSort.Drawing()
 			})
 			drawingY = drawingY + linebreakSize
 		end
-	end
 
-	meckx_print({
-		Text = "------------ 03. SELECT A SORTING ORDER -------------",
-		XPos = drawingX,
-		YPos = drawingY,
-		ColorName = "white",
-		FontStyle = ClassicConsole_48,
-	})
-	drawingY = drawingY + linebreakSize
-
-	for i=1,#DatabaseMixes[Game.selectedMixIndex].SortingMethods,1 do
-		meckx_print({
-			Text = (Game.selectedSortIndex == i) and "> "..DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName or DatabaseMixes[Game.selectedMixIndex].SortingMethods[i].SortName,
-			XPos = (Game.selectedSortIndex == i) and drawingX or drawingX+24,
-			YPos = drawingY,
-			ColorName = (Game.selectedSortIndex == i) and "white" or "darkGray",
-			FontStyle = ClassicConsole_48,
-		})
-		drawingY = drawingY + linebreakSize
 	end
 
 end

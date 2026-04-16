@@ -7,6 +7,11 @@ local chartOptions = {
 	"Edit recommended speed"
 }
 
+-- GLOBAL FUNCTIONS
+function ResetState06()
+	--
+end
+
 -- INPUT HANDLING
 
 function State_06ChartSelected.UpPressed()
@@ -105,7 +110,7 @@ function State_06ChartSelected.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -118,36 +123,32 @@ function State_06ChartSelected.Drawing()
 	})
 
 	-- contents
+	local text = Game.selectedSongName
+	local textSize = #text
 	meckx_print({
-		Text = "../"..Game.selectedSongName.."/"..Game.selectedChartName,
-		XPos = drawingX+24,
+		Text = Game.selectedSongName,
+		XPos = drawingX+(((53-#text)/2)*24),
 		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
 
-	meckx_print({
-		Text = Game.selectedChartName,
-		XPos = drawingX,
-		YPos = drawingY,
+	meckx_rect({
+		XPos = 0,
+		YPos = 44,
+		Width = 1280,
+		Height = 40,
 		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
-		FontStyle = ClassicConsole_48,
+		RectStyle = "fill",
+		Transparency = 1,
 	})
-	local outputText = "["..Game.selectedChartRecommendedSpeed.."]"
+	local text2 = Game.selectedChartDifficultyName .. " - " .. Game.selectedChartName .. " - [" .. Game.selectedChartRecommendedSpeed .. "]"
 	meckx_print({
-		Text = outputText,
-		XPos = drawingX + ((53-#outputText)*24),
+		Text = text2,
+		XPos = drawingX+(((53-#text2)/2)*24),
 		YPos = drawingY,
-		ColorName = "lightGray",
-		FontStyle = ClassicConsole_48,
-	})
-	drawingY = drawingY + linebreakSize
-	meckx_print({
-		Text = Game.selectedChartDifficultyName,
-		XPos = drawingX,
-		YPos = drawingY,
-		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
+		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
