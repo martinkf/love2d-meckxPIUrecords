@@ -3,7 +3,7 @@ local Debug_03Controller = {}
 function Debug_03Controller.Drawing()
 	local j = Joysticks[1]
 	local drawingX = 660
-	local drawingY = 100
+	local drawingY = 20
 	local linebreakSize = 26
 
 	-- background
@@ -14,7 +14,7 @@ function Debug_03Controller.Drawing()
 		Height = 720 - drawingY,
 		ColorName = "red",
 		RectStyle = "fill",
-		Transparency = 0.25,
+		Transparency = 0.65,
 	})
 
 	if #Joysticks == 0 then

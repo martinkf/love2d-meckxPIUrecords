@@ -117,6 +117,11 @@ function meckx_rect(args)
 	love.graphics.setColor(1, 1, 1, 1)
 end
 
+function DebugWrite(text)
+    local datetime = os.date("%d/%m/%Y")
+    love.filesystem.append("debug.txt", datetime .. " : " .. text .. "\n")
+end
+
 
 
 

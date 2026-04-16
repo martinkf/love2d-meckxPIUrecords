@@ -36,6 +36,7 @@ function State_02SelectMix.CenterPressed()
 
 	Game.selectedSortIndex = 1
 	Game.selectedSortName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].SortName
+	Game.selectedSortTotalSongs = #DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs
 
 	Game.state = 3
 
@@ -132,10 +133,10 @@ function State_02SelectMix.Drawing()
 
 	for i=1,#DatabaseMixes,1 do
 		meckx_print({
-			Text = (Game.selectedMixIndex == i) and "> "..DatabaseMixes[i].MixName.." <" or DatabaseMixes[i].MixName,
+			Text = (Game.selectedMixIndex == i) and "> "..DatabaseMixes[i].MixName or DatabaseMixes[i].MixName,
 			XPos = (Game.selectedMixIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
-			ColorName = (Game.selectedMixIndex == i) and "white" or "darkGray",
+			ColorName = (Game.selectedMixIndex == i) and FetchMixColorEnabled(DatabaseMixes[i].MixName) or FetchMixColorDisabled(DatabaseMixes[i].MixName),
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize
