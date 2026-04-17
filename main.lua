@@ -87,6 +87,7 @@ function love.keypressed(key)
 	if key == "a" then HandleCenter() end
 	if key == "b" then HandleBack() end
 	if key == "x" then ToggleDebug() end
+	if key == "l" then ToggleSongListModeL() end
 	if key == "r" then ToggleInfographic() end
 
 end
@@ -108,6 +109,7 @@ function love.gamepadpressed(joystick, button)
 	if button == "a" then HandleCenter() end
 	if button == "b" then HandleBack() end
 	if button == "x" then ToggleDebug() end
+	if button == "leftshoulder" then ToggleSongListModeL() end
 	if button == "rightshoulder" then ToggleInfographic() end
 
 end
@@ -232,6 +234,14 @@ function ToggleInfographic()
 
 end
 
+function ToggleSongListModeL()
+
+	if Game.state == 41 or Game.state == 42 then
+		if Game.songListModeL == 0 then Game.songListModeL = 1 else Game.songListModeL = 0 end
+	end
+
+end
+
 
 
 
@@ -315,6 +325,8 @@ function love.load()
 	Game.state = 1
 	Game.debug = 0
 	Game.infographic = 0
+	Game.songListModeL = 0
+
 	Game.baseDrawingY = (love._os == "Horizon") and 6 or -3
 
 	Game.selectedPlayerIndex = 1

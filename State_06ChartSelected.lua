@@ -7,6 +7,11 @@ local chartOptions = {
 	"Edit recommended speed"
 }
 
+-- GLOBAL FUNCTIONS
+function ResetState06()
+	--
+end
+
 -- INPUT HANDLING
 
 function State_06ChartSelected.UpPressed()
@@ -105,7 +110,7 @@ function State_06ChartSelected.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -118,36 +123,32 @@ function State_06ChartSelected.Drawing()
 	})
 
 	-- contents
+	local text = Game.selectedSongName
+	local textSize = #text
 	meckx_print({
-		Text = "../"..Game.selectedSongName.."/"..Game.selectedChartName,
-		XPos = drawingX+24,
+		Text = Game.selectedSongName,
+		XPos = drawingX+(((53-#text)/2)*24),
 		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
 
-	meckx_print({
-		Text = Game.selectedChartName,
-		XPos = drawingX,
-		YPos = drawingY,
+	meckx_rect({
+		XPos = 0,
+		YPos = 44,
+		Width = 1280,
+		Height = 40,
 		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
-		FontStyle = ClassicConsole_48,
+		RectStyle = "fill",
+		Transparency = 1,
 	})
-	local outputText = "["..Game.selectedChartRecommendedSpeed.."]"
+	local text2 = Game.selectedChartDifficultyName .. " - " .. Game.selectedChartName .. " - [" .. Game.selectedChartRecommendedSpeed .. "]"
 	meckx_print({
-		Text = outputText,
-		XPos = drawingX + ((53-#outputText)*24),
+		Text = text2,
+		XPos = drawingX+(((53-#text2)/2)*24),
 		YPos = drawingY,
-		ColorName = "lightGray",
-		FontStyle = ClassicConsole_48,
-	})
-	drawingY = drawingY + linebreakSize
-	meckx_print({
-		Text = Game.selectedChartDifficultyName,
-		XPos = drawingX,
-		YPos = drawingY,
-		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
+		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
 	drawingY = drawingY + linebreakSize
@@ -181,6 +182,97 @@ function State_06ChartSelected.Drawing()
 	})
 	drawingY = drawingY + linebreakSize
 
+	local arrayOfRecords = FetchArrayOfRecords(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+
+	for j=1,#arrayOfRecords do
+		meckx_print({
+			Text = "#"..j,
+			XPos = drawingX+(1*24),
+			YPos = drawingY,
+			ColorName = "white",
+			FontStyle = ClassicConsole_48,
+		})
+
+		local actualText = "-"
+		local actualText2 = ""
+		local actualTextP = ""
+		local actualTextG = ""
+		local actualTextD = ""
+		local actualTextB = ""
+		local actualTextM = ""
+		local actualColor = "lightGray"
+		local scoreObject = arrayOfRecords[j]
+		if scoreObject then
+			actualText = scoreObject.DisplayStars .. " " .. scoreObject.DisplayAccuracy
+			actualText2 = scoreObject.Date .. " " .. scoreObject.Time
+			actualTextP = string.format("%04d", scoreObject.Perfects)
+			actualTextG = string.format("%04d", scoreObject.Greats)
+			actualTextD = string.format("%04d", scoreObject.Goods)
+			actualTextB = string.format("%04d", scoreObject.Bads)
+			actualTextM = string.format("%04d", scoreObject.Misses)
+			actualColor = FetchScoreColorOfThisScore(arrayOfRecords[j])
+		end
+		local textPos = 52-#actualText
+
+		meckx_print({
+			Text = actualText,
+			XPos = drawingX+(textPos*24),
+			YPos = drawingY,
+			ColorName = actualColor,
+			FontStyle = ClassicConsole_48,
+		})
+		drawingY = drawingY + linebreakSize
+
+		meckx_print({
+			Text = actualText2,
+			XPos = drawingX+(6*24),
+			YPos = drawingY,
+			ColorName = actualColor,
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(26*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextP,
+			XPos = drawingX+(27*24),
+			YPos = drawingY,
+			ColorName = "meckx_02Blue_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(31*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextG,
+			XPos = drawingX+(32*24),
+			YPos = drawingY,
+			ColorName = "meckx_03Green_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(36*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextD,
+			XPos = drawingX+(37*24),
+			YPos = drawingY,
+			ColorName = "meckx_04Yellow_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(41*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextB,
+			XPos = drawingX+(42*24),
+			YPos = drawingY,
+			ColorName = "meckx_01Pink_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(46*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextM,
+			XPos = drawingX+(47*24),
+			YPos = drawingY,
+			ColorName = "meckx_06Red_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(51*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		drawingY = drawingY + linebreakSize
+	end
 end
 
 

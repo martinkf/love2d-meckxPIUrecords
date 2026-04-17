@@ -91,7 +91,7 @@ function State_05SelectChart.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -156,35 +156,84 @@ function State_05SelectChart.Drawing()
 	--displaying top record information
 	drawingY = tempdrawingY
 	for j=1,#Game.selectedSongArrayOfCharts,1 do
-		local playerPlaying = Game.selectedPlayerName
-		local songToInput = Game.selectedSongName
-		local chartToInput = Game.selectedSongArrayOfCharts[j]
-
 		local actualText = "-"
 		local actualText2 = ""
+		local actualTextP = ""
+		local actualTextG = ""
+		local actualTextD = ""
+		local actualTextB = ""
+		local actualTextM = ""
 		local actualColor = "lightGray"
-		local highScoreObject = FetchHighScore(playerPlaying, songToInput, chartToInput)
+		local highScoreObject = FetchHighScore(Game.selectedPlayerName, Game.selectedSongName, Game.selectedSongArrayOfCharts[j])
 		if highScoreObject then
-			actualText = highScoreObject.DisplayAccuracy .. "·" .. highScoreObject.Comment
-			actualColor = FetchHighScoreColor(playerPlaying, songToInput, chartToInput)
-			actualText2 = highScoreObject.Date .. "·" .. highScoreObject.Time
+			actualText = highScoreObject.DisplayStars .. " " .. highScoreObject.DisplayAccuracy
+			actualText2 = highScoreObject.Date .. " " .. highScoreObject.Time
+			actualTextP = string.format("%04d", highScoreObject.Perfects)
+			actualTextG = string.format("%04d", highScoreObject.Greats)
+			actualTextD = string.format("%04d", highScoreObject.Goods)
+			actualTextB = string.format("%04d", highScoreObject.Bads)
+			actualTextM = string.format("%04d", highScoreObject.Misses)
+			actualColor = FetchHighScoreColor(Game.selectedPlayerName, Game.selectedSongName, Game.selectedSongArrayOfCharts[j])
 		end
+		local textPos = 52-#actualText
 
 		meckx_print({
 			Text = actualText,
-			XPos = drawingX+(23*24),
+			XPos = drawingX+(textPos*24),
 			YPos = drawingY,
 			ColorName = actualColor,
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize
+
 		meckx_print({
 			Text = actualText2,
-			XPos = drawingX+(34*24),
+			XPos = drawingX+(6*24),
 			YPos = drawingY,
 			ColorName = actualColor,
 			FontStyle = ClassicConsole_48,
 		})
+		meckx_print({ Text = "|", XPos = drawingX+(26*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextP,
+			XPos = drawingX+(27*24),
+			YPos = drawingY,
+			ColorName = "meckx_02Blue_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(31*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextG,
+			XPos = drawingX+(32*24),
+			YPos = drawingY,
+			ColorName = "meckx_03Green_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(36*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextD,
+			XPos = drawingX+(37*24),
+			YPos = drawingY,
+			ColorName = "meckx_04Yellow_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(41*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextB,
+			XPos = drawingX+(42*24),
+			YPos = drawingY,
+			ColorName = "meckx_01Pink_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(46*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
+		meckx_print({
+			Text = actualTextM,
+			XPos = drawingX+(47*24),
+			YPos = drawingY,
+			ColorName = "meckx_06Red_light",
+			FontStyle = ClassicConsole_48,
+		})
+		meckx_print({ Text = "|", XPos = drawingX+(51*24), YPos = drawingY, ColorName = "white", FontStyle = ClassicConsole_48, })
 		drawingY = drawingY + linebreakSize
 	end
 

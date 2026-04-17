@@ -90,7 +90,7 @@ function State_01SelectPlayer.Drawing()
 
 	-- backgrounds
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
@@ -126,7 +126,7 @@ function State_01SelectPlayer.Drawing()
 			Text = (Game.selectedPlayerIndex == i) and "> "..DatabasePlayers[i].PlayerName or DatabasePlayers[i].PlayerName,
 			XPos = (Game.selectedPlayerIndex == i) and drawingX or drawingX+24,
 			YPos = drawingY,
-			ColorName = (Game.selectedPlayerIndex == i) and "white" or "darkGray",
+			ColorName = (Game.selectedPlayerIndex == i) and FetchPlayerColorEnabled(DatabasePlayers[i].PlayerName) or FetchPlayerColorDisabled(DatabasePlayers[i].PlayerName),
 			FontStyle = ClassicConsole_48,
 		})
 		drawingY = drawingY + linebreakSize

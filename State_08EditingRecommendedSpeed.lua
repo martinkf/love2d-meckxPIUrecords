@@ -40,6 +40,7 @@ local function SaveEditRecommendedSpeed()
         table.insert(speeds, newEntry)
     end
 
+	Game.selectedChartRecommendedSpeed = editingRecommendedSpeed
     SaveToMemorycard()
 
 end
@@ -161,7 +162,7 @@ function State_08EditingRecommendedSpeed.Drawing()
 
 	-- background
 	meckx_clearScreen({
-		ColorName = "darkestGray",
+		ColorName = "backgroundGray",
 	})
 	meckx_rect({
 		XPos = 0,
