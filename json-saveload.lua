@@ -51,6 +51,8 @@ function FetchArrayOfRecords(input_playerName, input_songTitle, input_chartName)
         end
     end
 
+    results = SortArrayOfRecordsByStarsThenAccuracy(results)
+
     return results
 end
 
@@ -86,20 +88,20 @@ function FetchHighScore(input_playerName, input_songTitle, input_chartName)
 
 end
 
+function FetchScoreColorOfThisScore(input_scoreObject)
+    if input_scoreObject.Stars == 5 then return "meckx_02Blue_light"
+    elseif input_scoreObject.Stars == 4 then return "meckx_03Green_light"
+    elseif input_scoreObject.Stars == 3 then return "meckx_04Yellow_light"
+    elseif input_scoreObject.Stars == 2 then return "meckx_01Pink_light"
+    else return "meckx_06Red_light"
+    end
+end
+
 function FetchHighScoreColor(input_playerName, input_songTitle, input_chartName)
 
     local highScoreObject = FetchHighScore(input_playerName, input_songTitle, input_chartName)
 
-    if highScoreObject then
-        if highScoreObject.Stars == 5 then return "meckx_02Blue_light"
-        elseif highScoreObject.Stars == 4 then return "meckx_03Green_light"
-        elseif highScoreObject.Stars == 3 then return "meckx_04Yellow_light"
-        elseif highScoreObject.Stars == 2 then return "meckx_01Pink_light"
-        else return "meckx_06Red_light"
-        end
-    else
-        return "lightGray"
-    end
+    return FetchScoreColorOfThisScore(highScoreObject)
 
 end
 

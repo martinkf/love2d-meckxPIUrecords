@@ -268,7 +268,7 @@ function State_042SelectSongSingleChart.Drawing()
 			
 			meckx_print({
 				Text = outputRightSideText,
-				XPos = drawingX+((dividerInteger+3)*24),
+				XPos = drawingX+((dividerInteger+2)*24),
 				YPos = drawingY,
 				ColorName = actualColor,
 				FontStyle = ClassicConsole_48,
