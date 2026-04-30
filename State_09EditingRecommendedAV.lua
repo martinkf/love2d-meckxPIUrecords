@@ -16,28 +16,33 @@ local function SaveEditRecommendedAV()
     MemorycardData = MemorycardData or {}
     MemorycardData.Players = MemorycardData.Players or {}
     MemorycardData.Players[Game.selectedPlayerName] = MemorycardData.Players[Game.selectedPlayerName] or {}
-    MemorycardData.Players[Game.selectedPlayerName].RecommendedAVs = MemorycardData.Players[Game.selectedPlayerName].RecommendedAVs or {}
+    MemorycardData.Players[Game.selectedPlayerName].RecommendedSpeeds = MemorycardData.Players[Game.selectedPlayerName].RecommendedSpeeds or {}
 
-    local avs = MemorycardData.Players[Game.selectedPlayerName].RecommendedAVs
-
-    local newEntry = {
-        SongTitle = Game.selectedSongName,
-        ChartName = Game.selectedChartName,
-        RecommendedAV = editingRecommendedAV
-    }
+    local speeds = MemorycardData.Players[Game.selectedPlayerName].RecommendedSpeeds    
 
     local found = false
-
-    for i, entry in ipairs(avs) do
-        if entry.SongTitle == newEntry.SongTitle and entry.ChartName == newEntry.ChartName then
-            avs[i] = newEntry
+    for i, entry in ipairs(speeds) do
+        if entry.SongTitle == Game.selectedSongName and entry.ChartName == Game.selectedChartName then
+			local editedEntry = {
+				SongTitle = entry.SongTitle,
+				ChartName = entry.ChartName,
+				RecommendedSpeed = entry.RecommendedSpeed,
+				RecommendedAV = editingRecommendedAV
+			}
+            speeds[i] = editedEntry
             found = true
             break
         end
     end
 
     if not found then
-        table.insert(avs, newEntry)
+		local newEntry = {
+			SongTitle = Game.selectedSongName,
+			ChartName = Game.selectedChartName,
+			RecommendedSpeed = "????",
+			RecommendedAV = editingRecommendedAV
+		}
+        table.insert(speeds, newEntry)
     end
 
 	Game.selectedChartRecommendedAV = editingRecommendedAV
@@ -63,38 +68,42 @@ end
 
 function State_09EditingRecommendedAV.LeftPressed()
 
-	if selectorIndex == 1 then
-		if editingRecommendedAV == "500AV" then editingRecommendedAV = "480AV"
-		elseif editingRecommendedAV == "480AV" then editingRecommendedAV = "460AV"
-		elseif editingRecommendedAV == "460AV" then editingRecommendedAV = "440AV"
-		elseif editingRecommendedAV == "440AV" then editingRecommendedAV = "420AV"
-		elseif editingRecommendedAV == "420AV" then editingRecommendedAV = "400AV"
-		elseif editingRecommendedAV == "400AV" then editingRecommendedAV = "380AV"
-		elseif editingRecommendedAV == "380AV" then editingRecommendedAV = "360AV"
-		elseif editingRecommendedAV == "360AV" then editingRecommendedAV = "340AV"
-		elseif editingRecommendedAV == "340AV" then editingRecommendedAV = "320AV"
-		elseif editingRecommendedAV == "320AV" then editingRecommendedAV = "300AV"
-		end
-	end
+    if selectorIndex == 1 then
+        local value = tonumber(editingRecommendedAV:match("%d+"))
+
+        -- if it's "?????" or invalid, initialize
+        if not value then return end
+
+        -- special case: 999 → 980
+        if value == 999 then
+            value = 980
+        else
+            value = value - 20
+            if value < 300 then value = 300 end
+        end
+
+        editingRecommendedAV = tostring(value) .. "AV"
+    end
 
 end
 
 function State_09EditingRecommendedAV.RightPressed()
 
-	if selectorIndex == 1 then
-		if editingRecommendedAV == "?????" then editingRecommendedAV = "300AV"
-		elseif editingRecommendedAV == "300AV" then editingRecommendedAV = "320AV"
-		elseif editingRecommendedAV == "320AV" then editingRecommendedAV = "340AV"
-		elseif editingRecommendedAV == "340AV" then editingRecommendedAV = "360AV"
-		elseif editingRecommendedAV == "360AV" then editingRecommendedAV = "380AV"
-		elseif editingRecommendedAV == "380AV" then editingRecommendedAV = "400AV"
-		elseif editingRecommendedAV == "400AV" then editingRecommendedAV = "420AV"
-		elseif editingRecommendedAV == "420AV" then editingRecommendedAV = "440AV"
-		elseif editingRecommendedAV == "440AV" then editingRecommendedAV = "460AV"
-		elseif editingRecommendedAV == "460AV" then editingRecommendedAV = "480AV"
-		elseif editingRecommendedAV == "480AV" then editingRecommendedAV = "500AV"
-		end
-	end
+    if selectorIndex == 1 then
+        local value = tonumber(editingRecommendedAV:match("%d+"))
+
+        -- if it's "?????" or invalid, initialize
+        if not value then value = 280 end
+
+        if value >= 980 then
+            value = 999
+        else
+            value = value + 20
+            if value > 980 then value = 980 end
+        end
+
+        editingRecommendedAV = tostring(value) .. "AV"
+    end
 
 end
 

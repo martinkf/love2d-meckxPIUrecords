@@ -126,11 +126,11 @@ end
 function FetchRecommendedAV(input_playerName, input_songTitle, input_chartName)
 
     local player = MemorycardData.Players[input_playerName]
-    if not player or not player.RecommendedAVs then
+    if not player or not player.RecommendedSpeeds then
         return "?????"
     end
 
-    for _, thisSongAndChart in ipairs(player.RecommendedAVs) do
+    for _, thisSongAndChart in ipairs(player.RecommendedSpeeds) do
         if thisSongAndChart.SongTitle == input_songTitle and thisSongAndChart.ChartName == input_chartName then
             return thisSongAndChart.RecommendedAV
         end

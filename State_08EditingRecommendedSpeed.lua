@@ -20,23 +20,28 @@ local function SaveEditRecommendedSpeed()
 
     local speeds = MemorycardData.Players[Game.selectedPlayerName].RecommendedSpeeds
 
-    local newEntry = {
-        SongTitle = Game.selectedSongName,
-        ChartName = Game.selectedChartName,
-        RecommendedSpeed = editingRecommendedSpeed
-    }
-
     local found = false
-
     for i, entry in ipairs(speeds) do
-        if entry.SongTitle == newEntry.SongTitle and entry.ChartName == newEntry.ChartName then
-            speeds[i] = newEntry
+        if entry.SongTitle == Game.selectedSongName and entry.ChartName == Game.selectedChartName then
+			local editedEntry = {
+				SongTitle = entry.SongTitle,
+				ChartName = entry.ChartName,
+				RecommendedSpeed = editingRecommendedSpeed,
+				RecommendedAV = "?????"
+			}
+            speeds[i] = editedEntry
             found = true
             break
         end
     end
 
     if not found then
+		local newEntry = {
+			SongTitle = Game.selectedSongName,
+			ChartName = Game.selectedChartName,
+			RecommendedSpeed = editingRecommendedSpeed,
+			RecommendedAV = "?????"
+		}
         table.insert(speeds, newEntry)
     end
 
