@@ -2223,6 +2223,21 @@ local DatabaseDetails = {
         ["NX-FREESTYLE"] = { DifficultyName = " D08" },
         ["NX-NIGHTMARE"] = { DifficultyName = " D18" } } },
 
+        ["ESP - S13"] = { OriginMix = "Phoenix", Charts = {
+        ["S13"] = { DifficultyName = " S13" } } },
+
+        ["DECA DANCE - S13"] = { OriginMix = "Phoenix", Charts = {
+        ["S13"] = { DifficultyName = " S13" } } },
+
+        ["CO5M1C R4ILR0AD - S15"] = { OriginMix = "Phoenix", Charts = {
+        ["S15"] = { DifficultyName = " S15" } } },
+
+        ["DEMON OF LAPLACE - S17"] = { OriginMix = "Phoenix", Charts = {
+        ["S17"] = { DifficultyName = " S17" } } },
+
+        ["TOMBOY - S17"] = { OriginMix = "Phoenix", Charts = {
+        ["S17"] = { DifficultyName = " S17" } } },
+
     }
 }
 
@@ -2232,6 +2247,7 @@ function DatabaseDetails.FetchSongOriginShort(input_songTitle)
     if not song then return "XXXX" end
 
     local mappingMap = {
+        ["Phoenix"] = " PHX",
         ["The 1st DF"] = " 1ST",
         ["The 2nd DF"] = " 2ND",
         ["O.B.G The 3rd"] = " 3RD",
@@ -2259,26 +2275,7 @@ function DatabaseDetails.FetchSongColorEnabled(input_songTitle)
     local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "black" end
 
-    local mappingMap = {
-        ["The 1st DF"] = "meckx_01Pink_light",
-        ["The 2nd DF"] = "meckx_02Blue_light",
-        ["O.B.G The 3rd"] = "meckx_03Green_light",
-        ["O.B.G Season Evo."] = "meckx_04Yellow_light",
-        ["Perfect"] = "meckx_05Orange_light",
-        ["Extra"] = "meckx_06Red_light",
-        ["Premiere"] = "meckx_01Pink_light",
-        ["Rebirth"] = "meckx_02Blue_light",
-        ["Premiere 3"] = "meckx_03Green_light",
-        ["Prex 3"] = "meckx_04Yellow_light",
-        ["Exceed"] = "meckx_05Orange_light",
-        ["Exceed 2"] = "meckx_06Red_light",
-        ["Zero"] = "meckx_01Pink_light",
-        ["NX"] = "meckx_02Blue_light",
-        ["Pro"] = "meckx_03Green_light",
-        ["NX2"] = "meckx_04Yellow_light",
-        ["NX Absolute"] = "meckx_05Orange_light",
-    }
-    return mappingMap[song.OriginMix] or "black"
+    return FetchMixColorEnabled(song.OriginMix) or "black"
 
 end
 
@@ -2287,26 +2284,7 @@ function DatabaseDetails.FetchSongColorDisabled(input_songTitle)
     local song = DatabaseDetails.Songs[input_songTitle]
     if not song then return "black" end
 
-    local mappingMap = {
-        ["The 1st DF"] = "meckx_01Pink_dark",
-        ["The 2nd DF"] = "meckx_02Blue_dark",
-        ["O.B.G The 3rd"] = "meckx_03Green_dark",
-        ["O.B.G Season Evo."] = "meckx_04Yellow_dark",
-        ["Perfect"] = "meckx_05Orange_dark",
-        ["Extra"] = "meckx_06Red_dark",
-        ["Premiere"] = "meckx_01Pink_dark",
-        ["Rebirth"] = "meckx_02Blue_dark",
-        ["Premiere 3"] = "meckx_03Green_dark",
-        ["Prex 3"] = "meckx_04Yellow_dark",
-        ["Exceed"] = "meckx_05Orange_dark",
-        ["Exceed 2"] = "meckx_06Red_dark",
-        ["Zero"] = "meckx_01Pink_dark",
-        ["NX"] = "meckx_02Blue_dark",
-        ["Pro"] = "meckx_03Green_dark",
-        ["NX2"] = "meckx_04Yellow_dark",
-        ["NX Absolute"] = "meckx_05Orange_dark",
-    }
-    return mappingMap[song.OriginMix] or "black"
+    return FetchMixColorDisabled(song.OriginMix) or "black"
 
 end
 
