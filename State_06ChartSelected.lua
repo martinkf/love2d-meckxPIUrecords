@@ -4,7 +4,8 @@ local State_06ChartSelected = {}
 
 local chartOptions = {
 	"Add new record",
-	"Edit recommended speed"
+	"Edit recommended speed",
+	"Edit recommended AV"
 }
 
 -- GLOBAL FUNCTIONS
@@ -38,6 +39,9 @@ function State_06ChartSelected.CenterPressed()
 	elseif Game.selectedChartOptIndex == 2 then
 		ResetState08()
 		Game.state = 8
+	elseif Game.selectedChartOptIndex == 3 then
+		ResetState09()
+		Game.state = 9
 	end
 
 end
@@ -53,6 +57,7 @@ function State_06ChartSelected.BackPressed()
 		Game.selectedChartName = ""
 		Game.selectedChartDifficultyName = ""
 		Game.selectedChartRecommendedSpeed = ""
+		Game.selectedChartRecommendedAV = ""
 		Game.state = 41
 	else
 		-- we will return to a "single-chart songwheel"
@@ -123,10 +128,10 @@ function State_06ChartSelected.Drawing()
 	})
 
 	-- first bar - song name in red background
-	local text = Game.selectedSongName
+	local text1 = Game.selectedSongName
 	meckx_print({
-		Text = Game.selectedSongName,
-		XPos = drawingX+(((53-#text)/2)*24),
+		Text = text1,
+		XPos = drawingX+(((53-#text1)/2)*24),
 		YPos = drawingY-2,
 		ColorName = "yellow",
 		FontStyle = ClassicConsole_48,
@@ -138,22 +143,22 @@ function State_06ChartSelected.Drawing()
 		XPos = 0,
 		YPos = 44,
 		Width = 1280,
-		Height = 122,
+		Height = 81,
 		ColorName = FetchChartColorEnabled(Game.selectedSongName, Game.selectedChartName),
 		RectStyle = "fill",
 		Transparency = 1,
 	})
-	local text2 = Game.selectedChartName
-	local text3 = Game.selectedChartDifficultyName
-	local text4 = "Recommended speed: " .. Game.selectedChartRecommendedSpeed
+	local text2 = "Rec. speed: " .. Game.selectedChartRecommendedSpeed
+	local text3 = Game.selectedChartName
+	local text4 = "Rec. AV: " .. Game.selectedChartRecommendedAV
+	local text5 = Game.selectedChartDifficultyName
 	meckx_print({
 		Text = text2,
-		XPos = drawingX+(((53-#text2)/2)*24),
+		XPos = drawingX,
 		YPos = drawingY,
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	drawingY = drawingY + linebreakSize
 	meckx_print({
 		Text = text3,
 		XPos = drawingX+(((53-#text3)/2)*24),
@@ -161,15 +166,23 @@ function State_06ChartSelected.Drawing()
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	drawingY = drawingY + linebreakSize - 6
 	meckx_print({
 		Text = text4,
-		XPos = drawingX+(((53-#text4)/2)*24),
+		XPos = drawingX+((53-#text4)*24),
 		YPos = drawingY,
 		ColorName = "white",
 		FontStyle = ClassicConsole_48,
 	})
-	drawingY = drawingY + linebreakSize + 4
+	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = text5,
+		XPos = drawingX+(((53-#text5)/2)*24),
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_48,
+	})
+	drawingY = drawingY + linebreakSize
 
 	meckx_print({
 		Text = "----------------- 06. CHART OPTIONS -----------------",

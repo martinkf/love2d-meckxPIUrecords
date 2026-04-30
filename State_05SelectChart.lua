@@ -9,6 +9,7 @@ function State_05SelectChart.UpPressed()
 	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 	Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 	Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+	Game.selectedChartRecommendedAV = FetchRecommendedAV(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
 
 end
 
@@ -19,6 +20,7 @@ function State_05SelectChart.DownPressed()
 	Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 	Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 	Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+	Game.selectedChartRecommendedAV = FetchRecommendedAV(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
 
 end
 
@@ -39,7 +41,7 @@ function State_05SelectChart.BackPressed()
 	Game.selectedChartName = ""
 	Game.selectedChartDifficultyName = ""
 	Game.selectedChartRecommendedSpeed = ""
-
+	Game.selectedChartRecommendedAV = ""
 end
 
 

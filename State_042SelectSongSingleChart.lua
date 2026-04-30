@@ -19,6 +19,7 @@ function State_042SelectSongSingleChart.UpPressed()
 		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 		Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 		Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+		Game.selectedChartRecommendedAV = FetchRecommendedAV(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
 	end
 
 end
@@ -40,6 +41,7 @@ function State_042SelectSongSingleChart.DownPressed()
 		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 		Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 		Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+		Game.selectedChartRecommendedAV = FetchRecommendedAV(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
 	end
 
 end
@@ -53,6 +55,7 @@ function State_042SelectSongSingleChart.CenterPressed()
 		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 		Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 		Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+		Game.selectedChartRecommendedAV = FetchRecommendedAV(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
 
 		Game.infographic = 0
 		Game.state = 5
@@ -80,6 +83,7 @@ function State_042SelectSongSingleChart.BackPressed()
 		Game.selectedChartName = ""
 		Game.selectedChartDifficultyName = ""
 		Game.selectedChartRecommendedSpeed = ""
+		Game.selectedChartRecommendedAV = ""
 	end
 
 end
