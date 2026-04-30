@@ -1,4 +1,19 @@
 local DatabaseMixes = {
+    {	MixName = "LBPIU 2026",
+        CheatCodes = {
+        },
+        SortingMethods = {
+            {   SortName = "Seletiva (April 2026)",
+                AvailableSongs = {
+                    { SongTitle = "ESP - S13", Charts = { "S13" } },
+                    { SongTitle = "DECA DANCE - S13", Charts = { "S13" } },
+                    { SongTitle = "CO5M1C R4ILR0AD - S15", Charts = { "S15" } },
+                    { SongTitle = "DEMON OF LAPLACE - S17", Charts = { "S17" } },
+                    { SongTitle = "TOMBOY - S17", Charts = { "S17" } },
+                },
+            },
+        },
+    },
     {	MixName = "O.B.G Season Evo.",
         CheatCodes = {
             "55755595 - Speed 2x",
@@ -11014,6 +11029,9 @@ local DatabaseMixes = {
 function FetchMixColorEnabled(input_mixName)
 
     local mappingMap = {
+        ["LBPIU 2026"] = "meckx_03Green_light",
+        ["Phoenix"] = "meckx_03Green_light",
+
         ["The 1st DF"] = "meckx_01Pink_light",
         ["The 2nd DF"] = "meckx_02Blue_light",
         ["O.B.G The 3rd"] = "meckx_03Green_light",
@@ -11041,6 +11059,9 @@ end
 function FetchMixColorDisabled(input_mixName)
 
     local mappingMap = {
+        ["LBPIU 2026"] = "meckx_03Green_dark",
+        ["Phoenix"] = "meckx_03Green_dark",
+
         ["The 1st DF"] = "meckx_01Pink_dark",
         ["The 2nd DF"] = "meckx_02Blue_dark",
         ["O.B.G The 3rd"] = "meckx_03Green_dark",
