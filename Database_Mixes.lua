@@ -11092,6 +11092,7 @@ function FetchPlayerColorEnabled(input_playerName)
         ["1. MartinTest"] = "meckx_06Red_light",
         ["2. Hand PIU"] = "meckx_01Pink_light",
         ["3. PIU pad"] = "meckx_02Blue_light",
+        ["4. DanceFit House"] = "meckx_03Green_light",
     }
     return mappingMap[input_playerName] or "white"
 
@@ -11103,6 +11104,7 @@ function FetchPlayerColorDisabled(input_playerName)
         ["1. MartinTest"] = "meckx_06Red_dark",
         ["2. Hand PIU"] = "meckx_01Pink_dark",
         ["3. PIU pad"] = "meckx_02Blue_dark",
+        ["4. DanceFit House"] = "meckx_03Green_dark",
     }
     return mappingMap[input_playerName] or "darkGray"
 

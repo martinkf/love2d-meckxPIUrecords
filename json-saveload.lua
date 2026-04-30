@@ -6,8 +6,9 @@ local function GetDefaultMemorycard()
     return {
         Players = {
             ["1. MartinTest"] = { Scores = {} },
-            ["2. Hand PIU"]    = { Scores = {} },
-            ["3. PIU pad"]    = { Scores = {} },
+            ["2. Hand PIU"] = { Scores = {} },
+            ["3. PIU pad"] = { Scores = {} },
+            ["4. DanceFit House"] = { Scores = {} },
         }
     }
 end
@@ -109,7 +110,7 @@ function FetchRecommendedSpeed(input_playerName, input_songTitle, input_chartNam
 
     local player = MemorycardData.Players[input_playerName]
     if not player or not player.RecommendedSpeeds then
-        return "  0x"
+        return "????"
     end
 
     for _, thisSongAndChart in ipairs(player.RecommendedSpeeds) do
@@ -118,7 +119,24 @@ function FetchRecommendedSpeed(input_playerName, input_songTitle, input_chartNam
         end
     end
 
-    return "  0x"
+    return "????"
+
+end
+
+function FetchRecommendedAV(input_playerName, input_songTitle, input_chartName)
+
+    local player = MemorycardData.Players[input_playerName]
+    if not player or not player.RecommendedAVs then
+        return "?????"
+    end
+
+    for _, thisSongAndChart in ipairs(player.RecommendedAVs) do
+        if thisSongAndChart.SongTitle == input_songTitle and thisSongAndChart.ChartName == input_chartName then
+            return thisSongAndChart.RecommendedAV
+        end
+    end
+
+    return "?????"
 
 end
 

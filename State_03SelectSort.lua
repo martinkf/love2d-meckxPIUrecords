@@ -51,6 +51,7 @@ function State_03SelectSort.CenterPressed()
 		Game.selectedChartName = DatabaseMixes[Game.selectedMixIndex].SortingMethods[Game.selectedSortIndex].AvailableSongs[Game.selectedSongIndex].Charts[Game.selectedChartIndex]
 		Game.selectedChartDifficultyName = FetchChartDifficultyName(Game.selectedSongName, Game.selectedChartName)
 		Game.selectedChartRecommendedSpeed = FetchRecommendedSpeed(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
+		Game.selectedChartRecommendedAV = FetchRecommendedAV(Game.selectedPlayerName, Game.selectedSongName, Game.selectedChartName)
 		Game.state = 42
 	end
 

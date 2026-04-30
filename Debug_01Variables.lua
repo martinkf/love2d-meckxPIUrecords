@@ -199,6 +199,15 @@ function Debug_01Variables.Drawing()
 		FontStyle = ClassicConsole_24,
 	})
 	drawingY = drawingY + linebreakSize
+
+	meckx_print({
+		Text = "Game.selectedChartRecommendedAV = "..Game.selectedChartRecommendedAV,
+		XPos = drawingX,
+		YPos = drawingY,
+		ColorName = "white",
+		FontStyle = ClassicConsole_24,
+	})
+	drawingY = drawingY + linebreakSize
 	drawingY = drawingY + (0.5 * linebreakSize)
 
 	meckx_print({

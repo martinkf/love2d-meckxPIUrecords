@@ -80,7 +80,7 @@ end
 function State_08EditingRecommendedSpeed.RightPressed()
 
 	if selectorIndex == 1 then
-		if editingRecommendedSpeed == "  0x" then editingRecommendedSpeed = "0.5x"
+		if editingRecommendedSpeed == "????" then editingRecommendedSpeed = "0.5x"
 		elseif editingRecommendedSpeed == "0.5x" then editingRecommendedSpeed = "  1x"
 		elseif editingRecommendedSpeed == "  1x" then editingRecommendedSpeed = "1.5x"
 		elseif editingRecommendedSpeed == "1.5x" then editingRecommendedSpeed = "  2x"

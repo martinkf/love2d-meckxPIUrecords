@@ -19,6 +19,7 @@ local State_05SelectChart = require("State_05SelectChart")
 local State_06ChartSelected = require("State_06ChartSelected")
 local State_07AddingNewRecord = require("State_07AddingNewRecord")
 local State_08EditingRecommendedSpeed = require("State_08EditingRecommendedSpeed")
+local State_09EditingRecommendedAV = require("State_09EditingRecommendedAV")
 -- overlay screens
 local Overlay_Infographic = require("Overlay_Infographic")
 
@@ -171,7 +172,8 @@ function HandleUp()
 	elseif Game.state == 5 then State_05SelectChart.UpPressed()
 	elseif Game.state == 6 then State_06ChartSelected.UpPressed()
 	elseif Game.state == 7 then State_07AddingNewRecord.UpPressed()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.UpPressed() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.UpPressed()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.UpPressed() end
 end
 
 function HandleDown()
@@ -183,7 +185,8 @@ function HandleDown()
 	elseif Game.state == 5 then State_05SelectChart.DownPressed()
 	elseif Game.state == 6 then State_06ChartSelected.DownPressed()
 	elseif Game.state == 7 then State_07AddingNewRecord.DownPressed()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.DownPressed() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.DownPressed()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.DownPressed() end
 end
 
 function HandleCenter()
@@ -195,7 +198,8 @@ function HandleCenter()
 	elseif Game.state == 5 then State_05SelectChart.CenterPressed()
 	elseif Game.state == 6 then State_06ChartSelected.CenterPressed()
 	elseif Game.state == 7 then State_07AddingNewRecord.CenterPressed()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.CenterPressed() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.CenterPressed()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.CenterPressed() end
 end
 
 function HandleBack()
@@ -206,17 +210,20 @@ function HandleBack()
 	elseif Game.state == 5 then State_05SelectChart.BackPressed()
 	elseif Game.state == 6 then State_06ChartSelected.BackPressed()
 	elseif Game.state == 7 then State_07AddingNewRecord.BackPressed()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.BackPressed() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.BackPressed()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.BackPressed() end
 end
 
 function HandleLeft()
 	if Game.state == 7 then State_07AddingNewRecord.LeftPressed()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.LeftPressed() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.LeftPressed()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.LeftPressed() end
 end
 
 function HandleRight()
 	if Game.state == 7 then State_07AddingNewRecord.RightPressed()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.RightPressed() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.RightPressed()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.RightPressed() end
 end
 
 function ToggleDebug()
@@ -347,6 +354,7 @@ function love.load()
 	Game.selectedChartName = ""
 	Game.selectedChartDifficultyName = ""
 	Game.selectedChartRecommendedSpeed = ""
+	Game.selectedChartRecommendedAV = ""
 
 	Game.selectedChartOptIndex = 0
 	Game.selectedChartOptName = ""
@@ -484,7 +492,8 @@ local function drawingUnderlay()
 	elseif Game.state == 5 then State_05SelectChart.Drawing()
 	elseif Game.state == 6 then State_06ChartSelected.Drawing()
 	elseif Game.state == 7 then State_07AddingNewRecord.Drawing()
-	elseif Game.state == 8 then State_08EditingRecommendedSpeed.Drawing() end
+	elseif Game.state == 8 then State_08EditingRecommendedSpeed.Drawing()
+	elseif Game.state == 9 then State_09EditingRecommendedAV.Drawing() end
 
 end
 
